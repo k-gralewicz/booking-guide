@@ -17,7 +17,13 @@ public class Visit {
         this.dueDate = dueDate;
     }
 
-    // TODO: dodać metody do obsługi wizyty (zaproponować w formie komentarza)
+    public void booking(){
+        //sprawdzić dostępność terminu w Shop dla Client
+    }
+
+    public LocalDateTime getDueDate() {
+        return dueDate;
+    }
 
     @Override
     public String toString() {
