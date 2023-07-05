@@ -20,24 +20,26 @@ public class Shop {
         this.address = address;
     }
 
-    public void visitAvailable(LocalDateTime dueDate) {
+    public boolean visitAvailable(LocalDateTime dueDate) {
         for (Visit visit : visits) {
             LocalDateTime visitDueDate = visit.getDueDate();
             boolean dueDateEquals = dueDate.isEqual(visitDueDate);
             if (dueDateEquals) {
                 System.out.println("Termin zajęty przez wizytę " + visit);
-            }else{
+            } else {
                 System.out.println("Termin dostępny ");
+                return true;
             }
         }
+        return false;
     }
     // TODO: 14.06.2023 zmodyfikować metodę visitAvailable tak aby uwzględniała czas trwania wizyt
 
-    public void addVisit(Visit visit){
-    visits.add(visit);
+    public void addVisit(Visit visit) {
+        visits.add(visit);
     }
 
-    public void allVisits(){
+    public void allVisits() {
         System.out.println("Wszystkie wizyty " + visits);
     }
 

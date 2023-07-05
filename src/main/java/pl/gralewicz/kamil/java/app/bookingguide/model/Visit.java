@@ -19,6 +19,8 @@ public class Visit {
 
     public void booking(){
         //sprawdzić dostępność terminu w Shop dla Client
+        // TODO: 05.07.2023 napisać implementację metody
+        // implementacja metody z TDD.
     }
 
     public LocalDateTime getDueDate() {

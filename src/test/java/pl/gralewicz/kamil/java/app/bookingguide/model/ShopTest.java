@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.model;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -14,8 +15,10 @@ class ShopTest {
         LocalDateTime dueDate = LocalDateTime.of(2023, Month.NOVEMBER, 20, 12, 0);
 
         //when - wywołujemy testowaną metodę dla klasy testowej
-        shop.visitAvailable(dueDate);
+       boolean isAvailable = shop.visitAvailable(dueDate);
 
         //then - sprawdzamy poprawność działania metody testowej
+        Assertions.assertTrue(isAvailable,"Visit is not available");
     }
 }
+// TODO: 05.07.2023 stworzyć klasę testową dla klasy Visit oraz metody booking.
