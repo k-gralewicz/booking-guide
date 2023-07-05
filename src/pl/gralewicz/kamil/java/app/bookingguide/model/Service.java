@@ -8,12 +8,13 @@ public class Service {
     private String description;
     private BigDecimal price;
     private int duration;
-    private String durationType; // TODO: stworzyć i użyć enum zamiast String
+//    private String durationType; // TODO: stworzyć i użyć enum zamiast String
+    private DurationType durationType;
 
     public Service() {
     }
 
-    public Service(String name, String description, BigDecimal price, int duration, String durationType) {
+    public Service(String name, String description, BigDecimal price, int duration, DurationType durationType) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -53,11 +54,11 @@ public class Service {
         this.duration = duration;
     }
 
-    public String getDurationType() {
+    public DurationType getDurationType() {
         return durationType;
     }
 
-    public void setDurationType(String durationType) {
+    public void setDurationType(DurationType durationType) {
         this.durationType = durationType;
     }
 
