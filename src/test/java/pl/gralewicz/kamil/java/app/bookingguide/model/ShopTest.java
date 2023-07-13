@@ -29,4 +29,5 @@ class ShopTest {
         Assertions.assertTrue(isAvailable, "Visit is not available");
     }
 }
-// TODO: 05.07.2023 stworzyć klasę testową dla klasy Visit oraz metody booking.
+// TODO: 13.07.2023 dodać test jednostkowy dla metody book().
+// dodać test jednostkowy sprawdzający dostępność wizyty dla zarezerwowanej wizyty.

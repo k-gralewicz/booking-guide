@@ -9,9 +9,6 @@ public class Client {
 
    private Address address; // zależność/relacja (dependency/association)
 
-    public Client() {
-    }
-
     public Client(String firstName, String lastName, String email, String phoneNumber, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;

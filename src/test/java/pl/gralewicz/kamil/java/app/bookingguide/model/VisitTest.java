@@ -26,3 +26,5 @@ class VisitTest {
         Assertions.assertTrue(isAvailable, "Visit is not available");
     }
 }
+
+// TODO: 13.07.2023 dodać test jednostkowy sprawdzający rejestrację wizyty dla zajętego terminu.
