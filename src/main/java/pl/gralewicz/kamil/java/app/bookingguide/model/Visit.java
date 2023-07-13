@@ -17,10 +17,12 @@ public class Visit {
         this.dueDate = dueDate;
     }
 
-    public void booking(){
-        //sprawdzić dostępność terminu w Shop dla Client
-        // TODO: 05.07.2023 napisać implementację metody
-        // implementacja metody z TDD.
+    public boolean booking(LocalDateTime dueDate) {
+        boolean isAvailable = shop.visitAvailable(dueDate);
+        if (isAvailable) {
+            shop.book(this);
+        }
+        return isAvailable;
     }
 
     public LocalDateTime getDueDate() {
