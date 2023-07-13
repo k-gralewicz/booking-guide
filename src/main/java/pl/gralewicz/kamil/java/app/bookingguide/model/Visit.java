@@ -17,8 +17,12 @@ public class Visit {
         this.dueDate = dueDate;
     }
 
-    public void booking(){
-        //sprawdzić dostępność terminu w Shop dla Client
+    public boolean booking(LocalDateTime dueDate) {
+        boolean isAvailable = shop.visitAvailable(dueDate);
+        if (isAvailable) {
+            shop.book(this);
+        }
+        return isAvailable;
     }
 
     public LocalDateTime getDueDate() {

@@ -3,8 +3,11 @@ package pl.gralewicz.kamil.java.app.bookingguide.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Shop {
+
+    private static final Logger LOGGER = Logger.getLogger(Shop.class.getName());
 
     private String name;
     private String description;
@@ -20,24 +23,43 @@ public class Shop {
         this.address = address;
     }
 
-    public void visitAvailable(LocalDateTime dueDate) {
-        for (Visit visit : visits) {
-            LocalDateTime visitDueDate = visit.getDueDate();
-            boolean dueDateEquals = dueDate.isEqual(visitDueDate);
-            if (dueDateEquals) {
-                System.out.println("Termin zajęty przez wizytę " + visit);
-            }else{
-                System.out.println("Termin dostępny ");
+    public boolean visitAvailable(LocalDateTime dueDate) {
+        LOGGER.info("visitAvailable(" + dueDate + ")");
+        if (visits.size() > 0) {
+            for (Visit visit : visits) {
+                LocalDateTime visitDueDate = visit.getDueDate();
+                boolean dueDateEquals = dueDate.isEqual(visitDueDate);
+                if (dueDateEquals) {
+                    System.out.println("Termin zajęty przez wizytę " + visit);
+                } else {
+                    System.out.println("Termin dostępny ");
+                    LOGGER.info("visitAvailable(...)=" + true);
+                    return true;
+                }
+            }
+        } else {
+            LOGGER.info("visitAvailable(...)=" + true);
+            return true;
+        }
+        LOGGER.info("visitAvailable(...)=" + false);
+        return false;
+
+    }
+
+    public void book(Visit visit) {
+        if (visit != null) {
+            boolean isAvailable = visitAvailable(visit.getDueDate());
+            if (isAvailable) {
+                visits.add(visit);
             }
         }
     }
-    // TODO: 14.06.2023 zmodyfikować metodę visitAvailable tak aby uwzględniała czas trwania wizyt
 
-    public void addVisit(Visit visit){
-    visits.add(visit);
-    }
+//    public void addVisit(Visit visit) {
+//        visits.add(visit);
+//    }
 
-    public void allVisits(){
+    public void allVisits() {
         System.out.println("Wszystkie wizyty " + visits);
     }
 
