@@ -10,16 +10,9 @@ import java.time.Month;
 class ShopTest {
 
     @Test
-    void visitAvailable() {
+    void givenShop_whenVisitAvailableForDueDate_thenVisitAvailableForDueDate() {
         //given - tworzymy obiekt klasy testowanej
-        Address ewaAddress = new Address("Puławska", "121/56", "01-202", "Warszawa", "Polska");
-        Client ewaClient = new Client("Ewa", "Iksińska", "ewax@wp.pl", "503777888", ewaAddress);
-        Service masazService = new Service("Masaż", "Ogólny masaż twarzy", BigDecimal.valueOf(250), 1, DurationType.HOURS);
-
         Shop shop = new Shop("Studio", "Randomowe studio urody", "555444888", null);
-//        Visit ewaVisit = new Visit(ewaClient, masazService, shop, LocalDateTime.of(2023, Month.JULY, 14, 20, 0));
-//        shop.book(ewaVisit);
-
         LocalDateTime dueDate = LocalDateTime.of(2023, Month.JULY, 14, 20, 0);
 
         //when - wywołujemy testowaną metodę dla klasy testowej
@@ -30,7 +23,7 @@ class ShopTest {
     }
 
     @Test
-    void book(){
+    void givenShop_whenBook_thenVisitBooked() {
         //given
         Address ulaAddress = new Address("Modlińska", "124", "03-120", "Warszawa", "Polska");
         Client ulaClient = new Client("Ula", "Dudek", "ududek@o2.pl", "601222333", ulaAddress);
@@ -39,7 +32,6 @@ class ShopTest {
         Shop zuziaShop = new Shop("Makjiaże", "Makijaże permanentne", "608448998", null);
 
         LocalDateTime dueDate = LocalDateTime.of(2023, Month.JULY, 22, 10, 0);
-
         Visit ulaVisit = new Visit(ulaClient, ustaService, zuziaShop, dueDate);
 
         //when
@@ -47,7 +39,6 @@ class ShopTest {
 
         //then
         Assertions.assertNotNull(bookedVisit, "bookedVisit is null");
-
     }
 }
 // TODO: 13.07.2023 dodać test jednostkowy dla metody book().
