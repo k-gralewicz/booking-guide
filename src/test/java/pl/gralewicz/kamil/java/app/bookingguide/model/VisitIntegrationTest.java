@@ -2,8 +2,10 @@ package pl.gralewicz.kamil.java.app.bookingguide.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 
