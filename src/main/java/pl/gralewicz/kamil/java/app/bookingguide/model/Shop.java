@@ -46,13 +46,18 @@ public class Shop {
 
     }
 
-    public void book(Visit visit) {
+    public Visit book(Visit visit) {
+        LOGGER.info("book(" + visit + ")");
         if (visit != null) {
             boolean isAvailable = visitAvailable(visit.getDueDate());
             if (isAvailable) {
                 visits.add(visit);
+                LOGGER.info("book(...)=" + visit);
+                return visit;
             }
         }
+        LOGGER.info("book(...)=" + null);
+        return null;
     }
 
 //    public void addVisit(Visit visit) {

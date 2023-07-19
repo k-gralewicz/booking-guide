@@ -14,6 +14,7 @@ class VisitTest {
 
     @Test
     void booking() {
+        //given
         Client client = new Client("Anna", "Nowak", "anna.nowak@wp.pl", "505444555", new Address("Puławska", "124/24", "01-201", "Warszawa", "Polska"));
         Service service = new Service("Masaż", "Ogólny masala twarzy", BigDecimal.valueOf(250), DurationType.MINUTES.getDefaultValue(), DurationType.MINUTES);
         Shop shop = new Shop("Cudny Masaż", "studio masażu", "501222333", new Address("Akacjowa", "18", "02-222", "Warszawa", "Polska"));
@@ -21,8 +22,10 @@ class VisitTest {
                 LocalDateTime.of(2023, Month.JULY, 22, 11, 30));
 //        shop.book(visit);
 
+        //when
         boolean isAvailable = visit.booking(LocalDateTime.of(2023, Month.JULY, 22, 11, 30));
 
+        //then
         Assertions.assertTrue(isAvailable, "Visit is not available");
     }
 }
