@@ -1,4 +1,4 @@
-package pl.gralewicz.kamil.java.app.bookingguide.model;
+package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
 public enum DurationType {
     MINUTES("Minuty", 30),
