@@ -23,3 +23,5 @@ public class AddressService {
     }
 
 }
+// TODO: 02.08.2023 zrobić wstrzykiwanie zależności dla klasy ClientService,
+//dodać test jednostkowy dla klasy ClientService.
