@@ -12,6 +12,9 @@ public class AddressDao {
 
     public Address create(Address address) {
         LOGGER.info("create()");
+        // TODO: 09.08.2023 dodać test jednostkowy dla metody create w AddressDao
+        // stworzyć tabelę ADDRESS, która ma kolumny takie jak pola w klasie Address.
+        // zaimplementować metodę create analogicznie do CarJdbcDao z pojektu java-learn.
         LOGGER.info("create(...)=");
         return null;
     }
