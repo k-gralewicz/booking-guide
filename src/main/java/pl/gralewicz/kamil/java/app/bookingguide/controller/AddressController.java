@@ -15,8 +15,17 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    public Address create(Address address) {
+    public Address create(Address address) throws Exception {
         LOGGER.info("create()");
+        if (address != null) {
+            //walidacja danych przyjmowanych od użytkownika
+            if (address.getStreet() == null) {
+                LOGGER.warning("Please provide street for the address");
+                // zgłaszanie wyjątku - własnego wyjątku
+                throw new Exception("Please provide street for the address");
+            }
+        }
+
         Address createdAddress = addressService.create(address);
         LOGGER.info("create(...)=" + createdAddress);
         return createdAddress;
