@@ -17,9 +17,9 @@ public class AddressService {
 
     public Address create(Address address) {
         LOGGER.info("create()");
-        addressDao.create(address); // delegacja / delegation
-        LOGGER.info("create(...)=");
-        return null;
+        Address createdAddress = addressDao.create(address); // delegacja / delegation
+        LOGGER.info("create(...)=" + createdAddress);
+        return createdAddress;
     }
 
 }
