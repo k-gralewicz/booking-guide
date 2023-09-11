@@ -1,11 +1,13 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.repository;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AddressRepository {
@@ -33,7 +35,18 @@ public class AddressRepository {
     }
 
     public AddressEntity create(AddressEntity address) {
-        LOGGER.info("create()");
+        LOGGER.info("create(" + address + ")");
+        Session session = sessionFactory.openSession();
+        try {
+            session.getTransaction().begin();
+            session.save(address);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Unable to create address.", e);
+            session.getTransaction().rollback();
+        }
+
+        LOGGER.info("create(...)=");
         return null;
     }
 }

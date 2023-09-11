@@ -4,14 +4,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class AddressRepositoryTest {
 
     @Test
     void create() {
         // given
         AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setCity("Warszawa");
+        addressEntity.setStreet("Strumykowa");
+
         AddressRepository addressRepository = new AddressRepository();
 
         // when
