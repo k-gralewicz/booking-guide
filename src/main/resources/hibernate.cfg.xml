@@ -29,6 +29,7 @@
 
         <!-- Names the annotated entity class -->
         <mapping class="pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity"/>
+        <mapping class="pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity"/>
     </session-factory>
 </hibernate-configuration>
 

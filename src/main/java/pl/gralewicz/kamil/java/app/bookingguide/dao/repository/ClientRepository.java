@@ -5,21 +5,18 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AddressRepository {
+public class ClientRepository {
 
-    private static final Logger LOGGER = Logger.getLogger(AddressRepository.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ClientRepository.class.getName());
 
     private SessionFactory sessionFactory;
 
-    public AddressRepository() {
-        // TODO: 20.09.2023 zastąpić zawartość konstruktora nową oddzielną klasą, która będzie singleton'em.
-//        przenieść zawartość konstruktora do nowej klasy będącej singletone'em.
-//        metodę z nowej klasy wywyłać w ciele konstruktora.
+    public ClientRepository() {
         StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .configure("hibernate.cfg.xml")
                 .build();
@@ -34,19 +31,25 @@ public class AddressRepository {
         }
     }
 
-    public AddressEntity create(AddressEntity address) {
-        LOGGER.info("create(" + address + ")");
+    public ClientEntity create(ClientEntity clientEntity) {
+        LOGGER.info("create(" + clientEntity + ")");
         Session session = sessionFactory.openSession();
         try {
             session.getTransaction().begin();
-            session.save(address);
+
+            Object savedObject = session.save(clientEntity);
+            clientEntity.setId((Long) savedObject);
+            LOGGER.info("create(" + savedObject + ")");
+
+//        session.persist(clientEntity);
+
             session.getTransaction().commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to create address.", e);
+            LOGGER.log(Level.SEVERE, "Unable to create client.", e);
             session.getTransaction().rollback();
         }
 
-        LOGGER.info("create(...)=");
-        return null;
+        LOGGER.info("create(...)=" + clientEntity);
+        return clientEntity;
     }
 }
