@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class ClientEntity {
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private AddressEntity address;
 
     public ClientEntity() {
@@ -88,3 +89,13 @@ public class ClientEntity {
                 '}';
     }
 }
+
+/*
+SELECT * from CLIENTS;
+SELECT * from ADDRESSES;
+
+SELECT *
+from CLIENTS C
+JOIN ADDRESSES A
+ON C.ADDRESS_ID = A.ID;
+ */
