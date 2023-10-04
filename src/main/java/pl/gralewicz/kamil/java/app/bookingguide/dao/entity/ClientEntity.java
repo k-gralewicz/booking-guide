@@ -1,9 +1,11 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +23,9 @@ public class ClientEntity {
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private AddressEntity address;
+
     public ClientEntity() {
     }
 
@@ -30,6 +35,14 @@ public class ClientEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public AddressEntity getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressEntity address) {
+        this.address = address;
     }
 
     public String getFirstName() {
@@ -72,6 +85,20 @@ public class ClientEntity {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", address=" + address +
                 '}';
     }
 }
+
+// TODO: 04.10.2023 pozostałe brakujące encje stworzyć na podstawie modeli: Service, Shop i Visit.
+
+
+/*
+SELECT * from CLIENTS;
+SELECT * from ADDRESSES;
+
+SELECT *
+from CLIENTS C
+JOIN ADDRESSES A
+ON C.ADDRESS_ID = A.ID;
+ */
