@@ -90,6 +90,9 @@ public class ClientEntity {
     }
 }
 
+// TODO: 04.10.2023 pozostałe brakujące encje stworzyć na podstawie modeli: Service, Shop i Visit.
+
+
 /*
 SELECT * from CLIENTS;
 SELECT * from ADDRESSES;
