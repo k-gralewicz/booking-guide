@@ -9,12 +9,16 @@ public class Shop {
 
     private static final Logger LOGGER = Logger.getLogger(Shop.class.getName());
 
+    private Long id;
     private String name;
     private String description;
     private String phoneNumber;
 
     private Address address;
     private List<Visit> visits = new ArrayList<>();
+
+    public Shop (){
+    }
 
     public Shop(String name, String description, String phoneNumber, Address address) {
         this.name = name;
@@ -68,6 +72,14 @@ public class Shop {
         System.out.println("Wszystkie wizyty " + visits);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -103,7 +115,8 @@ public class Shop {
     @Override
     public String toString() {
         return "Shop{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address=" + address +
