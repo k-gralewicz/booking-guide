@@ -32,4 +32,4 @@ public class VisitMapper {
         return visitEntity;
     }
 }
-// TODO: 11.10.2023 przerobić wszystkie własne mappery na użycie klasy ModelMapper. 
+// TODO: 11.10.2023 przerobić wszystkie własne mappery na użycie klasy ModelMapper.

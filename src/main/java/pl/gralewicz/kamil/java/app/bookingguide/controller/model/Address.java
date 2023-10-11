@@ -2,6 +2,7 @@ package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
 public class Address {
 
+    private Long id;
     private String street;
     private String flatNumber;
     private String postCode;
@@ -17,6 +18,14 @@ public class Address {
         this.postCode = postCode;
         this.city = city;
         this.country = country;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStreet() {

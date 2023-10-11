@@ -1,26 +1,28 @@
-package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
+package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 
 import java.math.BigDecimal;
 
-public class Service {
-
+@Entity
+@Table(name = "SERVICES")
+public class ServiceEntity {
+    @Id
+    @GeneratedValue
     private Long id;
+
     private String name;
     private String description;
     private BigDecimal price;
     private int duration;
-//    private String durationType; // TODO: stworzyć i użyć enum zamiast String
     private DurationType durationType;
 
-    public Service() {
-    }
+    public ServiceEntity() {
 
-    public Service(String name, String description, BigDecimal price, int duration, DurationType durationType) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.duration = duration;
-        this.durationType = durationType;
     }
 
     public Long getId() {
@@ -73,7 +75,7 @@ public class Service {
 
     @Override
     public String toString() {
-        return "Service{" +
+        return "ServiceEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
