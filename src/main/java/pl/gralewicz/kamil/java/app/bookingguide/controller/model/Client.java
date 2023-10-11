@@ -2,6 +2,7 @@ package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
 public class Client {
 
+   private Long id;
    private String firstName;
    private String lastName;
    private String email;
@@ -9,12 +10,25 @@ public class Client {
 
    private Address address; // zależność/relacja (dependency/association)
 
+    public Client() {
+    }
+
     public Client(String firstName, String lastName, String email, String phoneNumber, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -60,7 +74,8 @@ public class Client {
     @Override
     public String toString() {
         return "Client{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
