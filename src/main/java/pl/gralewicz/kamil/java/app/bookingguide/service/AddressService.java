@@ -17,6 +17,9 @@ public class AddressService {
 
     public Address create(Address address) {
         LOGGER.info("create()");
+        // TODO: 18.10.2023 zastąpić DAO respository - zamiast DAO użyjemy Respository - zmodyfikować DID.
+//        używając repository trzeba będzie skorzystać z własnych mapperów.
+//        wyżej opisany to do dzieje się w service.
         Address createdAddress = addressDao.create(address); // delegacja / delegation
         LOGGER.info("create(...)=" + createdAddress);
         return createdAddress;
