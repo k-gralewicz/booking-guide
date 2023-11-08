@@ -8,7 +8,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity;
 class AddressMapperTest {
 
     @Test
-    void from() {
+    void fromModel() {
         // given
         AddressMapper addressMapper = new AddressMapper();
 
@@ -25,6 +25,29 @@ class AddressMapperTest {
                 () -> Assertions.assertNotNull(addressEntity, "addressEntity is null"),
                 () -> Assertions.assertNotNull(addressEntity.getId(), "AddressEntity ID is null"),
                 () -> Assertions.assertNotNull(addressEntity.getCity(), "AddressEntity City is null")
+        );
+    }
+
+    @Test
+    void fromEntity() {
+        // given
+        AddressMapper addressMapper = new AddressMapper();
+
+
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId(1L);
+        addressEntity.setCity("Warszawa");
+        addressEntity.setCountry("Polska");
+
+        // when
+        Address createdAddress = addressMapper.from(addressEntity);
+
+        // then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(createdAddress, "createdAddress is null"),
+                () -> Assertions.assertNotNull(createdAddress.getId(), "createdAddress ID is null"),
+                () -> Assertions.assertNotNull(createdAddress.getCity(), "createdAddress City is null"),
+                () -> Assertions.assertNotNull(createdAddress.getCountry(), "createdAddress Country is null")
         );
     }
 }
