@@ -10,26 +10,22 @@ import java.util.logging.Logger;
 public class AddressService {
     private static final Logger LOGGER = Logger.getLogger(AddressService.class.getName());
 
-//    private String name;
     private AddressRepository addressRepository; // zależność/dependency
+    private AddressMapper addressMapper;
 
-    public AddressService(AddressRepository addressRepository) { //wstrzykiwanie zależności / dependency injection
+    public AddressService(AddressRepository addressRepository, AddressMapper addressMapper) { //wstrzykiwanie zależności / dependency injection
         this.addressRepository = addressRepository;
+        this.addressMapper = addressMapper;
     }
 
     public Address create(Address address) {
         LOGGER.info("create()");
-        // TODO: 18.10.2023 zastąpić DAO respository - zamiast DAO użyjemy Respository - zmodyfikować DID.
-//        używając repository trzeba będzie skorzystać z własnych mapperów.
-//        wyżej opisany to do dzieje się w service.
-        AddressMapper addressMapper = new AddressMapper();
         AddressEntity addressEntity = addressMapper.from(address);
-        AddressEntity createdAddress =
+        AddressEntity createdAddressEntity =
                 addressRepository.create(addressEntity); // delegacja / delegation
-        LOGGER.info("create(...)=" + createdAddress);
-        return null;
+        Address mappedAddress = addressMapper.from(createdAddressEntity);
+        LOGGER.info("create(...)=" + mappedAddress);
+        return mappedAddress;
     }
 
 }
-// TODO: 02.08.2023 zrobić wstrzykiwanie zależności dla klasy ClientService,
-//dodać test jednostkowy dla klasy ClientService.

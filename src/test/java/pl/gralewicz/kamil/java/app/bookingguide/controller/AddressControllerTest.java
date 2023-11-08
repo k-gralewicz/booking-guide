@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.AddressRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.AddressService;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.AddressMapper;
 
 class AddressControllerTest {
 
@@ -12,7 +13,8 @@ class AddressControllerTest {
     void givenDaoAndServiceAndController_whenCreateAddress_thenCreatedAddressNotNull() throws Exception {
         // given
         AddressRepository addressRespository = new AddressRepository();
-        AddressService addressService = new AddressService(addressRespository);
+        AddressMapper addressMapper = new AddressMapper();
+        AddressService addressService = new AddressService(addressRespository, addressMapper);
         AddressController addressController = new AddressController(addressService);
 
         // when
@@ -27,9 +29,10 @@ class AddressControllerTest {
         // given
         Address address = new Address();
         address.setStreet("Lazurowa");
+        AddressMapper addressMapper = new AddressMapper();
 
         AddressRepository addressRepository = new AddressRepository();
-        AddressService addressService = new AddressService(addressRepository);
+        AddressService addressService = new AddressService(addressRepository, addressMapper);
         AddressController addressController = new AddressController(addressService);
 
         // when
@@ -49,9 +52,10 @@ class AddressControllerTest {
         // given
         Address address = new Address();
 //        address.setStreet("Lazurowa");
+        AddressMapper addressMapper = new AddressMapper();
 
         AddressRepository addressRepository = new AddressRepository();
-        AddressService addressService = new AddressService(addressRepository);
+        AddressService addressService = new AddressService(addressRepository, addressMapper);
         AddressController addressController = new AddressController(addressService);
 
         // when
