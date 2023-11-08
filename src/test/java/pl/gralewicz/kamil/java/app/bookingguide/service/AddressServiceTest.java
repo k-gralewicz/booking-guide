@@ -2,17 +2,15 @@ package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.junit.jupiter.api.Test;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.AddressDao;
-
-import static org.junit.jupiter.api.Assertions.*;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.AddressRepository;
 
 class AddressServiceTest {
 
     @Test
     void create() {
         // given
-        AddressDao addressDao = new AddressDao();
-        AddressService addressService = new AddressService(addressDao);
+        AddressRepository addressRepository = new AddressRepository();
+        AddressService addressService = new AddressService(addressRepository);
 
         // when
         addressService.create(new Address());

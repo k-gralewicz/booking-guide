@@ -3,7 +3,7 @@ package pl.gralewicz.kamil.java.app.bookingguide.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.AddressDao;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.AddressRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.AddressService;
 
 class AddressControllerTest {
@@ -11,8 +11,8 @@ class AddressControllerTest {
     @Test
     void givenDaoAndServiceAndController_whenCreateAddress_thenCreatedAddressNotNull() throws Exception {
         // given
-        AddressDao addressDao = new AddressDao();
-        AddressService addressService = new AddressService(addressDao);
+        AddressRepository addressRespository = new AddressRepository();
+        AddressService addressService = new AddressService(addressRespository);
         AddressController addressController = new AddressController(addressService);
 
         // when
@@ -28,8 +28,8 @@ class AddressControllerTest {
         Address address = new Address();
         address.setStreet("Lazurowa");
 
-        AddressDao addressDao = new AddressDao();
-        AddressService addressService = new AddressService(addressDao);
+        AddressRepository addressRepository = new AddressRepository();
+        AddressService addressService = new AddressService(addressRepository);
         AddressController addressController = new AddressController(addressService);
 
         // when
@@ -50,8 +50,8 @@ class AddressControllerTest {
         Address address = new Address();
 //        address.setStreet("Lazurowa");
 
-        AddressDao addressDao = new AddressDao();
-        AddressService addressService = new AddressService(addressDao);
+        AddressRepository addressRepository = new AddressRepository();
+        AddressService addressService = new AddressService(addressRepository);
         AddressController addressController = new AddressController(addressService);
 
         // when

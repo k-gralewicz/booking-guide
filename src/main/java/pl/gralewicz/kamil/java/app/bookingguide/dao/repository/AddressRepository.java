@@ -34,12 +34,12 @@ public class AddressRepository {
         }
     }
 
-    public AddressEntity create(AddressEntity address) {
-        LOGGER.info("create(" + address + ")");
+    public AddressEntity create(AddressEntity addressEntity) {
+        LOGGER.info("create(" + addressEntity + ")");
         Session session = sessionFactory.openSession();
         try {
             session.getTransaction().begin();
-            session.save(address);
+            session.save(addressEntity);
             session.getTransaction().commit();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to create address.", e);
@@ -47,6 +47,6 @@ public class AddressRepository {
         }
 
         LOGGER.info("create(...)=");
-        return null;
+        return addressEntity;
     }
 }

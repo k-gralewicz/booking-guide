@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service.mapper;
 
+import org.modelmapper.ModelMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity;
 
@@ -16,6 +17,14 @@ public class AddressMapper {
         addressEntity.setCity(address.getCity());
         LOGGER.info("from(...) = " + addressEntity);
         return addressEntity;
+    }
+
+    public Address from(AddressEntity addressEntity) {
+        LOGGER.info("from(" + addressEntity + ")");
+        ModelMapper modelMapper = new ModelMapper();
+        Address address = modelMapper.map(addressEntity, Address.class);
+        LOGGER.info("from(...) = " + address);
+        return address;
     }
 }
 
