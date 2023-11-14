@@ -8,18 +8,18 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 import java.util.logging.Logger;
 
 public class ShopService {
-        private static final Logger LOGGER = Logger.getLogger(ShopService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ShopService.class.getName());
 
-        private ShopRepository shopRepository;
-        private ShopMapper shopMapper;
+    private ShopRepository shopRepository;
+    private ShopMapper shopMapper;
 
-        public ShopService(ShopRepository shopRepository, ShopMapper shopMapper) {
-            this.shopRepository = shopRepository;
-            this.shopMapper = shopMapper;
+    public ShopService(ShopRepository shopRepository, ShopMapper shopMapper) {
+        this.shopRepository = shopRepository;
+        this.shopMapper = shopMapper;
     }
 
     public Shop create(Shop shop) {
-            LOGGER.info("create()");
+        LOGGER.info("create()");
         ShopEntity shopEntity = shopMapper.from(shop);
         ShopEntity createdShopEntity = shopRepository.create(shopEntity);
         Shop mappedShop = shopMapper.from(createdShopEntity);
