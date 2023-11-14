@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service.mapper;
 
+import org.modelmapper.ModelMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
 
@@ -17,4 +18,13 @@ public class ServiceMapper {
         LOGGER.info("from(...) = " + serviceEntity);
         return serviceEntity;
     }
+
+    public Service from(ServiceEntity serviceEntity) {
+        LOGGER.info("from(" + serviceEntity + ")");
+        ModelMapper modelMapper = new ModelMapper();
+        Service service = modelMapper.map(serviceEntity, Service.class);
+        LOGGER.info("from(...) = " + serviceEntity);
+        return service;
+    }
 }
+

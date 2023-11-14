@@ -31,5 +31,13 @@ public class VisitMapper {
         LOGGER.info("from(...) = " + visitEntity);
         return visitEntity;
     }
+
+    public Visit from(VisitEntity visitEntity) {
+        LOGGER.info("from(" + visitEntity + ")");
+        ModelMapper modelMapper = new ModelMapper();
+        Visit visit = modelMapper.map(visitEntity, Visit.class);
+        LOGGER.info("from(...) = " + visitEntity);
+        return visit;
+    }
 }
 // TODO: 11.10.2023 przerobić wszystkie własne mappery na użycie klasy ModelMapper.

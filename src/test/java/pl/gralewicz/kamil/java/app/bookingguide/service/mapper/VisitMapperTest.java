@@ -5,12 +5,13 @@ import org.junit.jupiter.api.Test;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
 
 class VisitMapperTest {
 
     @Test
-    void from() {
+    void fromModel() {
         // given
         VisitMapper visitMapper = new VisitMapper();
 
@@ -38,6 +39,28 @@ class VisitMapperTest {
                 () -> Assertions.assertNotNull(visitEntity.getId(), "VisitEntity ID is null"),
                 () -> Assertions.assertNotNull(visitEntity.getClient(), "VisitEntity CLIENT is null"),
                 () -> Assertions.assertNotNull(visitEntity.getShop(), "VisitEntity SHOP is null")
+        );
+    }
+
+    @Test
+    void fromEntity() {
+        // given
+        VisitMapper visitMapper = new VisitMapper();
+
+        ShopEntity shopEntity = new ShopEntity();
+
+        VisitEntity visitEntity = new VisitEntity();
+        visitEntity.setId(1L);
+        visitEntity.setShop(shopEntity);
+
+        // when
+        Visit createdVisit = visitMapper.from(visitEntity);
+
+        // then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(createdVisit, "createdVisit is null"),
+                () -> Assertions.assertNotNull(createdVisit.getId(), "createdVisit ID is null"),
+                () -> Assertions.assertNotNull(createdVisit.getShop(), "createdVisit Shop is null")
         );
     }
 }
