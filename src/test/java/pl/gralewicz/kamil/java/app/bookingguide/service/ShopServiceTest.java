@@ -20,6 +20,5 @@ class ShopServiceTest {
 
         // then
         Assertions.assertNotNull(createdShop, "createdShop is null");
-
     }
 }

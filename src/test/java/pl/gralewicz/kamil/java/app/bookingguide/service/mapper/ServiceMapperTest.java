@@ -8,7 +8,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
 class ServiceMapperTest {
 
     @Test
-    void from() {
+    void fromModel() {
         // given
         ServiceMapper serviceMapper = new ServiceMapper();
 
@@ -25,6 +25,26 @@ class ServiceMapperTest {
                 () -> Assertions.assertNotNull(serviceEntity, "serviceEntity is null"),
                 () -> Assertions.assertNotNull(serviceEntity.getId(), "ServiceEntity ID is null"),
                 () -> Assertions.assertNotNull(serviceEntity.getName(), "ServiceEntity Name is null")
+        );
+    }
+
+    @Test
+    void fromEntity() {
+        /// given
+        ServiceMapper serviceMapper = new ServiceMapper();
+
+        ServiceEntity serviceEntity = new ServiceEntity();
+        serviceEntity.setId(1L);
+        serviceEntity.setName("Masaż Kobido");
+
+        // when
+        Service createdService = serviceMapper.from(serviceEntity);
+
+        // then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(createdService, "createdService is null"),
+                () -> Assertions.assertNotNull(createdService.getId(), "createdService ID is null"),
+                () -> Assertions.assertNotNull(createdService.getName(), "createdService Name is null")
         );
     }
 }
