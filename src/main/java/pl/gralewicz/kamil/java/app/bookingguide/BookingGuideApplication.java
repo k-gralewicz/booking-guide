@@ -9,3 +9,7 @@ public class BookingGuideApplication {
         SpringApplication.run(BookingGuideApplication.class,args);
     }
 }
+
+// TODO: 07.08.2024 Dla Adress konrolera zrobić komponent i test springowy.
+// dla wszystkich warstw Client (ctr, serw, mapper, repo), dodać SpringFramework oraz testy.
+// na nowym branchu.
