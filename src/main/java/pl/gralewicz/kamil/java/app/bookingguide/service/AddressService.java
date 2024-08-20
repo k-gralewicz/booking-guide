@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
+import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.AddressRepository;
@@ -7,6 +8,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.AddressMapper;
 
 import java.util.logging.Logger;
 
+@Service
 public class AddressService {
     private static final Logger LOGGER = Logger.getLogger(AddressService.class.getName());
 

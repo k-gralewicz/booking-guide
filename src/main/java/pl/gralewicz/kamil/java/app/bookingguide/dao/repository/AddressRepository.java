@@ -5,11 +5,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.springframework.stereotype.Repository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Repository
 public class AddressRepository {
 
     private static final Logger LOGGER = Logger.getLogger(AddressRepository.class.getName());
