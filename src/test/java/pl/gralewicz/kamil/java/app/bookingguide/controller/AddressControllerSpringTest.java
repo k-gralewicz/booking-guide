@@ -7,8 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class AddressControllerSpringTest {
 
@@ -22,11 +20,11 @@ class AddressControllerSpringTest {
         address.setStreet("Długa");
 
         // when
-        Address createdAddres = addressController.create(address);
+        Address createdAddress = addressController.create(address);
 
         // then
         Assertions.assertAll(
-                () -> Assert.notNull(createdAddres, "createdAddress is null")
+                () -> Assert.notNull(createdAddress, "createdAddress is null")
         );
     }
 }
