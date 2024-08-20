@@ -1,12 +1,12 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 import pl.gralewicz.kamil.java.app.bookingguide.service.AddressService;
 
 import java.util.logging.Logger;
 
-@Component
+@Controller
 public class AddressController {
     private static final Logger LOGGER = Logger.getLogger(AddressController.class.getName());
 

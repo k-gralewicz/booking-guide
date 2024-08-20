@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
+import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ClientRepository;
@@ -7,6 +8,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ClientMapper;
 
 import java.util.logging.Logger;
 
+@Service
 public class ClientService {
     private static final Logger LOGGER = Logger.getLogger(ClientService.class.getName());
 
