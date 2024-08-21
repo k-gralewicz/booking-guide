@@ -29,3 +29,4 @@ public class ClientMapper {
         return client;
     }
 }
+// TODO: 21.08.2024 poprawić pierwszy from, dodać modelMapper (jak w drugim from), 

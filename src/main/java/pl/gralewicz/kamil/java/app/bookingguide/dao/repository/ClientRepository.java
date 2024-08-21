@@ -55,3 +55,4 @@ public class ClientRepository {
         return clientEntity;
     }
 }
+// TODO: 21.08.2024 poprawić Repository

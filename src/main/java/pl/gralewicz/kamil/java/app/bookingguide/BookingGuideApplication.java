@@ -10,6 +10,6 @@ public class BookingGuideApplication {
     }
 }
 
-// TODO: 07.08.2024 Dla Adress konrolera zrobić komponent i test springowy.
+// TODO: 07.08.2024 Dla Address konrolera zrobić komponent i test springowy.
 // dla wszystkich warstw Client (ctr, serw, mapper, repo), dodać SpringFramework oraz testy.
 // na nowym branchu.
