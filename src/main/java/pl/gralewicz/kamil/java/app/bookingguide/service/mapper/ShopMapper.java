@@ -1,11 +1,13 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service.mapper;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 
 import java.util.logging.Logger;
 
+@Component
 public class ShopMapper {
 
     private static final Logger LOGGER = Logger.getLogger(ShopMapper.class.getName());

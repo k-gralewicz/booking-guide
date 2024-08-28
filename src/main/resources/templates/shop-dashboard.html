@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Shops</title>
+</head>
+<body>
+  <div>Shop list</div>
+  <div>
+      <table>
+          <tr>
+              <th>ID</th>
+              <th>NAME</th>
+              <th>DESCRIPTION</th>
+              <th>PHONE NUMBER</th>
+              <th>READ</th>
+              <th>UPDATE</th>
+              <th>DELETE</th>
+          </tr>
+          <tr th:if="${#lists.isEmpty(shops)}">
+              <td colspan="6">This list is empty</td>
+          </tr>
+          <tr th:each="shop : ${shops}">
+              <td th:text="${shop.id}"></td>
+              <td th:text="${shop.name}"></td>
+              <td th:text="${shop.description}"></td>
+              <td th:text="${shop.phoneNumber}"></td>
+              <td><a th:href="@{/shops/{id}(id = ${shop.id})}">Read</a></td>
+              <td><a th:href="@{/shops/update/{id}(id = ${shop.id})}">Update</a></td>
+              <td><a th:href="@{/shops/delete/{id}(id = ${shop.id})}">Delete</a></td>
+          </tr>
+      </table>
+  </div>
+<!--    <div th:text="${shops}"></div>-->
+</body>
+</html>
