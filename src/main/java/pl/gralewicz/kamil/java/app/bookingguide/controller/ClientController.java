@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ClientService;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
@@ -18,6 +19,14 @@ public class ClientController {
 
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    @GetMapping
+    public String list(){
+        LOGGER.info("list()");
+        List<Client> clients = clientService.list();
+        LOGGER.info("list(...)= " + clients);
+        return "clients";
     }
 
     @GetMapping(value="/create")
@@ -33,7 +42,7 @@ public class ClientController {
         LOGGER.info("create(" + client + ")");
         Client createdClient = clientService.create(client);
         LOGGER.info("create(...)= " + createdClient);
-        return "client-create";
+        return "redirect:/clients";
     }
 
 
