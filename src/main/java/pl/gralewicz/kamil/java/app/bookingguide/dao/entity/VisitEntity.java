@@ -14,9 +14,9 @@ public class VisitEntity {
     @GeneratedValue
     private Long id;
 
-    private ClientEntity client;
-    private ServiceEntity service;
-    private ShopEntity shop;
+//    private ClientEntity client;
+//    private ServiceEntity service;
+//    private ShopEntity shop;
     private LocalDateTime dueDate;
 
     public VisitEntity() {
@@ -30,29 +30,29 @@ public class VisitEntity {
         this.id = id;
     }
 
-    public ClientEntity getClient() {
-        return client;
-    }
-
-    public void setClient(ClientEntity client) {
-        this.client = client;
-    }
-
-    public ServiceEntity getService() {
-        return service;
-    }
-
-    public void setService(ServiceEntity service) {
-        this.service = service;
-    }
-
-    public ShopEntity getShop() {
-        return shop;
-    }
-
-    public void setShop(ShopEntity shop) {
-        this.shop = shop;
-    }
+//    public ClientEntity getClient() {
+//        return client;
+//    }
+//
+//    public void setClient(ClientEntity client) {
+//        this.client = client;
+//    }
+//
+//    public ServiceEntity getService() {
+//        return service;
+//    }
+//
+//    public void setService(ServiceEntity service) {
+//        this.service = service;
+//    }
+//
+//    public ShopEntity getShop() {
+//        return shop;
+//    }
+//
+//    public void setShop(ShopEntity shop) {
+//        this.shop = shop;
+//    }
 
     public LocalDateTime getDueDate() {
         return dueDate;
@@ -66,9 +66,9 @@ public class VisitEntity {
     public String toString() {
         return "VisitEntity{" +
                 "id=" + id +
-                ", client=" + client +
-                ", service=" + service +
-                ", shop=" + shop +
+//                ", client=" + client +
+//                ", service=" + service +
+//                ", shop=" + shop +
                 ", dueDate=" + dueDate +
                 '}';
     }

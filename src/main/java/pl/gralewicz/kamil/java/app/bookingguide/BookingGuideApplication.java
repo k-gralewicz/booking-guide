@@ -14,12 +14,12 @@ public class BookingGuideApplication {
 //dodać brakujące pola z modelu,
 //
 
-// TODO: 28.08.2024 Dla Address konrolera zrobić komponent i test springowy.
+// TODO: 04.09.2024 Dla Address konrolera zrobić komponent i test springowy.
 // dla wszystkich warstw Client (ctr, serw, mapper, repo), dodać SpringFramework oraz testy.
 // na nowym branchu.
 // poprawić Client Repository
 
-// TODO: 28.08.2024 dla wszystkich warstw Service (ctr, serw, mapper, repo), dodać SpringFramework oraz testy.
+// TODO: 04.09.2024 dla wszystkich warstw Service (ctr, serw, mapper, repo), dodać SpringFramework oraz testy.
 // na nowym branchu.
 
 

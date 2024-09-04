@@ -6,11 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "SHOPS")
@@ -23,8 +18,8 @@ public class ShopEntity {
     private String description;
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
-    private Address address;
-    private List<Visit> visits = new ArrayList<>();
+//    private Address address;
+//    private List<Visit> visits = new ArrayList<>();
 
     public ShopEntity() {
 
@@ -61,22 +56,22 @@ public class ShopEntity {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public List<Visit> getVisits() {
-        return visits;
-    }
-
-    public void setVisits(List<Visit> visits) {
-        this.visits = visits;
-    }
+//
+//    public Address getAddress() {
+//        return address;
+//    }
+//
+//    public void setAddress(Address address) {
+//        this.address = address;
+//    }
+//
+//    public List<Visit> getVisits() {
+//        return visits;
+//    }
+//
+//    public void setVisits(List<Visit> visits) {
+//        this.visits = visits;
+//    }
 
     @Override
     public String toString() {
@@ -85,8 +80,8 @@ public class ShopEntity {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", address=" + address +
-                ", visits=" + visits +
+//                ", address=" + address +
+//                ", visits=" + visits +
                 '}';
     }
 }
