@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Client list</title>
+</head>
+<h1>Client list</h1>
+<body>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>FIRST NAME</th>
+        <th>LAST NAME</th>
+        <th>EMAIL</th>
+        <th>PHONE NUMBER</th>
+        <th>READ</th>
+        <th>UPDATE</th>
+        <th>DELETE</th>
+    </tr>
+    <tr th:if="${#lists.isEmpty(clients)}">
+        <td colspan="6">This list is empty</td>
+    </tr>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.id}"></td>
+        <td th:text="${client.firstName}"></td>
+        <td th:text="${client.lastName}"></td>
+        <td th:text="${client.email}"></td>
+        <td th:text="${client.phoneNumber}"></td>
+        <td><a th:href="@{/clients/{id}(id = ${client.id})}">Read</a></td>
+        <td><a th:href="@{/clients/update/{id}(id = ${client.id})}">Update</a></td>
+        <td><a th:href="@{/clients/delete/{id}(id = ${client.id})}">Delete</a></td>
+    </tr>
+</table>
+</body>
+</html>
