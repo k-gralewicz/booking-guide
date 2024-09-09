@@ -6,8 +6,8 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ClientRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ClientMapper;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -22,12 +22,10 @@ public class ClientService {
         this.clientMapper = clientMapper;
     }
 
-    public List<Client> list(){
+    public List<Client> list() {
         LOGGER.info("list()");
-        List<Client>clients = new ArrayList<>();
-        clients.add(new Client("Ewa", "Kowalska", null, null, null));
-        clients.add(new Client("Anna", "Nowak", null, null, null));
-        clients.add(new Client("Ela", "Iksińska", null, null, null));
+        List<ClientEntity> clientEntities = clientRepository.findAll();
+        List<Client> clients = clientMapper.fromEntities(clientEntities);
         LOGGER.info("list(...)= " + clients);
         return clients;
     }
@@ -35,9 +33,23 @@ public class ClientService {
     public Client create(Client client) {
         LOGGER.info("create()");
         ClientEntity clientEntity = clientMapper.from(client);
-        ClientEntity createdClientEntity = clientRepository.create(clientEntity);
+        ClientEntity createdClientEntity = clientRepository.save(clientEntity);
         Client mappedClient = clientMapper.from(createdClientEntity);
         LOGGER.info("create(...)=" + mappedClient);
         return mappedClient;
+    }
+
+    public Client read(Long id) {
+        LOGGER.info("read(" + id + ")");
+        Optional<ClientEntity> optionalClientEntity = clientRepository.findById(id);
+        ClientEntity clientEntity = optionalClientEntity.orElseThrow();
+        LOGGER.info("read(...)= ");
+        return null;
+    }
+
+    public void delete(Long id) {
+        LOGGER.info("delete(" + id + ")");
+        clientRepository.deleteById(id);
+        LOGGER.info("delete(...)= ");
     }
 }
