@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Service list</title>
+</head>
+<h1>Service list</h1>
+<body>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>NAME</th>
+    <th>DESCRIPTION</th>
+    <th>PRICE</th>
+    <th>DURATION</th>
+    <th>DURATION TYPE</th>
+    <th>READ</th>
+    <th>UPDATE</th>
+    <th>DELETE</th>
+  </tr>
+  <tr th:if="${#lists.isEmpty(services)}">
+    <td colspan="6">This list is empty</td>
+  </tr>
+  <tr th:each="service : ${services}">
+    <td th:text="${service.id}"></td>
+    <td th:text="${service.name}"></td>
+    <td th:text="${service.description}"></td>
+    <td th:text="${service.price}"></td>
+    <td th:text="${service.duration}"></td>
+    <td th:text="${service.durationType}"></td>
+    <td><a th:href="@{/services/{id}(id = ${service.id})}">Read</a></td>
+    <td><a th:href="@{/services/update/{id}(id = ${service.id})}">Update</a></td>
+    <td><a th:href="@{/services/delete/{id}(id = ${service.id})}">Delete</a></td>
+  </tr>
+</table>
+</body>
+</html>
