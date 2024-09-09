@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Address list</title>
+</head>
+<h1>Address list</h1>
+<body>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>STREET</th>
+        <th>FLAT NUMBER</th>
+        <th>POST CODE</th>
+        <th>CITY</th>
+        <th>COUNTRY</th>
+        <th>READ</th>
+        <th>UPDATE</th>
+        <th>DELETE</th>
+    </tr>
+    <tr th:if="${#lists.isEmpty(addresses)}">
+        <td colspan="6">This list is empty</td>
+    </tr>
+    <tr th:each="address : ${addresses}">
+        <td th:text="${address.id}"></td>
+        <td th:text="${address.street}"></td>
+        <td th:text="${address.flatNumber}"></td>
+        <td th:text="${address.postCode}"></td>
+        <td th:text="${address.city}"></td>
+        <td th:text="${address.country}"></td>
+        <td><a th:href="@{/addresses/{id}(id = ${address.id})}">Read</a></td>
+        <td><a th:href="@{/addresses/update/{id}(id = ${address.id})}">Update</a></td>
+        <td><a th:href="@{/addresses/delete/{id}(id = ${address.id})}">Delete</a></td>
+    </tr>
+</table>
+</body>
+</html>
