@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,6 +20,7 @@ public class ServiceEntity {
     private String description;
     private BigDecimal price;
     private int duration;
+    @Column(name = "DURATION_TYPE")
     private DurationType durationType;
 
     public ServiceEntity() {
