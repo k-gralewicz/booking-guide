@@ -70,7 +70,7 @@ public class AddressController {
         return "address-create";
     }
 
-    @GetMapping(value = "/id")
+    @GetMapping(value = "/delete/id")
     public String delete(@PathVariable Long id, String street, String flatNumber, String postCode, String city, String country, ModelMap modelMap) {
         LOGGER.info("read(" + id + ")");
         LOGGER.info("read(" + street + ")");
