@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Component
@@ -12,11 +14,24 @@ public class AddressMapper {
 
     private static final Logger LOGGER = Logger.getLogger(AddressMapper.class.getName());
 
+    public List<Address> fromEntities(List<AddressEntity> addressEntities) {
+        LOGGER.info("fromEntities()");
+
+        List<Address> addresses = new ArrayList<>();
+
+        for (AddressEntity addressEntity : addressEntities) {
+            Address address = from(addressEntity);
+            addresses.add(address);
+        }
+
+        LOGGER.info("fromEntities(...)");
+        return addresses;
+    }
+
     public AddressEntity from(Address address) {
         LOGGER.info("from(" + address + ")");
-        AddressEntity addressEntity = new AddressEntity();
-        addressEntity.setId(address.getId());
-        addressEntity.setCity(address.getCity());
+        ModelMapper modelMapper = new ModelMapper();
+        AddressEntity addressEntity = modelMapper.map(address, AddressEntity.class);
         LOGGER.info("from(...) = " + addressEntity);
         return addressEntity;
     }

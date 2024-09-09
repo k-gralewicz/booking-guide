@@ -6,6 +6,8 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.AddressEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.AddressRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.AddressMapper;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -20,14 +22,35 @@ public class AddressService {
         this.addressMapper = addressMapper;
     }
 
+    public List<Address> list() {
+        LOGGER.info("list()");
+        List<AddressEntity> addressEntities = addressRepository.findAll();
+        List<Address> addresses = addressMapper.fromEntities(addressEntities);
+        LOGGER.info("list(...)= " + addresses);
+        return addresses;
+    }
+
     public Address create(Address address) {
         LOGGER.info("create()");
         AddressEntity addressEntity = addressMapper.from(address);
         AddressEntity createdAddressEntity =
-                addressRepository.create(addressEntity); // delegacja / delegation
+                addressRepository.save(addressEntity); // delegacja / delegation
         Address mappedAddress = addressMapper.from(createdAddressEntity);
         LOGGER.info("create(...)=" + mappedAddress);
         return mappedAddress;
     }
 
+    public Address read(Long id) {
+        LOGGER.info("read(" + id + ")");
+        Optional<AddressEntity> optionalAddressEntity = addressRepository.findById(id);
+        AddressEntity addressEntity = optionalAddressEntity.orElseThrow();
+        LOGGER.info("read(...)= ");
+        return null;
+    }
+
+    public void delete(Long id) {
+        LOGGER.info("delete(" + id + ")");
+        addressRepository.deleteById(id);
+        LOGGER.info("delete(...)= ");
+    }
 }
