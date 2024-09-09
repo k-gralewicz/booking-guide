@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+</head>
+<body>
+<div>Shop details</div>
+<div class="mb-3">
+    <a th:href="@{/shops/clients/{id}(id = ${shopId})}">Clients</a>
+<!--    <a th:href="@{/clients/filter/{shopId}(id = ${shop.id})}">Details</a>-->
+</div>
+</body>
+</html>

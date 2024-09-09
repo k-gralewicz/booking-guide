@@ -27,8 +27,10 @@ public class ShopService {
         List<Shop> shops = new ArrayList<>();
         Shop cosmeticShop = new Shop();
         cosmeticShop.setName("Rossmann");
+        cosmeticShop.setId(1L);
         Shop groceryShop = new Shop();
         groceryShop.setName("Biedronka");
+        groceryShop.setId(2L);
         shops.add(cosmeticShop);
         shops.add(groceryShop);
         LOGGER.info("list(...)= " + shops);
