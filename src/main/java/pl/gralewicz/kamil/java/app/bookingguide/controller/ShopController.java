@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 @Controller
 @RequestMapping(value = "/shops")
+//@SessionAttributes("SHOP_ID_SESSION")
 public class ShopController {
     private static Logger LOGGER = Logger.getLogger(ShopController.class.getName());
 
@@ -34,8 +35,17 @@ public class ShopController {
     @GetMapping(value = "/details/{id}")
     public String details(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("details(" + id + ")");
-
+//        modelMap.addAttribute("SHOP_ID_SESSION", id);
+        modelMap.addAttribute("shopId", id);
         LOGGER.info("details(...)= ");
+        return "shop-details";
+    }
+
+    @GetMapping(value = "/clients/{id}")
+    public String clients(@PathVariable Long id, ModelMap modelMap) {
+        LOGGER.info("clients(" + id + ")");
+//        Object shopIdSession = modelMap.getAttribute("SHOP_ID_SESSION");
+//        LOGGER.info("shopIdSession: " + shopIdSession);
         return "shop-details";
     }
 }
