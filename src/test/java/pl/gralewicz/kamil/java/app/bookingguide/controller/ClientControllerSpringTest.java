@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 
-import javax.swing.*;
-
 @SpringBootTest
 class ClientControllerSpringTest {
 
@@ -30,3 +28,5 @@ class ClientControllerSpringTest {
         );
     }
 }
+
+// https://spring.io/guides/gs/testing-web
