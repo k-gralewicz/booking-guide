@@ -2,16 +2,22 @@ package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ClientRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ClientMapper;
 
+@SpringBootTest
 class ClientServiceTest {
+
+    @Autowired
+    private ClientService clientService;
+    private ClientRepository clientRepository;
 
     @Test
     void create() {
         // given
-        ClientRepository clientRepository = new ClientRepository();
         ClientMapper clientMapper = new ClientMapper();
         ClientService clientService = new ClientService(clientRepository, clientMapper);
 

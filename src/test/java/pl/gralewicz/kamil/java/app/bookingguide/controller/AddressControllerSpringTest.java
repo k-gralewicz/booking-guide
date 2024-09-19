@@ -20,7 +20,7 @@ class AddressControllerSpringTest {
         address.setStreet("Długa");
 
         // when
-        Address createdAddress = addressController.create(address);
+        String createdAddress = addressController.create(address);
 
         // then
         Assertions.assertAll(

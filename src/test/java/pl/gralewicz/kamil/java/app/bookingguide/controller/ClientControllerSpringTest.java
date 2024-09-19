@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 
-import static org.junit.jupiter.api.Assertions.*;
+import javax.swing.*;
 
 @SpringBootTest
 class ClientControllerSpringTest {
@@ -22,7 +22,7 @@ class ClientControllerSpringTest {
         client.setLastName("Kowalska");
 
         // when
-        Client createdClient = clientController.create(client);
+        String createdClient = clientController.create(client);
 
         // then
         Assertions.assertAll(

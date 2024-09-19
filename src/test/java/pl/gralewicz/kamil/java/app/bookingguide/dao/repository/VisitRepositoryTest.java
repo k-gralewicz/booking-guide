@@ -13,7 +13,7 @@ class VisitRepositoryTest {
         ShopEntity shopEntity = new ShopEntity();
         VisitEntity visitEntity = new VisitEntity();
         visitEntity.setId(1L);
-        visitEntity.setShop(shopEntity);
+//        visitEntity.setShop(shopEntity);
 
         VisitRepository visitRepository = new VisitRepository();
 
