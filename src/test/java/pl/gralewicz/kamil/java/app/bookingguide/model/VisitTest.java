@@ -18,9 +18,10 @@ class VisitTest {
     @Test
     void givenVisitClientServiceShop_whenBooking_thenVisitIsAvailable() {
         //given
-        Client client = new Client("Anna", "Nowak", "anna.nowak@wp.pl", "505444555", new Address("Puławska", "124/24", "01-201", "Warszawa", "Polska"));
+//        Client client = new Client("Anna", "Nowak", "anna.nowak@wp.pl", "505444555", new Address());
+        Client client = new Client();
         Service service = new Service("Masaż", "Ogólny masala twarzy", BigDecimal.valueOf(250), DurationType.MINUTES.getDefaultValue(), DurationType.MINUTES);
-        Shop shop = new Shop("Cudny Masaż", "studio masażu", "501222333", new Address("Akacjowa", "18", "02-222", "Warszawa", "Polska"));
+        Shop shop = new Shop("Cudny Masaż", "studio masażu", "501222333", new Address());
         Visit visit = new Visit(client, service, shop,
                 LocalDateTime.of(2023, Month.JULY, 22, 11, 30));
 

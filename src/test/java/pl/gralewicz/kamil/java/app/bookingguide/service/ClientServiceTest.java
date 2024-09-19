@@ -22,7 +22,9 @@ class ClientServiceTest {
         ClientService clientService = new ClientService(clientRepository, clientMapper);
 
         // when
-        Client createdClient = clientService.create(new Client("Anna", "Kowalska", "anna@wp.pl", "555444333", null));
+//        Client client = new Client("Anna", "Kowalska", "anna@wp.pl", "555444333", null);
+        Client client = new Client();
+        Client createdClient = clientService.create(client);
 
         // then
         Assertions.assertNotNull(createdClient, "Created client is null");

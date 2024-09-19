@@ -3,6 +3,7 @@ package pl.gralewicz.kamil.java.app.bookingguide.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public String create(Client client){
+    public String create(@ModelAttribute Client client){
         LOGGER.info("create(" + client + ")");
         Client createdClient = clientService.create(client);
         LOGGER.info("create(...)= " + createdClient);

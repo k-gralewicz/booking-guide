@@ -31,8 +31,10 @@ class ShopTest {
     @Test
     void givenShop_whenBook_thenVisitBooked() {
         //given
-        Address ulaAddress = new Address("Modlińska", "124", "03-120", "Warszawa", "Polska");
-        Client ulaClient = new Client("Ula", "Dudek", "ududek@o2.pl", "601222333", ulaAddress);
+//        Address ulaAddress = new Address("Modlińska", "124", "03-120", "Warszawa", "Polska");
+//        Client ulaClient = new Client("Ula", "Dudek", "ududek@o2.pl", "601222333", ulaAddress);
+        Address ulaAddress = new Address();
+        Client ulaClient = new Client();
         Service ustaService = new Service("Makijaż", "Makijaż permanentny ust", BigDecimal.valueOf(350), 3, DurationType.HOURS);
 
         Shop zuziaShop = new Shop("Makjiaże", "Makijaże permanentne", "608448998", null);
