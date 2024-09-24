@@ -25,3 +25,8 @@ public class BookingGuideApplication {
 
 // jak da radę resztę to też (Address, Shop, Visit) :)
 // też na nowym branchu.
+
+// TODO: 19.09.2024 rozbić adres w Client-create na poszczególne pola i podobnie w pozostałych modelach.
+//  zrobić test controller Client analogicznie do AddressControllerWebApplicationTest (też create)
+
+// TODO: 24.09.2024 dodać th do creatów html,

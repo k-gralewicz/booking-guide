@@ -13,13 +13,13 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String email, String phoneNumber, Address address) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-    }
+//    public Client(String firstName, String lastName, String email, String phoneNumber, Address address) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.phoneNumber = phoneNumber;
+//        this.address = address;
+//    }
 
 
 
