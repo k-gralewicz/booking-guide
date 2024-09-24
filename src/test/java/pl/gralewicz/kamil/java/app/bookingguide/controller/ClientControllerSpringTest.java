@@ -30,3 +30,10 @@ class ClientControllerSpringTest {
 }
 
 // https://spring.io/guides/gs/testing-web
+
+/*
+SELECT *
+FROM CLIENTS AS C
+LEFT JOIN ADDRESSES AS A
+ON C.ADDRESS_ID = A.ID
+ */

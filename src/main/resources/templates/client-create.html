@@ -38,7 +38,8 @@
 <!--                </div>-->
                 <div class="mb-3">
                     <label for="address.flatNumber">Flat Number</label>
-                    <input id="address.flatNumber" name="flatNumber" class="form-control">
+<!--                    <input id="address.flatNumber" name="flatNumber" class="form-control">-->
+                    <input th:field="${client.address.flatNumber}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Create</button>
