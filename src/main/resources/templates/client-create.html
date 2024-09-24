@@ -12,14 +12,17 @@
     <h1>Create Client</h1>
     <div class="row">
         <div class="col">
-            <form action="/clients" method="post">
+<!--            <form action="/clients" method="post">-->
+            <form action="#" th:action="@{/clients}" th:object="${client}" method="post">
                 <div class="mb-3">
                     <span>First Name:</span>
-                    <input id="firstName" name="firstName" class="form-control">
+<!--                    <input id="firstName" name="firstName" class="form-control">-->
+                    <input th:field="*{firstName}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="lastName">Last Name</label>
-                    <input id="lastName" name="lastName" class="form-control">
+<!--                    <input id="lastName" name="lastName" class="form-control">-->
+                    <input th:field="${client.lastName}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="email">Email</label>

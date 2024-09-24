@@ -37,6 +37,7 @@ public class ClientController {
     public String createView(ModelMap modelMap){
         LOGGER.info("createView()");
         modelMap.addAttribute("createMassage", "Fill out the form fields");
+        modelMap.addAttribute("client", new Client());
         LOGGER.info("createView(...)= ");
         return "client-create";
     }
