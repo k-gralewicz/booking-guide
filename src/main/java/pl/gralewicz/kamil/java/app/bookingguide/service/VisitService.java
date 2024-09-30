@@ -15,10 +15,10 @@ public class VisitService {
     private VisitRepository visitRepository;
     private VisitMapper visitMapper;
 
-    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper) {
-        this.visitRepository = visitRepository;
-        this.visitMapper = visitMapper;
-    }
+//    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper) {
+//        this.visitRepository = visitRepository;
+//        this.visitMapper = visitMapper;
+//    }
 
     public Visit create(Visit visit) {
         LOGGER.info("create()");

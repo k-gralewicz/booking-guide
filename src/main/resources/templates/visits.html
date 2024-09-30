@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Visits list</title>
+</head>
+<body>
+<div>
+  <h1>Visits list</h1>
+  <div>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Client</th>
+        <th>Service</th>
+        <th>Shop</th>
+        <th>Due Date</th>
+      </tr>
+
+      <tr th:each="visit : ${visits}">
+        <td th:text="${visit.id}"></td>
+        <td th:text="${visit.client}"></td>
+        <td th:text="${visit.service}"></td>
+        <td th:text="${visit.shop}"></td>
+        <td th:text="${visit.dueDate}"></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>
