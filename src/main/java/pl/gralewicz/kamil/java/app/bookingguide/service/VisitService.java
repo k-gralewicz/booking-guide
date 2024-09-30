@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
+import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
@@ -7,6 +8,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
 import java.util.logging.Logger;
 
+@Service
 public class VisitService {
     private static final Logger LOGGER = Logger.getLogger(VisitService.class.getName());
 
