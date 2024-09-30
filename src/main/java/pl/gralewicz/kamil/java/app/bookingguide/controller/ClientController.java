@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ClientService;
+import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,9 +21,20 @@ public class ClientController {
     private static final Logger LOGGER = Logger.getLogger(ClientController.class.getName());
 
     private ClientService clientService;
+    private VisitService visitService;
 
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, VisitService visitService) {
         this.clientService = clientService;
+        this.visitService = visitService;
+    }
+
+    @GetMapping(value="/dashboard")
+    public String dashboard(ModelMap modelMap){
+        LOGGER.info("dashboard()");
+        List<Visit> visits = visitService.list();
+        modelMap.addAttribute("visits", visits);
+        LOGGER.info("dashboard(...)= " + visits);
+        return "client-dashboard";
     }
 
     @GetMapping

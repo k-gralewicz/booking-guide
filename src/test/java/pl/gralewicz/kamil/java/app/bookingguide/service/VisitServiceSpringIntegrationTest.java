@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -18,6 +19,7 @@ class VisitServiceSpringIntegrationTest {
     void list() {
         // given
         Visit visit = new Visit();
+        visit.setDueDate(LocalDateTime.now());
 
         // when
         Visit createdVisit = visitService.create(visit);
