@@ -22,8 +22,7 @@ class VisitTest {
         Client client = new Client();
         Service service = new Service("Masaż", "Ogólny masala twarzy", BigDecimal.valueOf(250), DurationType.MINUTES.getDefaultValue(), DurationType.MINUTES);
         Shop shop = new Shop("Cudny Masaż", "studio masażu", "501222333", new Address());
-        Visit visit = new Visit(client, service, shop,
-                LocalDateTime.of(2023, Month.JULY, 22, 11, 30));
+        Visit visit = new Visit();
 
         //when
         boolean isAvailable = visit.booking(LocalDateTime.of(2023, Month.JULY, 22, 11, 30));

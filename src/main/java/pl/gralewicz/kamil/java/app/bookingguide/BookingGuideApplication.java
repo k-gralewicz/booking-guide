@@ -31,4 +31,4 @@ public class BookingGuideApplication {
 
 // TODO: 30.09.2024 dodać th do creatów html,
 // TODO: 30.09.2024 dla controllera visit, dla metody create dodać html (przez wszystkie warstwy front-back
-// łącznie z testami. 
+// łącznie z testami.

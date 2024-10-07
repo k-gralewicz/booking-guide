@@ -15,8 +15,8 @@ class VisitIntegrationTest {
     void bookingForBookedVisit() {
         // given
         Shop shop = new Shop("Cudny Masaż", "studio masażu", "501222333", new Address());
-        Visit alaVisit = new Visit(null, null, shop, LocalDateTime.of(2023, Month.JULY, 24, 12, 0));
-        Visit kajaVisit = new Visit(null, null, shop, LocalDateTime.of(2023, Month.JULY, 24, 12, 0));
+        Visit alaVisit = new Visit();
+        Visit kajaVisit = new Visit();
 
         // when
         shop.book(kajaVisit);

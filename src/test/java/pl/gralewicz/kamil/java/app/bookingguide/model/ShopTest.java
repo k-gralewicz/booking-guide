@@ -40,7 +40,7 @@ class ShopTest {
         Shop zuziaShop = new Shop("Makjiaże", "Makijaże permanentne", "608448998", null);
 
         LocalDateTime dueDate = LocalDateTime.of(2023, Month.JULY, 22, 10, 0);
-        Visit ulaVisit = new Visit(ulaClient, ustaService, zuziaShop, dueDate);
+        Visit ulaVisit = new Visit();
 
         //when
         Visit bookedVisit = zuziaShop.book(ulaVisit);

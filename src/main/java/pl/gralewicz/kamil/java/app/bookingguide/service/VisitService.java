@@ -7,6 +7,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -30,11 +31,25 @@ public class VisitService {
         return mappedVisit;
     }
 
-    public List<Visit> list(){
+    public List<Visit> list() {
         LOGGER.info("list()");
         List<VisitEntity> visitEntities = visitRepository.findAll();
         List<Visit> visits = visitMapper.fromEntities(visitEntities);
         LOGGER.info("list(...)= ");
         return visits;
+    }
+
+    public Visit read(Long id) {
+        LOGGER.info("read(" + id + ")");
+        Optional<VisitEntity> optionalVisitEntity = visitRepository.findById(id);
+        VisitEntity visitEntity = optionalVisitEntity.orElseThrow();
+        LOGGER.info("read(...)= ");
+        return null;
+    }
+
+    public void delete(Long id) {
+        LOGGER.info("delete(" + id + ")");
+        visitRepository.deleteById(id);
+        LOGGER.info("delete(...)= ");
     }
 }
