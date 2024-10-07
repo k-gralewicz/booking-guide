@@ -14,12 +14,12 @@ public class Visit {
     public Visit(){
     }
 
-    public Visit(Client client, Service service, Shop shop, LocalDateTime dueDate) {
-        this.client = client;
-        this.service = service;
-        this.shop = shop;
-        this.dueDate = dueDate;
-    }
+//    public Visit(Client client, Service service, Shop shop, LocalDateTime dueDate) {
+//        this.client = client;
+//        this.service = service;
+//        this.shop = shop;
+//        this.dueDate = dueDate;
+//    }
 
     public boolean booking(LocalDateTime dueDate) {
         boolean isAvailable = shop.visitAvailable(dueDate);

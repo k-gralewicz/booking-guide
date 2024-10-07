@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Create Visits</title>
+</head>
+<body>
+<div class="container-fluid">
+    <h1>Create Visit</h1>
+    <div class="row">
+        <div class="col">
+            <form action="#" th:action="@{/visits}" th:object="${visit}" method="post">
+                <div class="mb-3">
+                    <label for="client.firstName">Client First Name</label>
+                    <input th:field="${visit.client.firstName}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="client.lastName">Client Last Name</label>
+                    <input th:field="${visit.client.lastName}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="service.name">Service</label>
+                    <input th:field="${visit.service.name}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="shop.name">Shop</label>
+                    <input th:field="${visit.shop.name}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="dueDate">Date</label>
+                    <input id="dueDate" name="dueDate" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+            <div th:text="${createMessage}">&nbsp;</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

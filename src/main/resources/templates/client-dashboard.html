@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Client Dashboard</title>
+</head>
+<body>
+<div>
+    <h1>Client Dashboard</h1>
+    <div>
+<!-- TODO: praca domowa z html
+- wyświtlić listę wizyt(dla zalogowanego klienta)
+- dodać przycisk umozliwiający rezerwqację wizyty
+-->
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Shop</th>
+                <th>Due Date</th>
+            </tr>
+
+            <tr th:each="visit : ${visits}">
+                <td th:text="${visit.id}"></td>
+                <td th:text="${visit.client}"></td>
+                <td th:text="${visit.service}"></td>
+                <td th:text="${visit.shop}"></td>
+                <td th:text="${visit.dueDate}"></td>
+            </tr>
+        </table>
+        <button><a href="/visits/create">Book a new visit</a></button>
+    </div>
+</div>
+</body>
+</html>

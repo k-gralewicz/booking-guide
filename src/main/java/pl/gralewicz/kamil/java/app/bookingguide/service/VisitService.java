@@ -1,12 +1,16 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
+import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
+@Service
 public class VisitService {
     private static final Logger LOGGER = Logger.getLogger(VisitService.class.getName());
 
@@ -21,9 +25,31 @@ public class VisitService {
     public Visit create(Visit visit) {
         LOGGER.info("create()");
         VisitEntity visitEntity = visitMapper.from(visit);
-        VisitEntity createdVisitEntity = visitRepository.create(visitEntity);
+        VisitEntity createdVisitEntity = visitRepository.save(visitEntity);
         Visit mappedVisit = visitMapper.from(createdVisitEntity);
         LOGGER.info("create(...) = " + mappedVisit);
         return mappedVisit;
+    }
+
+    public List<Visit> list() {
+        LOGGER.info("list()");
+        List<VisitEntity> visitEntities = visitRepository.findAll();
+        List<Visit> visits = visitMapper.fromEntities(visitEntities);
+        LOGGER.info("list(...)= ");
+        return visits;
+    }
+
+    public Visit read(Long id) {
+        LOGGER.info("read(" + id + ")");
+        Optional<VisitEntity> optionalVisitEntity = visitRepository.findById(id);
+        VisitEntity visitEntity = optionalVisitEntity.orElseThrow();
+        LOGGER.info("read(...)= ");
+        return null;
+    }
+
+    public void delete(Long id) {
+        LOGGER.info("delete(" + id + ")");
+        visitRepository.deleteById(id);
+        LOGGER.info("delete(...)= ");
     }
 }

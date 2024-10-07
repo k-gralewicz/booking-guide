@@ -2,10 +2,16 @@ package pl.gralewicz.kamil.java.app.bookingguide.dao.repository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
 
+@SpringBootTest
 class VisitRepositoryTest {
+
+    @Autowired
+    private VisitRepository visitRepository;
 
     @Test
     void create() {
@@ -15,10 +21,8 @@ class VisitRepositoryTest {
         visitEntity.setId(1L);
 //        visitEntity.setShop(shopEntity);
 
-        VisitRepository visitRepository = new VisitRepository();
-
         // when
-        VisitEntity createdVisitEntity = visitRepository.create(visitEntity);
+        VisitEntity createdVisitEntity = visitRepository.save(visitEntity);
 
         // then
         Assertions.assertNotNull(createdVisitEntity, "createdVisitEntity is null");

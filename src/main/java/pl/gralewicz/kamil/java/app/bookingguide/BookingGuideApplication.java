@@ -29,4 +29,8 @@ public class BookingGuideApplication {
 // TODO: 19.09.2024 rozbić adres w Client-create na poszczególne pola i podobnie w pozostałych modelach.
 //  zrobić test controller Client analogicznie do AddressControllerWebApplicationTest (też create)
 
-// TODO: 24.09.2024 dodać th do creatów html,
+// TODO: 30.09.2024 dodać th do creatów html,
+// TODO: 30.09.2024 dla controllera visit, dla metody create dodać html (przez wszystkie warstwy front-back
+// łącznie z testami.
+
+// TODO: 07.10.2024 stworzyć dashboard dla visit 
