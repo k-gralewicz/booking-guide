@@ -1,9 +1,14 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="USERS")
@@ -18,7 +23,8 @@ public class UserEntity {
     private String roleId;
 
 //    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-//    private List<RoleEntity> roles = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<RoleEntity> roles = new ArrayList<>();
 
     public UserEntity() {
     }
@@ -63,13 +69,13 @@ public class UserEntity {
         this.roleId = roleId;
     }
 
-//    public List<RoleEntity> getRoles() {
-//        return roles;
-//    }
+    public List<RoleEntity> getRoles() {
+        return roles;
+    }
 
-//    public void setRoles(List<RoleEntity> roles) {
-//        this.roles = roles;
-//    }
+    public void setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public String toString() {
