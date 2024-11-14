@@ -33,4 +33,6 @@ public class BookingGuideApplication {
 // TODO: 30.09.2024 dla controllera visit, dla metody create dodać html (przez wszystkie warstwy front-back
 // łącznie z testami.
 
-// TODO: 07.10.2024 stworzyć dashboard dla visit 
+// TODO: 07.10.2024 stworzyć dashboard dla visit
+// TODO: 07.10.2024 dodać role do userów (repository i testy) 
+// TODO: 07.10.2024 zrobić fragment th który będzie navigation bar (getbootstrap)
