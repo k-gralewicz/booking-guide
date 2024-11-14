@@ -23,6 +23,9 @@
         <td th:text="${visit.service}"></td>
         <td th:text="${visit.shop}"></td>
         <td th:text="${visit.dueDate}"></td>
+        <td><a th:href="@{visits/{id}(id = ${visit.id})}">Read</a></td>
+        <td><a th:href="@{visits/update/{id}(id = ${visit.id})}">Update</a></td>
+        <td><a th:href="@{visits/delete/{id}(id = ${visit.id})}">Delete</a></td>
       </tr>
     </table>
   </div>

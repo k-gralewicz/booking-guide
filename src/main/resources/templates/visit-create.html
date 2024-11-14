@@ -12,22 +12,23 @@
     <h1>Create Visit</h1>
     <div class="row">
         <div class="col">
+            <div th:if="${visit != null}">
             <form action="#" th:action="@{/visits}" th:object="${visit}" method="post">
                 <div class="mb-3">
-                    <label for="client.firstName">Client First Name</label>
-                    <input th:field="${visit.client.firstName}" class="form-control">
+                    <label for="firstName">Client First Name</label>
+                    <input th:field="${visit?.client?.firstName}" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label for="client.lastName">Client Last Name</label>
-                    <input th:field="${visit.client.lastName}" class="form-control">
+                    <label for="lastName">Client Last Name</label>
+                    <input th:field="${visit?.client?.lastName}" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label for="service.name">Service</label>
-                    <input th:field="${visit.service.name}" class="form-control">
+                    <label for="serviceName">Service</label>
+                    <input th:field="${visit?.service?.name}" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label for="shop.name">Shop</label>
-                    <input th:field="${visit.shop.name}" class="form-control">
+                    <label for="shopName">Shop</label>
+                    <input th:field="${visit?.shop?.name}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="dueDate">Date</label>
@@ -37,6 +38,7 @@
                     <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </form>
+            </div>
         </div>
         <div class="col">
             <div th:text="${createMessage}">&nbsp;</div>
