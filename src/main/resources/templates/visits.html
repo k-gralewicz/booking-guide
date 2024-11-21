@@ -1,32 +1,65 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Visits list</title>
+  <meta charset="UTF-8">
+  <title>Visits list</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Features</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Pricing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 <div>
   <h1>Visits list</h1>
+  <form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form>
   <div>
-    <table>
+    <table class="table">
+      <thead>
       <tr>
         <th>ID</th>
         <th>Client</th>
         <th>Service</th>
         <th>Shop</th>
         <th>Due Date</th>
+        <th>Actions</th>
       </tr>
-
+      </thead>
+      <tbody>
       <tr th:each="visit : ${visits}">
         <td th:text="${visit.id}"></td>
         <td th:text="${visit.client}"></td>
         <td th:text="${visit.service}"></td>
         <td th:text="${visit.shop}"></td>
         <td th:text="${visit.dueDate}"></td>
-        <td><a th:href="@{visits/{id}(id = ${visit.id})}">Read</a></td>
-        <td><a th:href="@{visits/update/{id}(id = ${visit.id})}">Update</a></td>
-        <td><a th:href="@{visits/delete/{id}(id = ${visit.id})}">Delete</a></td>
+        <td>
+          <a th:href="@{visits/{id}(id = ${visit.id})}" class="btn btn-primary">Read</a>
+          <a th:href="@{visits/update/{id}(id = ${visit.id})}" class="btn btn-warning">Update</a>
+          <a th:href="@{visits/delete/{id}(id = ${visit.id})}" class="btn btn-danger">Delete</a>
+        </td>
       </tr>
+      </tbody>
     </table>
   </div>
 </div>

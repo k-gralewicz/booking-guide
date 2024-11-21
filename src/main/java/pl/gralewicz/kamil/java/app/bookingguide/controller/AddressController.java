@@ -98,4 +98,10 @@ public class AddressController {
 //        return createdAddress;
 //    }
 
+
+//    komunikacja frontend - backend
+//    FORM -> Submit -> GET /visits/create
+//
+//    komunikacja backend - frontend
+//    modelMap -> addAttribute() -> html -> EL (Expression Language)
 }
