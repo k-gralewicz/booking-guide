@@ -9,26 +9,31 @@
 </head>
 <body>
 <div class="container-fluid">
-    <h1>Create Visit</h1>
+    <div th:if="${!isEdit}">
+        <h1>Create Visit</h1>
+    </div>
+    <div th:if="${isEdit}">
+        <h1>Edit Visit</h1>
+    </div>
     <div class="row">
         <div class="col">
             <div th:if="${visit != null}">
             <form action="#" th:action="@{/visits}" th:object="${visit}" method="post">
                 <div class="mb-3">
                     <label for="firstName">Client First Name</label>
-                    <input th:field="${visit?.client?.firstName}" class="form-control">
+                    <input th:field="${visit.client.firstName}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="lastName">Client Last Name</label>
-                    <input th:field="${visit?.client?.lastName}" class="form-control">
+                    <input th:field="${visit.client.lastName}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="serviceName">Service</label>
-                    <input th:field="${visit?.service?.name}" class="form-control">
+                    <input th:field="${visit.service.name}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="shopName">Shop</label>
-                    <input th:field="${visit?.shop?.name}" class="form-control">
+                    <input th:field="${visit.shop.name}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="dueDate">Date</label>

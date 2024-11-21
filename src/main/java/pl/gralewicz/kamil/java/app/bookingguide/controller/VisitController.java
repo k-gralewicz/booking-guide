@@ -48,6 +48,7 @@ public class VisitController {
         LOGGER.info("createView()");
         modelMap.addAttribute("createMassage", "Fill out the form fields");
         modelMap.addAttribute("visit", new Visit());
+        modelMap.addAttribute("isEdit", false);
         LOGGER.info("createView(...)= ");
         return "visit-create.html";
     }
@@ -65,6 +66,8 @@ public class VisitController {
         LOGGER.info("read(" + id + ")");
         Visit readVisit = visitService.read(id);
         modelMap.addAttribute("createMessage", "This is visit: " + readVisit);
+        boolean isEdit = true;
+        modelMap.addAttribute("isEdit", isEdit);
         LOGGER.info("read(...)= ");
         return "visit-read.html";
     }
@@ -74,6 +77,7 @@ public class VisitController {
         LOGGER.info("updateView()");
         Visit readVisit = visitService.read(id);
         modelMap.addAttribute("visit", readVisit);
+        modelMap.addAttribute("isEdit", true);
         LOGGER.info("updateView(...)= " + readVisit);
         return "visit-create.html";
     }
