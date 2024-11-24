@@ -1,29 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Visits list</title>
+  <meta charset="UTF-8">
+  <title>Visits list</title>
 </head>
 <body>
+<div th:replace="fragments/navbar::navigation"></div>
 <div>
   <h1>Visits list</h1>
   <div>
-    <table>
+    <table class="table">
+      <thead>
       <tr>
         <th>ID</th>
         <th>Client</th>
         <th>Service</th>
         <th>Shop</th>
         <th>Due Date</th>
+        <th>Actions</th>
       </tr>
-
+      </thead>
+      <tbody>
       <tr th:each="visit : ${visits}">
         <td th:text="${visit.id}"></td>
         <td th:text="${visit.client}"></td>
         <td th:text="${visit.service}"></td>
         <td th:text="${visit.shop}"></td>
         <td th:text="${visit.dueDate}"></td>
+        <td>
+          <a th:href="@{visits/{id}(id = ${visit.id})}" class="btn btn-primary">Read</a>
+          <a th:href="@{visits/update/{id}(id = ${visit.id})}" class="btn btn-warning">Update</a>
+          <a th:href="@{visits/delete/{id}(id = ${visit.id})}" class="btn btn-danger">Delete</a>
+        </td>
       </tr>
+      </tbody>
     </table>
   </div>
 </div>

@@ -36,3 +36,9 @@ public class BookingGuideApplication {
 // TODO: 07.10.2024 stworzyć dashboard dla visit
 // TODO: 07.10.2024 dodać role do userów (repository i testy) 
 // TODO: 07.10.2024 zrobić fragment th który będzie navigation bar (getbootstrap)
+
+// TODO: 14.11.2024 dla widoku visit-create rozróżnić czy jest to tworzenie nowej wizyty czy aktualizacja istniejącej
+// TODO: 14.11.2024 napisać testy dla ról użytkowników
+
+// TODO: 21.11.2024 zaimplementować funkcjonalność dodawania nowego użytkownika
+// TODO: 21.11.2024 zrobić fragment th który będzie navigation bar (getbootstrap)

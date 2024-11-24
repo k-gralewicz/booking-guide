@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -28,9 +27,17 @@ public class VisitController {
     @GetMapping
     public String list(ModelMap modelMap) {
         LOGGER.info("list()");
-        List<Visit> visits = new ArrayList<>();
-        visits.add(new Visit());
-        visits.add(new Visit());
+//        List<Visit> visits = new ArrayList<>();
+//
+//        Visit firstVisit = new Visit();
+//        firstVisit.setId(1L);
+//        visits.add(firstVisit);
+//
+//        Visit secondVisit = new Visit();
+//        secondVisit.setId(2L);
+//        visits.add(secondVisit);
+
+        List<Visit> visits = visitService.list();
         modelMap.addAttribute("visits", visits);
         LOGGER.info("list(...)= " + visits);
         return "visits";
@@ -41,6 +48,7 @@ public class VisitController {
         LOGGER.info("createView()");
         modelMap.addAttribute("createMassage", "Fill out the form fields");
         modelMap.addAttribute("visit", new Visit());
+        modelMap.addAttribute("isEdit", false);
         LOGGER.info("createView(...)= ");
         return "visit-create.html";
     }
@@ -58,6 +66,8 @@ public class VisitController {
         LOGGER.info("read(" + id + ")");
         Visit readVisit = visitService.read(id);
         modelMap.addAttribute("createMessage", "This is visit: " + readVisit);
+        boolean isEdit = true;
+        modelMap.addAttribute("isEdit", isEdit);
         LOGGER.info("read(...)= ");
         return "visit-read.html";
     }
@@ -66,6 +76,8 @@ public class VisitController {
     public String updateView(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("updateView()");
         Visit readVisit = visitService.read(id);
+        modelMap.addAttribute("visit", readVisit);
+        modelMap.addAttribute("isEdit", true);
         LOGGER.info("updateView(...)= " + readVisit);
         return "visit-create.html";
     }

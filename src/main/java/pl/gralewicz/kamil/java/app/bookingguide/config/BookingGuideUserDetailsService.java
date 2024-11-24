@@ -24,7 +24,7 @@ public class BookingGuideUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         UserEntity userEntity = userRepository.findByUsername(username);
-        if (username == null) {
+        if (userEntity == null) {
             throw new UsernameNotFoundException(username);
         }
 
