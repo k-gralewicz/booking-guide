@@ -1,32 +1,13 @@
-package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
+package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
-import java.util.ArrayList;
-import java.util.List;
-
-@Entity
-@Table(name="USERS")
-public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class User {
     private Long id;
-
     private String username;
     private String password;
     private String email;
     private String roleId;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<RoleEntity> roles = new ArrayList<>();
-
-    public UserEntity() {
+    public User() {
     }
 
     public Long getId() {
@@ -69,23 +50,14 @@ public class UserEntity {
         this.roleId = roleId;
     }
 
-    public List<RoleEntity> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleEntity> roles) {
-        this.roles = roles;
-    }
-
     @Override
     public String toString() {
-        return "UserEntity{" +
+        return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", roleId='" + roleId + '\'' +
-//                ", roles=" + roles +
                 '}';
     }
 }
