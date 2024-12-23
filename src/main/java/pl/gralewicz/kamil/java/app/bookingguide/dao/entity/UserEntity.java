@@ -85,7 +85,7 @@ public class UserEntity {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", roleId='" + roleId + '\'' +
-//                ", roles=" + roles +
+                ", roles=" + roles +
                 '}';
     }
 }

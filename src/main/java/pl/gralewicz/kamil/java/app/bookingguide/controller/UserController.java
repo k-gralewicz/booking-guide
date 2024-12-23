@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
+import pl.gralewicz.kamil.java.app.bookingguide.service.RoleService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 
 import java.util.List;
@@ -19,9 +20,11 @@ public class UserController {
     private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
     private final UserService userService;
+    private final RoleService roleService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping
@@ -39,6 +42,7 @@ public class UserController {
         modelMap.addAttribute("createMessage", "Fill out the form fields");
         modelMap.addAttribute("user", new User());
         modelMap.addAttribute("isEdit", false);
+        modelMap.addAttribute("roles", roleService.list());
         LOGGER.info("createView(...)= ");
         return "user-create.html";
     }
@@ -46,7 +50,7 @@ public class UserController {
     @PostMapping
     public String create(@ModelAttribute User user) {
         LOGGER.info("create(" + user + ")");
-        User createdUser = userService.saveUser(user);
+        User createdUser = userService.create(user);
         LOGGER.info("create(...)= " + createdUser);
         return "redirect:/users";
     }

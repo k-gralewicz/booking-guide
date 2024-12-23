@@ -5,7 +5,7 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private String roleId;
+    private Long roleId;
 
     public User() {
     }
@@ -42,11 +42,11 @@ public class User {
         this.email = email;
     }
 
-    public String getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
