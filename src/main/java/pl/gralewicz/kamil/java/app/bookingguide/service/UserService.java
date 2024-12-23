@@ -3,11 +3,15 @@ package pl.gralewicz.kamil.java.app.bookingguide.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.RoleEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.RoleRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.RoleMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.UserMapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -17,9 +21,18 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
+
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, RoleMapper roleMapper) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.userMapper = userMapper;
+        this.roleMapper = roleMapper;
+    }
 
     @Autowired
     private UserMapper userMapper;
+    private RoleMapper roleMapper;
 
     public List<User> list() {
         LOGGER.info("list()");
@@ -29,13 +42,18 @@ public class UserService {
         return users;
     }
 
-    public User saveUser(User user) {
-        LOGGER.info("saveUser(" + user + ")");
+    public User create(User user) {
+        LOGGER.info("create(" + user + ")");
+        Long userRoleId = user.getRoleId();
+        Optional<RoleEntity> optionalRoleEntity = roleRepository.findById(userRoleId);
+        LOGGER.info("create(...)= " + optionalRoleEntity);
         UserEntity userEntity = userMapper.from(user);
         UserEntity savedUserEntity = userRepository.save(userEntity);
         User savedUser = userMapper.from(savedUserEntity);
-        LOGGER.info("saveUser(...)= " + savedUser);
+        LOGGER.info("create(...)= " + savedUser);
         return savedUser;
+        // za pomocą identyfikatora pobrać role z bazy i przypisać do użytkownika
+        // TODO: 02.12.2024 dokończyć ten element, tak aby utworzył się użytkownik z przypisaną rolą.
     }
 
     public User read(Long id) {
