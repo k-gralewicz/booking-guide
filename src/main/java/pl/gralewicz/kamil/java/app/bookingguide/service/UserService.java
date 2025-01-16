@@ -49,15 +49,11 @@ public class UserService {
         RoleEntity roleEntity = optionalRoleEntity.orElseThrow();
         LOGGER.info("create(...)= " + optionalRoleEntity);
         UserEntity userEntity = userMapper.from(user);
-//        userEntity.setRoles(List.of(roleEntity));
-//        userEntity.getRoles().add(roleEntity);
         userEntity.addRole(roleEntity);
         UserEntity savedUserEntity = userRepository.save(userEntity);
         User savedUser = userMapper.from(savedUserEntity);
         LOGGER.info("create(...)= " + savedUser);
         return savedUser;
-        // za pomocą identyfikatora pobrać role z bazy i przypisać do użytkownika
-        // TODO: 02.12.2024 dokończyć ten element, tak aby utworzył się użytkownik z przypisaną rolą.
     }
 
     public User read(Long id) {

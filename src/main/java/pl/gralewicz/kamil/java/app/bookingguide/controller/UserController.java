@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +22,12 @@ public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -50,6 +53,7 @@ public class UserController {
     @PostMapping
     public String create(@ModelAttribute User user) {
         LOGGER.info("create(" + user + ")");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User createdUser = userService.create(user);
         LOGGER.info("create(...)= " + createdUser);
         return "redirect:/users";
