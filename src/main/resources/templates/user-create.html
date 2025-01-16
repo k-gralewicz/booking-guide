@@ -11,6 +11,7 @@
     <div class="container">
         <h1>Add New User</h1>
         <form th:action="@{/users}" th:object="${user}" method="post">
+            <input type="hidden" th:field="*{id}"/>
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" th:field="*{username}" class="form-control"/>

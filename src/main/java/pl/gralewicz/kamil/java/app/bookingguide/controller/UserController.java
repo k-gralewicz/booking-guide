@@ -76,6 +76,7 @@ public class UserController {
         User readUser = userService.read(id);
         modelMap.addAttribute("user", readUser);
         modelMap.addAttribute("isEdit", true);
+        modelMap.addAttribute("roles", roleService.list());
         LOGGER.info("updateView(...)= " + readUser);
         return "user-create.html";
     }
