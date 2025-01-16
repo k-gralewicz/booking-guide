@@ -1,11 +1,16 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private Long id;
     private String username;
     private String password;
     private String email;
     private Long roleId;
+
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
@@ -50,6 +55,14 @@ public class User {
         this.roleId = roleId;
     }
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -57,7 +70,8 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", roleId='" + roleId + '\'' +
+                ", roleId=" + roleId +
+                ", roles=" + roles +
                 '}';
     }
 }

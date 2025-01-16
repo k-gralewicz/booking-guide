@@ -43,4 +43,5 @@ public class BookingGuideApplication {
 // TODO: 21.11.2024 zaimplementować funkcjonalność dodawania nowego użytkownika
 // TODO: 21.11.2024 zrobić fragment th który będzie navigation bar (getbootstrap)
 
-// TODO: 23.12.2024 w Navbar zrobić tak, aby logout był po prawej stronie, 
+// TODO: 23.12.2024 w Navbar zrobić tak, aby logout był po prawej stronie,
+// TODO: 23.12.2024 dokończyć ten element, tak aby utworzył się użytkownik z przypisaną rolą.(klasa UserService)

@@ -46,8 +46,12 @@ public class UserService {
         LOGGER.info("create(" + user + ")");
         Long userRoleId = user.getRoleId();
         Optional<RoleEntity> optionalRoleEntity = roleRepository.findById(userRoleId);
+        RoleEntity roleEntity = optionalRoleEntity.orElseThrow();
         LOGGER.info("create(...)= " + optionalRoleEntity);
         UserEntity userEntity = userMapper.from(user);
+//        userEntity.setRoles(List.of(roleEntity));
+//        userEntity.getRoles().add(roleEntity);
+        userEntity.addRole(roleEntity);
         UserEntity savedUserEntity = userRepository.save(userEntity);
         User savedUser = userMapper.from(savedUserEntity);
         LOGGER.info("create(...)= " + savedUser);

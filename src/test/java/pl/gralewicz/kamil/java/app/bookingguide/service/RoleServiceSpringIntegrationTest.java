@@ -18,8 +18,7 @@ class RoleServiceSpringIntegrationTest {
     @Test
     void list() {
         // given
-        Role role = new Role();
-        role.setName(RoleType.ADMIN);
+        Role role = new Role(RoleType.ADMIN);
 
         // when
         Role createdRole = roleService.create(role);

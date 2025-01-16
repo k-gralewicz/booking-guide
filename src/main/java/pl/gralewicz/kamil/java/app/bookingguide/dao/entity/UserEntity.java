@@ -3,9 +3,8 @@ package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.List;
 @Table(name="USERS")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private String username;
@@ -23,10 +22,15 @@ public class UserEntity {
     private String email;
     private String roleId;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<RoleEntity> roles = new ArrayList<>();
 
     public UserEntity() {
+    }
+
+    public void addRole(RoleEntity role) {
+        roles.add(role);
+        role.getUsers().add(this);
     }
 
     public Long getId() {
