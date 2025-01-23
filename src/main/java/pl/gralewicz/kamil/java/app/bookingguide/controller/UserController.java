@@ -81,6 +81,20 @@ public class UserController {
         return "user-create.html";
     }
 
+    @PostMapping(value = "/update/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute User user) {
+        LOGGER.info("update(" + id + ", " + user + ")");
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            User existingUser = userService.read(id);
+            user.setPassword(existingUser.getPassword());
+        }
+        User updatedUser = userService.updateUser(id, user);
+        LOGGER.info("update(...)= " + updatedUser);
+        return "redirect:/users";
+    }
+
     @GetMapping(value = "/delete/{id}")
     public String delete(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("delete(" + id + ")");
