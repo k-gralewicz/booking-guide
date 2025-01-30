@@ -1,39 +1,18 @@
-package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name="USERS")
-public class UserEntity {
-    @Id
-    @GeneratedValue
+public class User {
     private Long id;
-
-    @Column(unique = true)
     private String username;
-
     private String password;
     private String email;
-    private String roleId;
+    private Long roleId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<RoleEntity> roles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
 
-    public UserEntity() {
-    }
-
-    public void addRole(RoleEntity role) {
-        roles.add(role);
-        role.getUsers().add(this);
+    public User() {
     }
 
     public Long getId() {
@@ -68,30 +47,30 @@ public class UserEntity {
         this.email = email;
     }
 
-    public String getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
-    public List<RoleEntity> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<RoleEntity> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
     @Override
     public String toString() {
-        return "UserEntity{" +
+        return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", roleId='" + roleId + '\'' +
+                ", roleId=" + roleId +
                 ", roles=" + roles +
                 '}';
     }

@@ -24,6 +24,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.GET, "/visits/create").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users/create").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form.permitAll())
