@@ -45,7 +45,8 @@
           <td><a th:href="@{/services/{id}(id = ${service.id})}">Read</a></td>
           <td><a th:href="@{/services/update/{id}(id = ${service.id})}">Update</a></td>
           <td><a th:href="@{/services/delete/{id}(id = ${service.id})}">Delete</a></td>
-          <td><a th:href="@{/services/book/{id}(id = ${service.id})}">Book</a></td>
+          <td><a th:href="@{/visits/create/{id}(id = ${service.id})}">Book</a></td>
+<!--          <td><a th:href="@{/visits/create}">Book</a></td>-->
         </tr>
         </tbody>
       </table>
