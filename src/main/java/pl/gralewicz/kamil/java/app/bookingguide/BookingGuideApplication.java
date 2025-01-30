@@ -48,4 +48,9 @@ public class BookingGuideApplication {
 
 // TODO: 16.01.2025 sprawdzić dlaczego nie działa opcja edycji usera (dlaczego hasło nie przepisuje się),
 
-// TODO: 23.01.2025 dla zalogowanego użytkownika zaimpelentować wybór dostępnych usług (mniej więcej jak dla użytkownika dostępne role) 
+// TODO: 23.01.2025 dla zalogowanego użytkownika zaimpelentować wybór dostępnych usług (mniej więcej jak dla użytkownika dostępne role)
+
+// TODO: 30.01.2025 testy jednostkowe dla ServiceService#read(), VisitService#create(),
+// ServiceService#list(), ServiceMapper#from(), ServiceController#create(), ServiceController#read(),
+// VisitControllerWebApplicationTest - testy jak w ClientControllerWebApplicationTest.
+// https://justjoin.it/blog/komunikacja-frontend-www-z-backend-w-javie
