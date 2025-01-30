@@ -15,14 +15,6 @@ public class Service {
     public Service() {
     }
 
-    public Service(String name, String description, BigDecimal price, int duration, DurationType durationType) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.duration = duration;
-        this.durationType = durationType;
-    }
-
     public Long getId() {
         return id;
     }

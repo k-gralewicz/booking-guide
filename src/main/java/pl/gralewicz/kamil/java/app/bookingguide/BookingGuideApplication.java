@@ -47,3 +47,5 @@ public class BookingGuideApplication {
 // TODO: 23.12.2024 dokończyć ten element, tak aby utworzył się użytkownik z przypisaną rolą.(klasa UserService)
 
 // TODO: 16.01.2025 sprawdzić dlaczego nie działa opcja edycji usera (dlaczego hasło nie przepisuje się),
+
+// TODO: 23.01.2025 dla zalogowanego użytkownika zaimpelentować wybór dostępnych usług (mniej więcej jak dla użytkownika dostępne role) 
