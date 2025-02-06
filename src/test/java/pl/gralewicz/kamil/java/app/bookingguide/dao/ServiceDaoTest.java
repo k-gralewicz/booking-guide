@@ -2,10 +2,7 @@ package pl.gralewicz.kamil.java.app.bookingguide.dao;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
-
-import java.math.BigDecimal;
 
 class ServiceDaoTest {
 
@@ -13,7 +10,7 @@ class ServiceDaoTest {
     void create() {
         // given
         ServiceDao serviceDao = new ServiceDao();
-        Service service = new Service("Masaż twarzy", "Masaż całej twarzy", BigDecimal.valueOf(250), 30, DurationType.MINUTES);
+        Service service = new Service();
 
         // when
         Service createdService = serviceDao.create(service);
