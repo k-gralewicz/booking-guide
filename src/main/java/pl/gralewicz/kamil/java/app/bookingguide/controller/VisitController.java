@@ -15,7 +15,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Controller
+@Controller // przyjmuje dane od użytkownika i zwraca dane do użytkownika za pomocą protokołu http
 @RequestMapping(value = "/visits")
 public class VisitController {
     private static final Logger LOGGER = Logger.getLogger(VisitController.class.getName());
@@ -72,13 +72,14 @@ public class VisitController {
         return "redirect:/visits";
     }
 
+    //metoda obsługująca żadanie GET protokołu HTTP,
     @GetMapping(value = "/{id}")
-    public String read(@PathVariable Long id, ModelMap modelMap) {
+    public String read(@PathVariable Long id, ModelMap modelMap) { //id paramentr żądania prtokołu http w postaci zmiennej parametru URL.
         LOGGER.info("read(" + id + ")");
         Visit readVisit = visitService.read(id);
         modelMap.addAttribute("createMessage", "This is visit: " + readVisit);
         boolean isEdit = true;
-        modelMap.addAttribute("isEdit", isEdit);
+        modelMap.addAttribute("isEdit", isEdit); // modelMap służy do komunikacji backend-frontend, ustawia zmienne(wartości) widoczne na frontendzie.
         LOGGER.info("read(...)= ");
         return "visit-read.html";
     }
