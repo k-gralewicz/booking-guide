@@ -4,12 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 
@@ -20,7 +18,7 @@ class VisitTest {
         //given
 //        Client client = new Client("Anna", "Nowak", "anna.nowak@wp.pl", "505444555", new Address());
         Client client = new Client();
-        Service service = new Service("Masaż", "Ogólny masala twarzy", BigDecimal.valueOf(250), DurationType.MINUTES.getDefaultValue(), DurationType.MINUTES);
+        Service service = new Service();
         Shop shop = new Shop("Cudny Masaż", "studio masażu", "501222333", new Address());
         Visit visit = new Visit();
 

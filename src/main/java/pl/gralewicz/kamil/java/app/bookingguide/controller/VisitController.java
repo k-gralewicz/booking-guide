@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
+import pl.gralewicz.kamil.java.app.bookingguide.service.ServiceService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
 import java.util.List;
@@ -19,9 +21,11 @@ public class VisitController {
     private static final Logger LOGGER = Logger.getLogger(VisitController.class.getName());
 
     private VisitService visitService;
+    private ServiceService serviceService;
 
-    public VisitController(VisitService visitService) {
+    public VisitController(VisitService visitService, ServiceService serviceService) {
         this.visitService = visitService;
+        this.serviceService= serviceService;
     }
 
     @GetMapping
@@ -43,11 +47,18 @@ public class VisitController {
         return "visits";
     }
 
-    @GetMapping(value = "/create")
-    public String createView(ModelMap modelMap) {
-        LOGGER.info("createView()");
+    @GetMapping(value = "/create/{id}")
+    public String createView(@PathVariable(name = "id") Long serviceId,ModelMap modelMap) {
+        LOGGER.info("createView(" + serviceId + ")" );
+        Service service = serviceService.read(serviceId);
+
+        Visit visit = new Visit();
+        visit.setService(service);
+
+        LOGGER.info("creteView("+ visit +")");
+
         modelMap.addAttribute("createMassage", "Fill out the form fields");
-        modelMap.addAttribute("visit", new Visit());
+        modelMap.addAttribute("visit", visit);
         modelMap.addAttribute("isEdit", false);
         LOGGER.info("createView(...)= ");
         return "visit-create.html";

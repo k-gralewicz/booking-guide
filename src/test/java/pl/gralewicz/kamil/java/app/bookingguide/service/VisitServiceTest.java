@@ -18,11 +18,14 @@ class VisitServiceTest {
         // given
         VisitMapper visitMapper = new VisitMapper();
         VisitService visitService = new VisitService(visitRepository, visitMapper);
-
+        // zrobić poprawne DI i IOC w Springframework
         // when
         Visit createdVisit = visitService.create(new Visit());
 
         // then
-        Assertions.assertNotNull(createdVisit, "createdVisit is null");
+        Assertions.assertAll(
+                ()-> Assertions.assertNotNull(createdVisit, "cretedVisit is null"),
+                ()-> Assertions.assertNotNull(createdVisit.getId(), "createdVisit id is null")
+        );
     }
 }

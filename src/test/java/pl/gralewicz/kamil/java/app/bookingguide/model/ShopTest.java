@@ -4,12 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 
@@ -35,7 +33,7 @@ class ShopTest {
 //        Client ulaClient = new Client("Ula", "Dudek", "ududek@o2.pl", "601222333", ulaAddress);
         Address ulaAddress = new Address();
         Client ulaClient = new Client();
-        Service ustaService = new Service("Makijaż", "Makijaż permanentny ust", BigDecimal.valueOf(350), 3, DurationType.HOURS);
+        Service ustaService = new Service();
 
         Shop zuziaShop = new Shop("Makjiaże", "Makijaże permanentne", "608448998", null);
 

@@ -42,8 +42,9 @@ public class ServiceService {
         LOGGER.info("read(" + id + ")");
         Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);
         ServiceEntity serviceEntity = optionalServiceEntity.orElseThrow();
-        LOGGER.info("read(...)= ");
-        return null;
+        Service service = serviceMapper.from(serviceEntity);
+        LOGGER.info("read(...)= " + service);
+        return service;
     }
 
     public void delete(Long id) {
