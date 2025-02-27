@@ -54,3 +54,17 @@ public class BookingGuideApplication {
 // ServiceService#list(), ServiceMapper#from(), ServiceController#create(), ServiceController#read(),
 // VisitControllerWebApplicationTest - testy jak w ClientControllerWebApplicationTest.
 // https://justjoin.it/blog/komunikacja-frontend-www-z-backend-w-javie
+
+// TODO: 06.02.2025 stworzyć od podstaw nowy projekt SpringFramework + SpringBoot
+// szablon projektu stworzyć na stronie start.spring.io
+// dodać niezbędne zależności dla projektu Web
+// projekt aplikacji umożliwiającej tworzenie notatek przez autorów/użytkowników
+// dwa główne modele to note i author
+// aplikacja trójwarstwowa: Repo (repo i encja), Mapper, Service (service i mapper), Controller (controller i model),
+// każda z warstw posiada metody CRUD,
+// dla każdej z warstw i metod stworzyć testy jednostkowe i integracyjne
+// frontend html + bootstrap + thymeleaf
+// dla każdej publicznej metody loggery wejścia i wyjścia
+// dla jednego modelu i jego wszystkich warstw oraz testów napisać komentarze wyjaśniające co technicznie dzieje się tam.
+// dodać na GitHub.
+// najpierw dodać wszystko od jednego modelu (warstwy), później od drugiego i dopiero relacje między nimi.

@@ -10,21 +10,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-@Service
+@Service // stereotyp informujący lub oznaczający klasę jako komponent springowy, który podlega DI i IoC.
 public class VisitService {
     private static final Logger LOGGER = Logger.getLogger(VisitService.class.getName());
 
-    private VisitRepository visitRepository;
+    private VisitRepository visitRepository; // zależności
     private VisitMapper visitMapper;
 
-    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper) {
+    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper) { // wstrzykiwanie zależności
         this.visitRepository = visitRepository;
         this.visitMapper = visitMapper;
     }
 
     public Visit create(Visit visit) {
         LOGGER.info("create()");
-        VisitEntity visitEntity = visitMapper.from(visit);
+        VisitEntity visitEntity = visitMapper.from(visit); // delegacja
         VisitEntity createdVisitEntity = visitRepository.save(visitEntity);
         Visit mappedVisit = visitMapper.from(createdVisitEntity);
         LOGGER.info("create(...) = " + mappedVisit);
