@@ -67,4 +67,4 @@ public class BookingGuideApplication {
 // dla każdej publicznej metody loggery wejścia i wyjścia
 // dla jednego modelu i jego wszystkich warstw oraz testów napisać komentarze wyjaśniające co technicznie dzieje się tam.
 // dodać na GitHub.
-// najpierw dodać wszystko od jednego modelu (warstwy), później od drugiego i dopiero relacje między nimi. 
+// najpierw dodać wszystko od jednego modelu (warstwy), później od drugiego i dopiero relacje między nimi.
