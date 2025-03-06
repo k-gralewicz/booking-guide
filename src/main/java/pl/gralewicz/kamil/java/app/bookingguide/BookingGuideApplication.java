@@ -73,4 +73,4 @@ public class BookingGuideApplication {
 
 // TODO: 06.03.2025 przygotować przykłady strumieni (streams) (+ testy),
 // zaprezentować różne constrainy dla kolumn w encji ( + testy),
-// analogicznie jak dla Service zarządzać rolami użytkowników (dostępem do funkcjonalności), 
+// analogicznie jak dla Service zarządzać rolami użytkowników (dostępem do funkcjonalności),
