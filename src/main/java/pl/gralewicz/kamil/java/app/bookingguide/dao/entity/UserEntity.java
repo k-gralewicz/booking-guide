@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,14 +19,14 @@ public class UserEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(unique = true)
-    private String username;
+
+    @Column(unique = false) private String username;
 
     private String password;
     private String email;
     private String roleId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<RoleEntity> roles = new ArrayList<>();
 
     public UserEntity() {

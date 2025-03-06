@@ -68,3 +68,8 @@ public class BookingGuideApplication {
 // dla jednego modelu i jego wszystkich warstw oraz testów napisać komentarze wyjaśniające co technicznie dzieje się tam.
 // dodać na GitHub.
 // najpierw dodać wszystko od jednego modelu (warstwy), później od drugiego i dopiero relacje między nimi.
+
+// TODO: 27.02.2025 poprawić przypisywanie ról dla użytkownika w UserDetailsService.
+
+// TODO: 06.03.2025 przygotować przykłady strumieni (streams) (+ testy),
+// zaprezentować różne constrainy dla kolumn w encji ( + testy),
