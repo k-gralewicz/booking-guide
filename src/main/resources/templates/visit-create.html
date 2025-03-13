@@ -25,7 +25,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="lastName">Client Last Name</label>
-                    <input th:field="${visit.client.lastName}" class="form-control">
+<!--                    <input th:field="${visit.client.lastName}" class="form-control">-->
+                    <div sec:authentication="name"></div>
                 </div>
                 <div class="mb-3">
                     <label for="serviceName">Service</label>
@@ -33,7 +34,10 @@
                 </div>
                 <div class="mb-3">
                     <label for="shopName">Shop</label>
-                    <input th:field="${visit.shop.name}" class="form-control">
+<!--                    <input th:field="${visit.shop.name}" class="form-control">-->
+                    <select id="shops" name="shop" th:field="*{shop}" class="form-control">
+                        <option th:each="shop : ${shops}" th:value="${shop}" th:text="${shop.name}"></option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="dueDate">Date</label>
