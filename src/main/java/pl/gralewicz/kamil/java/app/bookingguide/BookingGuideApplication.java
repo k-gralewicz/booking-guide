@@ -68,3 +68,6 @@ public class BookingGuideApplication {
 // dla jednego modelu i jego wszystkich warstw oraz testów napisać komentarze wyjaśniające co technicznie dzieje się tam.
 // dodać na GitHub.
 // najpierw dodać wszystko od jednego modelu (warstwy), później od drugiego i dopiero relacje między nimi.
+
+// TODO: 06.03.2025 klient może stworzyć nową wizytę, w której wybierze salon, usługę i datę.
+// Utowrzyć panel klienta, na którym będą wizyty i przycisk Utwórz wizytę.

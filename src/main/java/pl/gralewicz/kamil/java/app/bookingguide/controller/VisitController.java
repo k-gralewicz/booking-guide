@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ServiceService;
+import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
 import java.util.List;
@@ -22,45 +24,58 @@ public class VisitController {
 
     private VisitService visitService;
     private ServiceService serviceService;
+    private ShopService shopService;
 
-    public VisitController(VisitService visitService, ServiceService serviceService) {
+    public VisitController(VisitService visitService, ServiceService serviceService, ShopService shopService) {
         this.visitService = visitService;
-        this.serviceService= serviceService;
+        this.serviceService = serviceService;
+        this.shopService = shopService;
     }
 
     @GetMapping
     public String list(ModelMap modelMap) {
         LOGGER.info("list()");
-//        List<Visit> visits = new ArrayList<>();
-//
-//        Visit firstVisit = new Visit();
-//        firstVisit.setId(1L);
-//        visits.add(firstVisit);
-//
-//        Visit secondVisit = new Visit();
-//        secondVisit.setId(2L);
-//        visits.add(secondVisit);
-
         List<Visit> visits = visitService.list();
         modelMap.addAttribute("visits", visits);
         LOGGER.info("list(...)= " + visits);
         return "visits";
     }
 
+    @GetMapping(value = "/create")
+    public String createView(ModelMap modelMap) {
+        LOGGER.info("createView()");
+        List<Service> services = serviceService.list();
+        List<Shop> shops = shopService.list();
+        modelMap.addAttribute("services", services);
+        modelMap.addAttribute("shops", shops);
+        modelMap.addAttribute("visit", new Visit());
+        modelMap.addAttribute("isEdit", false);
+        LOGGER.info("createVisit(...)= ");
+        return "visit-create";
+    }
+
+    // 1. Użytkownik wybiera salon(shop),
+    // 2. Użytkownik wybiera usługę(service) dla danego salonu(shop),
+    //      2a. Filtrowanie usług po salonie,
+    // 3. Użytkownik wybiera datę,
+    //      3a. Sprawdzanie dostępności,
+    // 4. Użytkownik potwierdza rezerwację wizyty(visit),
+    //      4a. Blokada godzinowa usługi w danym salonie.
+
     @GetMapping(value = "/create/{id}")
-    public String createView(@PathVariable(name = "id") Long serviceId,ModelMap modelMap) {
-        LOGGER.info("createView(" + serviceId + ")" );
+    public String createWithService(@PathVariable(name = "id") Long serviceId, ModelMap modelMap) {
+        LOGGER.info("createWithService(" + serviceId + ")");
         Service service = serviceService.read(serviceId);
 
         Visit visit = new Visit();
         visit.setService(service);
 
-        LOGGER.info("creteView("+ visit +")");
+        LOGGER.info("createWithService(" + visit + ")");
 
         modelMap.addAttribute("createMassage", "Fill out the form fields");
         modelMap.addAttribute("visit", visit);
         modelMap.addAttribute("isEdit", false);
-        LOGGER.info("createView(...)= ");
+        LOGGER.info("createWithService(...)= ");
         return "visit-create.html";
     }
 
