@@ -30,7 +30,10 @@
                 </div>
                 <div class="mb-3">
                     <label for="serviceName">Service</label>
-                    <input th:field="${visit.service.name}" class="form-control" readonly>
+<!--                    <input th:field="${visit.service.name}" class="form-control" readonly>-->
+                <select id="services" name="service" th:field="*{service}" class="form-control">
+                    <option th:each="service : ${services}" th:value="${service}" th:text="${service.name}"></option>
+                </select>
                 </div>
                 <div class="mb-3">
                     <label for="shopName">Shop</label>
