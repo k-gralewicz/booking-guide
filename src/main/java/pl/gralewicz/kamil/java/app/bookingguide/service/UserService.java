@@ -42,6 +42,14 @@ public class UserService {
         return users;
     }
 
+    public User findByUsername(String username){
+        LOGGER.info("find()");
+        UserEntity userByUsername = userRepository.findByUsername(username);
+        User user = userMapper.from(userByUsername);
+        LOGGER.info("find(...)=" + user);
+        return user;
+    }
+
     public User create(User user) {
         LOGGER.info("create(" + user + ")");
         Long userRoleId = user.getRoleId();

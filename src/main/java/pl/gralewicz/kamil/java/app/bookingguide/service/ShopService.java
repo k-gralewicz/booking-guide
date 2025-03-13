@@ -8,6 +8,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -37,10 +38,19 @@ public class ShopService {
         return shops;
     }
 
+    public Shop findById(Long id){
+        LOGGER.info("findById");
+        Optional<ShopEntity> optionalShopEntity = shopRepository.findById(id);
+        ShopEntity shopEntity = optionalShopEntity.orElseThrow();
+        Shop shop = shopMapper.from(shopEntity);
+        LOGGER.info("findById(...)=" + shop);
+        return shop;
+    }
+
     public Shop create(Shop shop) {
         LOGGER.info("create()");
         ShopEntity shopEntity = shopMapper.from(shop);
-        ShopEntity createdShopEntity = shopRepository.create(shopEntity);
+        ShopEntity createdShopEntity = shopRepository.save(shopEntity);
         Shop mappedShop = shopMapper.from(createdShopEntity);
         LOGGER.info("create(...)=" + mappedShop);
         return mappedShop;

@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ServiceService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
+import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
 import java.util.List;
@@ -25,11 +27,13 @@ public class VisitController {
     private VisitService visitService;
     private ServiceService serviceService;
     private ShopService shopService;
+    private UserService userService;
 
-    public VisitController(VisitService visitService, ServiceService serviceService, ShopService shopService) {
+    public VisitController(VisitService visitService, ServiceService serviceService, ShopService shopService, UserService userService) {
         this.visitService = visitService;
         this.serviceService = serviceService;
         this.shopService = shopService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -54,6 +58,18 @@ public class VisitController {
         return "visit-create";
     }
 
+    @PostMapping(value = "/create")
+    public String createX(String username, Long shopId, Long serviceId, String date){
+        LOGGER.info("createX()");
+        // na podstawie username pobrac użytkownika
+        User userByUsername = userService.findByUsername(username);
+        // na podstawie shopId pobrać shop,
+        Shop shop = shopService.findById(shopId);
+        // na podstawie serviceId pobrać service
+        LOGGER.info("createX(...)=");
+        return null;
+    }
+// TODO: 13.03.2025 poniżej: 
     // 1. Użytkownik wybiera salon(shop),
     // 2. Użytkownik wybiera usługę(service) dla danego salonu(shop),
     //      2a. Filtrowanie usług po salonie,
