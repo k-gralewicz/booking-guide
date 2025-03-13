@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
 <body>
@@ -19,9 +19,11 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/clients}">Clients</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/services}">Services</a>
-                    </li>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/services}">Services</a>
+                        </li>
+                    </div>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/shops}">Shops</a>
                     </li>
@@ -32,6 +34,13 @@
                 <form class="d-flex" role="search">
                     <a class="nav-link" th:href="@{/logout}">Logout</a>
                 </form>
+                <ul>
+                    <li>
+                        <div sec:authentication="name">
+                            The value of the "name" property of the authentication object should appear here.
+                        </div>
+                    </li>
+                </ul>
                 <!--                <ul class="navbar-nav ms-auto">-->
                 <!--                    <li class="nav-item">-->
                 <!--                        <a class="nav-link" th:href="@{/logout}">Logout</a>-->

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 @Service
@@ -28,9 +29,14 @@ public class BookingGuideUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
 
+        String[] roles = userEntity.getRoles().stream()
+                .map(role -> role.getName().name()).toList()
+                .toArray(new String[0]);
+        LOGGER.info("####roles" + Arrays.toString(roles));
+
         UserDetails userDetails = User.withUsername(userEntity.getUsername())
                 .password(userEntity.getPassword())
-                .roles("ADMIN", "USER")
+                .roles(roles)
                 .build();
 
         return userDetails;
