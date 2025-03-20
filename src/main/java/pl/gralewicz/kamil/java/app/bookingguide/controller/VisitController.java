@@ -16,6 +16,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -59,15 +60,35 @@ public class VisitController {
     }
 
     @PostMapping(value = "/create")
-    public String createX(String username, Long shopId, Long serviceId, String date){
+    public String createX(String username, Long shopId, Long serviceId, String date, ModelMap modelMap){
         LOGGER.info("createX()");
         // na podstawie username pobrac użytkownika
         User userByUsername = userService.findByUsername(username);
+        if ( userByUsername == null) {
+            modelMap.addAttribute("error", "User not found");
+            return "visit-create";
+        }
         // na podstawie shopId pobrać shop,
         Shop shop = shopService.findById(shopId);
+        if (shop == null) {
+            modelMap.addAttribute("error", "Shop not found");
+            return "visit-create";
+        }
+        Service service = serviceService.findById(serviceId);
+        if (service == null) {
+            modelMap.addAttribute("error", "Service not found");
+            return "visit-create";
+        }
         // na podstawie serviceId pobrać service
-        LOGGER.info("createX(...)=");
-        return null;
+
+        Visit visit = new Visit();
+        visit.setShop(shop);
+        visit.setService(service);
+        visit.setDueDate(LocalDateTime.parse(date));
+
+        Visit createdVisit = visitService.create(visit);
+        LOGGER.info("createX(...)= " + createdVisit);
+        return "redirect:/visits";
     }
 // TODO: 13.03.2025 poniżej: 
     // 1. Użytkownik wybiera salon(shop),

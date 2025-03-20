@@ -29,6 +29,15 @@ public class ServiceService {
         return services;
     }
 
+    public Service findById(Long id){
+        LOGGER.info("findById()");
+        Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);
+        ServiceEntity serviceEntity = optionalServiceEntity.orElseThrow();
+        Service service = serviceMapper.from(serviceEntity);
+        LOGGER.info("findById(...)=" + service);
+        return service;
+    }
+
     public Service create(Service service) {
         LOGGER.info("create()");
         ServiceEntity serviceEntity = serviceMapper.from(service);
