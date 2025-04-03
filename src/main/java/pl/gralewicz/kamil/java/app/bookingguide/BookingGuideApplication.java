@@ -69,8 +69,14 @@ public class BookingGuideApplication {
 // dodać na GitHub.
 // najpierw dodać wszystko od jednego modelu (warstwy), później od drugiego i dopiero relacje między nimi.
 
+// TODO: 06.03.2025 klient może stworzyć nową wizytę, w której wybierze salon, usługę i datę.
+// Utowrzyć panel klienta, na którym będą wizyty i przycisk Utwórz wizytę.
 // TODO: 27.02.2025 poprawić przypisywanie ról dla użytkownika w UserDetailsService.
 
 // TODO: 06.03.2025 przygotować przykłady strumieni (streams) (+ testy),
 // zaprezentować różne constrainy dla kolumn w encji ( + testy),
 // analogicznie jak dla Service zarządzać rolami użytkowników (dostępem do funkcjonalności),
+
+// TODO: 20.03.2025 odkomentować relację w VisitEntity (linijka 17) i napisać testy jednostkowe,
+// do istniejących serwisów z zaimplementowanymi metodami dodać testy jednostkowe do każdej metody i sprawdzić czy działają poprzednie.
+// dokończyć ClientDashboard

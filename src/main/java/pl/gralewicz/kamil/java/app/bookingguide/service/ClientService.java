@@ -7,6 +7,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ClientRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ClientMapper;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -42,9 +43,11 @@ public class ClientService {
     public Client read(Long id) {
         LOGGER.info("read(" + id + ")");
         Optional<ClientEntity> optionalClientEntity = clientRepository.findById(id);
-        ClientEntity clientEntity = optionalClientEntity.orElseThrow();
-        LOGGER.info("read(...)= ");
-        return null;
+        ClientEntity clientEntity = optionalClientEntity
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono klienta o ID: " + id));
+        Client mappedClient = clientMapper.from(clientEntity);
+        LOGGER.info("read(...) = " + mappedClient);
+        return mappedClient;
     }
 
     public void delete(Long id) {

@@ -2,7 +2,9 @@ package pl.gralewicz.kamil.java.app.bookingguide.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,16 +40,35 @@ public class ServiceController {
     public String createView(ModelMap modelMap) {
         LOGGER.info("createView()");
         modelMap.addAttribute("createMessage", "Fill out the form fields");
+        modelMap.addAttribute("service", new Service());
+        modelMap.addAttribute("durationTypes", DurationType.values());
+        modelMap.addAttribute("isEdit", false);
         LOGGER.info("createView(...)= ");
         return "service-create";
     }
 
     @PostMapping
-    public String create(Service service) {
-        LOGGER.info("create(" + service + ")");
-        Service createdService = serviceService.create(service);
-        LOGGER.info("create(...)= " + createdService);
-        return "redirect:/services";
+    public String create(@ModelAttribute Service service, BindingResult bindingResult, ModelMap modelMap) {
+        LOGGER.info("Attempting to create service: " + service);
+        if (bindingResult.hasErrors()) {
+            LOGGER.warning("Binding errors occurred: " + bindingResult.getAllErrors());
+            modelMap.addAttribute("createMessage", "Please correct the errors below.");
+            modelMap.addAttribute("durationTypes", DurationType.values());
+            modelMap.addAttribute("isEdit", false);
+            return "service-create";
+        }
+        try {
+            Service createdService = serviceService.create(service);
+            LOGGER.info("Successfully created service: " + createdService);
+            return "redirect:/services";
+        } catch (Exception e) {
+            LOGGER.severe("Error saving service: " + e.getMessage());
+            modelMap.addAttribute("createMessage", "Error saving service: " + e.getMessage());
+            modelMap.addAttribute("durationTypes", DurationType.values());
+            modelMap.addAttribute("isEdit", false);
+            modelMap.addAttribute("service", service);
+            return "service-create";
+        }
     }
 
     @GetMapping(value = "/id")
