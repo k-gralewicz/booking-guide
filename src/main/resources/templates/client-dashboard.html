@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> <head>
     <meta charset="UTF-8">
     <title>Client Dashboard</title>
 </head>
@@ -9,24 +8,27 @@
     <h1>Client Dashboard</h1>
     <div>
         <table>
-            <tr>
+            <thead> <tr>
                 <th>ID</th>
-                <th>Client</th>
-                <th>Service</th>
-                <th>Shop</th>
-                <th>Due Date</th>
+                <th>Client</th>     <th>Service</th>    <th>Shop</th>       <th>Due Date</th>   </tr>
+            </thead>
+            <tbody> <tr th:if="${visits == null || visits.isEmpty()}">
+                <td colspan="5" style="text-align: center;">Nie znaleziono żadnych wizyt.</td>
             </tr>
-
             <tr th:each="visit : ${visits}">
-                <td th:text="${visit.id}"></td>
-                <td th:text="${visit.client}"></td>
-                <td th:text="${visit.service}"></td>
-                <td th:text="${visit.shop}"></td>
-                <td th:text="${visit.dueDate}"></td>
+                <td th:text="${visit.id}">ID</td>
+
+                <td th:text="${visit.client?.firstName + ' ' + visit.client?.lastName}">Imię Nazwisko</td>
+
+                <td th:text="${visit.service?.name}">Nazwa Usługi</td>
+
+                <td th:text="${visit.shop?.name}">Nazwa Sklepu</td>
+
+                <td th:text="${visit.dueDate != null ? #temporals.format(visit.dueDate, 'dd-MM-yyyy HH:mm') : ''}">Data i Godzina</td>
             </tr>
+            </tbody>
         </table>
-        <button><a href="/visits/create">Book a new visit</a></button>
-    </div>
+        <br/> <button><a th:href="@{/visits/create}">Book a new visit</a></button> </div>
 </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -42,9 +43,11 @@ public class VisitService {
     public Visit read(Long id) {
         LOGGER.info("read(" + id + ")");
         Optional<VisitEntity> optionalVisitEntity = visitRepository.findById(id);
-        VisitEntity visitEntity = optionalVisitEntity.orElseThrow();
-        LOGGER.info("read(...)= ");
-        return null;
+        VisitEntity visitEntity = optionalVisitEntity
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono wizyty o ID: " + id));
+        Visit mappedVisit = visitMapper.from(visitEntity);
+        LOGGER.info("read(...) = " + mappedVisit);
+        return mappedVisit;
     }
 
     public void delete(Long id) {

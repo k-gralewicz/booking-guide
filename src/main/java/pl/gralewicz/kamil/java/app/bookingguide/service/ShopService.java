@@ -6,8 +6,8 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.List; // Dodaj import dla List
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 public class ShopService {
     private static final Logger LOGGER = Logger.getLogger(ShopService.class.getName());
 
-    private ShopRepository shopRepository;
-    private ShopMapper shopMapper;
+    private final ShopRepository shopRepository;
+    private final ShopMapper shopMapper;
 
     public ShopService(ShopRepository shopRepository, ShopMapper shopMapper) {
         this.shopRepository = shopRepository;
@@ -25,23 +25,17 @@ public class ShopService {
 
     public List<Shop> list() {
         LOGGER.info("list()");
-        List<Shop> shops = new ArrayList<>();
-        Shop cosmeticShop = new Shop();
-        cosmeticShop.setName("Rossmann");
-        cosmeticShop.setId(1L);
-        Shop groceryShop = new Shop();
-        groceryShop.setName("Biedronka");
-        groceryShop.setId(2L);
-        shops.add(cosmeticShop);
-        shops.add(groceryShop);
-        LOGGER.info("list(...)= " + shops);
+        List<ShopEntity> shopEntities = shopRepository.findAll();
+        List<Shop> shops = shopMapper.fromEntities(shopEntities);
+        LOGGER.info("list(...) found " + shops.size() + " shops"); // Lepszy log
         return shops;
     }
 
     public Shop findById(Long id){
-        LOGGER.info("findById");
+        LOGGER.info("findById(" + id +")");
         Optional<ShopEntity> optionalShopEntity = shopRepository.findById(id);
-        ShopEntity shopEntity = optionalShopEntity.orElseThrow();
+        ShopEntity shopEntity = optionalShopEntity
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono sklepu o ID: " + id));
         Shop shop = shopMapper.from(shopEntity);
         LOGGER.info("findById(...)=" + shop);
         return shop;
@@ -54,5 +48,25 @@ public class ShopService {
         Shop mappedShop = shopMapper.from(createdShopEntity);
         LOGGER.info("create(...)=" + mappedShop);
         return mappedShop;
+    }
+
+    public Shop read(Long id) {
+        LOGGER.info("read(" + id + ")");
+        Optional<ShopEntity> optionalShopEntity = shopRepository.findById(id);
+        ShopEntity shopEntity = optionalShopEntity
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono sklepu o ID: " + id));
+        Shop shop = shopMapper.from(shopEntity);
+        LOGGER.info("read(...)= " + shop);
+        return shop;
+    }
+
+    public void delete(Long id) {
+        LOGGER.info("delete(" + id + ")");
+        if (!shopRepository.existsById(id)) {
+            LOGGER.warning("Próba usunięcia nieistniejącego sklepu o ID: " + id);
+            return;
+        }
+        shopRepository.deleteById(id);
+        LOGGER.info("delete(...) completed for ID: " + id);
     }
 }

@@ -44,8 +44,9 @@ public class AddressService {
         LOGGER.info("read(" + id + ")");
         Optional<AddressEntity> optionalAddressEntity = addressRepository.findById(id);
         AddressEntity addressEntity = optionalAddressEntity.orElseThrow();
-        LOGGER.info("read(...)= ");
-        return null;
+        Address mappedAddress = addressMapper.from(addressEntity);
+        LOGGER.info("read(...) = " + mappedAddress);
+        return mappedAddress;
     }
 
     public void delete(Long id) {

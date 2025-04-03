@@ -11,6 +11,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.RoleMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.UserMapper;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -65,21 +66,59 @@ public class UserService {
         return savedUser;
     }
 
-    public User updateUser(Long id, User updatedUser) {
-        LOGGER.info("updateUser(" + id + ", " + updatedUser + ")");
-        UserEntity existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public User updateUser(Long id, User updatedUserDto) { // Zmieniono nazwę parametru DTO dla jasności
+        LOGGER.info("updateUser(" + id + ", " + updatedUserDto + ") using manual field update");
 
-        UserEntity userEntity = userMapper.from(updatedUser);
+        // 1. Znajdź istniejącą encję w bazie lub rzuć wyjątek
+        UserEntity existingUserEntity = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id)); // Można użyć bardziej specyficznego wyjątku
 
-        UserEntity savedUserEntity = userRepository.save(existingUser);
+        // 2. Ręcznie zaktualizuj pola istniejącej encji wartościami z DTO
+        existingUserEntity.setUsername(updatedUserDto.getUsername());
+        existingUserEntity.setEmail(updatedUserDto.getEmail());
+
+        // 3. Obsługa aktualizacji hasła (tylko jeśli nowe hasło zostało podane w DTO)
+        //    Zakładamy, że kontroler przekazuje już ZAKODOWANE hasło w DTO, jeśli ma być zmienione.
+        //    Jeśli kodowanie ma się odbyć tutaj, musisz wstrzyknąć PasswordEncoder.
+        if (updatedUserDto.getPassword() != null && !updatedUserDto.getPassword().isEmpty() && !updatedUserDto.getPassword().isBlank()) {
+            LOGGER.info("Updating password for user ID: " + id);
+            existingUserEntity.setPassword(updatedUserDto.getPassword()); // Ustawiamy już zakodowane hasło
+        } else {
+            LOGGER.info("Password not provided in update DTO, keeping existing password for user ID: " + id);
+            // Nie robimy nic - istniejące hasło pozostaje
+        }
+
+        // 4. Obsługa aktualizacji roli (tylko jeśli roleId zostało podane w DTO)
+        //    Zakładamy, że użytkownik ma jedną rolę (lub chcemy zastąpić wszystkie jedną nową).
+        if (updatedUserDto.getRoleId() != null) {
+            LOGGER.info("Updating role for user ID: " + id + " to role ID: " + updatedUserDto.getRoleId());
+            // Znajdź encję nowej roli
+            RoleEntity roleEntity = roleRepository.findById(updatedUserDto.getRoleId())
+                    .orElseThrow(() -> new NoSuchElementException("Role not found with id: " + updatedUserDto.getRoleId()));
+
+            // Zaktualizuj kolekcję ról w encji użytkownika
+            // Najprostsze podejście dla pojedynczej roli: wyczyść stare, dodaj nową
+            // Upewnij się, że getRoles() zwraca modyfikowalną kolekcję (np. zainicjalizowaną jako new ArrayList<>() w UserEntity)
+            existingUserEntity.getRoles().clear();
+            existingUserEntity.addRole(roleEntity); // Zakładamy, że UserEntity ma metodę addRole(RoleEntity)
+        } else {
+            LOGGER.info("Role ID not provided in update DTO, keeping existing roles for user ID: " + id);
+            // Nie robimy nic z rolami
+        }
+
+        // 5. Zapisz zaktualizowaną encję (teraz `existingUserEntity` zawiera zmiany)
+        UserEntity savedUserEntity = userRepository.save(existingUserEntity);
+
+        // 6. Zmapuj zapisaną encję z powrotem na DTO
         User savedUser = userMapper.from(savedUserEntity);
-        LOGGER.info("updateUser(...)= " + savedUser);
+        LOGGER.info("updateUser(...) updated and saved: " + savedUser);
         return savedUser;
     }
 
     public User read(Long id) {
         LOGGER.info("read(" + id + ")");
-        UserEntity readUserEntity = userRepository.findById(id).orElse(null);
+        UserEntity readUserEntity = userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + id)); // Rzuca wyjątek, gdy Optional jest pusty
         User readUser = userMapper.from(readUserEntity);
         LOGGER.info("read(...)= " + readUser);
         return readUser;
@@ -87,7 +126,11 @@ public class UserService {
 
     public void delete(Long id) {
         LOGGER.info("delete(" + id + ")");
+        if (!userRepository.existsById(id)) {
+            LOGGER.warning("Attempt to delete non-existent user with ID: " + id);
+            return;
+        }
         userRepository.deleteById(id);
-        LOGGER.info("delete(...)= ");
+        LOGGER.info("delete(...) completed for ID: " + id);
     }
 }

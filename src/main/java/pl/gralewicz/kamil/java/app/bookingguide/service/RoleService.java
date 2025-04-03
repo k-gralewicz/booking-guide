@@ -8,6 +8,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.RoleRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.RoleMapper;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class RoleService {
 
     public Role read(Long id) {
         LOGGER.info("read(" + id + ")");
-        RoleEntity readRoleEntity = roleRepository.findById(id).orElseThrow(null);
+        RoleEntity readRoleEntity = roleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Nie znaleziono roli o ID: " + id));
         Role readRole = roleMapper.from(readRoleEntity);
         LOGGER.info("read(...)= " + readRole);
         return readRole;
