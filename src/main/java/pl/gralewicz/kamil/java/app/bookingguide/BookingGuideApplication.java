@@ -80,3 +80,8 @@ public class BookingGuideApplication {
 // TODO: 20.03.2025 odkomentować relację w VisitEntity (linijka 17) i napisać testy jednostkowe,
 // do istniejących serwisów z zaimplementowanymi metodami dodać testy jednostkowe do każdej metody i sprawdzić czy działają poprzednie.
 // dokończyć ClientDashboard
+
+// TODO: 03.04.2025 zamienić adres url na formularz w client-dashboard line 32,
+//<br/> <button><a th:href="@{/visits/create?username=__${#authentication.name}__}">Book a new visit</a></button> </div>
+// dokończyć dashboard - filtrowanie usług dla danego shopa -> filtrowanie serwisów dla użytkownika
+// dodać tym razem poprawnie testy jednostkowe dla serwisów!

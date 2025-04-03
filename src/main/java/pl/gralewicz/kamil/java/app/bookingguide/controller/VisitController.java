@@ -48,8 +48,13 @@ public class VisitController {
     }
 
     @GetMapping(value = "/create")
-    public String createView(ModelMap modelMap) {
+    public String createView(String username, ModelMap modelMap) {
         LOGGER.info("createView()");
+        User userByUsername = userService.findByUsername(username);
+        if ( userByUsername == null) {
+            modelMap.addAttribute("error", "User not found");
+            return "visit-create";
+        }
         List<Service> services = serviceService.list();
         List<Shop> shops = shopService.list();
         modelMap.addAttribute("services", services);

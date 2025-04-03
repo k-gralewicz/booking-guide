@@ -28,7 +28,8 @@
             </tr>
             </tbody>
         </table>
-        <br/> <button><a th:href="@{/visits/create}">Book a new visit</a></button> </div>
+<!--        #{selection.__${sel.code}__}-->
+        <br/> <button><a th:href="@{/visits/create?username=__${#authentication.name}__}">Book a new visit</a></button> </div>
 </div>
 </body>
 </html>
