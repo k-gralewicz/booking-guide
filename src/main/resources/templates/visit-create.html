@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col">
             <div th:if="${visit != null}">
-            <form action="#" th:action="@{/visits}" th:object="${visit}" method="post">
+            <form action="#" th:action="@{/visits/create}" th:object="${visit}" method="post">
                 <div class="mb-3">
                     <label for="firstName">Client First Name</label>
                     <input th:field="${visit.client.firstName}" class="form-control">

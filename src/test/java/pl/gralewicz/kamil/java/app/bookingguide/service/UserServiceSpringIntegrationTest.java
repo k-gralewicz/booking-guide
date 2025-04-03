@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import pl.gralewicz.kamil.java.app.bookingguide.api.RoleType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Role;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 
@@ -74,5 +75,27 @@ class UserServiceSpringIntegrationTest {
                 ()-> Assertions.assertNotNull(createdUser, "createdUser is null"),
                 ()-> Assertions.assertEquals("password",createdUser.getPassword(), "createdUser password is not equals")
         );
+    }
+
+    @Test
+    void  findByUsernameTest(){
+        // given
+        User user = new User();
+        user.setUsername("Katarzyna");
+        Role role = new Role();
+        role.setName(RoleType.CLIENT);
+        Role createdRole = roleService.create(role);
+        user.setRoles(List.of(createdRole));
+        user.setRoleId(createdRole.getId());
+
+        // when
+        User createdUser = userService.create(user);
+        User foundUser = userService.findByUsername("Katarzyna");
+
+        // then
+        Assertions.assertAll(
+                ()->Assertions.assertNotNull(foundUser, "foundUser is null")
+        );
+
     }
 }

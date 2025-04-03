@@ -78,3 +78,5 @@ public class BookingGuideApplication {
 // analogicznie jak dla Service zarządzać rolami użytkowników (dostępem do funkcjonalności),
 
 // TODO: 20.03.2025 odkomentować relację w VisitEntity (linijka 17) i napisać testy jednostkowe,
+// do istniejących serwisów z zaimplementowanymi metodami dodać testy jednostkowe do każdej metody i sprawdzić czy działają poprzednie.
+// dokończyć ClientDashboard

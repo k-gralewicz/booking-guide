@@ -42,11 +42,12 @@ public class UserService {
         return users;
     }
 
-    public User findByUsername(String username){
-        LOGGER.info("find()");
+    public User findByUsername(String username) {
+        LOGGER.info("findByUsername(" + username + ")");
         UserEntity userByUsername = userRepository.findByUsername(username);
+        LOGGER.info("userByUsername(" + userByUsername + ")");
         User user = userMapper.from(userByUsername);
-        LOGGER.info("find(...)=" + user);
+        LOGGER.info("findByUsername(...)=" + user);
         return user;
     }
 

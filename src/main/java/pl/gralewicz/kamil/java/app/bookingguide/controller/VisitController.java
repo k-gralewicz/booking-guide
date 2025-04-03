@@ -61,7 +61,9 @@ public class VisitController {
 
     @PostMapping(value = "/create")
     public String createX(String username, Long shopId, Long serviceId, String date, ModelMap modelMap){
-        LOGGER.info("createX()");
+        LOGGER.info("createX(" + shopId + ")");
+        LOGGER.info("createX(" + serviceId + ")");
+        LOGGER.info("createX(" + date + ")");
         // na podstawie username pobrac użytkownika
         User userByUsername = userService.findByUsername(username);
         if ( userByUsername == null) {
