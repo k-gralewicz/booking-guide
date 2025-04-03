@@ -13,14 +13,10 @@ import java.util.stream.Collectors;
 public class ShopMapper {
 
     private static final Logger LOGGER = Logger.getLogger(ShopMapper.class.getName());
-    private final ModelMapper modelMapper;
-
-    public ShopMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
 
     public ShopEntity from(Shop shop) {
         LOGGER.info("from(" + shop + ")");
+        ModelMapper modelMapper = new ModelMapper();
         ShopEntity shopEntity = modelMapper.map(shop, ShopEntity.class);
         LOGGER.info("from(...) = " + shopEntity);
         return shopEntity;
@@ -28,6 +24,7 @@ public class ShopMapper {
 
     public Shop from(ShopEntity shopEntity) {
         LOGGER.info("from(" + shopEntity + ")");
+        ModelMapper modelMapper = new ModelMapper();
         Shop shop = modelMapper.map(shopEntity, Shop.class);
         LOGGER.info("from(...) = " + shop);
         return shop;

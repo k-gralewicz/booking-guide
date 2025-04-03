@@ -16,7 +16,8 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -55,16 +56,17 @@ public class VisitController {
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("visit", new Visit());
         modelMap.addAttribute("isEdit", false);
-        LOGGER.info("createVisit(...)= ");
+        LOGGER.info("createView(...)= ");
         return "visit-create";
     }
 
     @PostMapping(value = "/create")
-    public String createX(String username, Long shopId, Long serviceId, String date, ModelMap modelMap){
+    public String createX(String username, Long shopId, Long serviceId, String dueDate, ModelMap modelMap){
+        LOGGER.info("createX(" + username + ")");
         LOGGER.info("createX(" + shopId + ")");
         LOGGER.info("createX(" + serviceId + ")");
-        LOGGER.info("createX(" + date + ")");
-        // na podstawie username pobrac użytkownika
+        LOGGER.info("createX(" + dueDate + ")");
+        // na podstawie username pobrać użytkownika
         User userByUsername = userService.findByUsername(username);
         if ( userByUsername == null) {
             modelMap.addAttribute("error", "User not found");
@@ -83,12 +85,12 @@ public class VisitController {
         }
         // na podstawie serviceId pobrać service
 
-        Visit visit = new Visit();
-        visit.setShop(shop);
-        visit.setService(service);
-        visit.setDueDate(LocalDateTime.parse(date));
+        Visit newVisit = new Visit();
+        newVisit.setShop(shop);
+        newVisit.setService(service);
+        newVisit.setDueDate(LocalDate.parse(dueDate, DateTimeFormatter.ISO_DATE).atStartOfDay());
 
-        Visit createdVisit = visitService.create(visit);
+        Visit createdVisit = visitService.create(newVisit);
         LOGGER.info("createX(...)= " + createdVisit);
         return "redirect:/visits";
     }
