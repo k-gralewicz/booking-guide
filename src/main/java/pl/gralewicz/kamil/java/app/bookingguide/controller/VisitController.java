@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
@@ -51,7 +52,7 @@ public class VisitController {
     public String createView(String username, ModelMap modelMap) {
         LOGGER.info("createView()");
         User userByUsername = userService.findByUsername(username);
-        if ( userByUsername == null) {
+        if (userByUsername == null) {
             modelMap.addAttribute("error", "User not found");
             return "visit-create";
         }
@@ -66,14 +67,14 @@ public class VisitController {
     }
 
     @PostMapping(value = "/create")
-    public String createX(String username, Long shopId, Long serviceId, String dueDate, ModelMap modelMap){
+    public String createX(String username, Long shopId, Long serviceId, String dueDate, ModelMap modelMap) {
         LOGGER.info("createX(" + username + ")");
         LOGGER.info("createX(" + shopId + ")");
         LOGGER.info("createX(" + serviceId + ")");
         LOGGER.info("createX(" + dueDate + ")");
         // na podstawie username pobrać użytkownika
         User userByUsername = userService.findByUsername(username);
-        if ( userByUsername == null) {
+        if (userByUsername == null) {
             modelMap.addAttribute("error", "User not found");
             return "visit-create";
         }
@@ -99,6 +100,25 @@ public class VisitController {
         LOGGER.info("createX(...)= " + createdVisit);
         return "redirect:/visits";
     }
+
+    @PostMapping(value = "/create/user")
+    public String createWithUsername(@RequestBody String username, ModelMap modelMap) {
+        LOGGER.info("createWithUsername(" + username + ")");
+        User userByUsername = userService.findByUsername(username);
+        if (userByUsername == null) {
+            modelMap.addAttribute("error", "User not found");
+            return "visit-create";
+        }
+        List<Service> services = serviceService.list();
+        List<Shop> shops = shopService.list();
+        modelMap.addAttribute("services", services);
+        modelMap.addAttribute("shops", shops);
+        modelMap.addAttribute("visit", new Visit());
+        modelMap.addAttribute("isEdit", false);
+        LOGGER.info("createWithUsername(...)= ");
+        return "visit-create";
+    }
+
 // TODO: 13.03.2025 poniżej: 
     // 1. Użytkownik wybiera salon(shop),
     // 2. Użytkownik wybiera usługę(service) dla danego salonu(shop),

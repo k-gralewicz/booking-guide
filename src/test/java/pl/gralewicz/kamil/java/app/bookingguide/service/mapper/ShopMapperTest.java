@@ -39,7 +39,7 @@ class ShopMapperTest {
         // });
 
         // Tworzymy instancję ShopMapper, przekazując prawdziwy ModelMapper
-        shopMapper = new ShopMapper(modelMapper);
+//        shopMapper = new ShopMapper(modelMapper);
     }
 
     // === Test dla metody from(Shop shop) DTO -> Entity ===

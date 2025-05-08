@@ -1,7 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,9 +18,7 @@ public class UserEntity {
     @GeneratedValue
     private Long id;
 
-
-    @Column(unique = false) private String username;
-
+    private String username;
     private String password;
     private String email;
     private String roleId;
@@ -90,7 +87,7 @@ public class UserEntity {
         return "UserEntity{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+//                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", roleId='" + roleId + '\'' +
                 ", roles=" + roles +
