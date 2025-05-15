@@ -6,7 +6,9 @@ public class Visit {
 
     private Long id;
     private Client client;
+    private Long serviceId;
     private Service service;
+    private Long shopId;
     private Shop shop;
 
     private LocalDateTime dueDate;
@@ -24,6 +26,22 @@ public class Visit {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
     }
 
     public void setId(Long id) {
@@ -65,8 +83,11 @@ public class Visit {
     @Override
     public String toString() {
         return "Visit{" +
-                "client=" + client +
+                "id=" + id +
+                ", client=" + client +
+                ", serviceId=" + serviceId +
                 ", service=" + service +
+                ", shopId=" + shopId +
                 ", shop=" + shop +
                 ", dueDate=" + dueDate +
                 '}';

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
@@ -16,7 +17,8 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -47,26 +49,32 @@ public class VisitController {
     }
 
     @GetMapping(value = "/create")
-    public String createView(ModelMap modelMap) {
+    public String createView(String username, ModelMap modelMap) {
         LOGGER.info("createView()");
+        User userByUsername = userService.findByUsername(username);
+        if (userByUsername == null) {
+            modelMap.addAttribute("error", "User not found");
+            return "visit-create";
+        }
         List<Service> services = serviceService.list();
         List<Shop> shops = shopService.list();
         modelMap.addAttribute("services", services);
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("visit", new Visit());
         modelMap.addAttribute("isEdit", false);
-        LOGGER.info("createVisit(...)= ");
+        LOGGER.info("createView(...)= ");
         return "visit-create";
     }
 
     @PostMapping(value = "/create")
-    public String createX(String username, Long shopId, Long serviceId, String date, ModelMap modelMap){
+    public String createX(String username, Long shopId, Long serviceId, String dueDate, ModelMap modelMap) {
+        LOGGER.info("createX(" + username + ")");
         LOGGER.info("createX(" + shopId + ")");
         LOGGER.info("createX(" + serviceId + ")");
-        LOGGER.info("createX(" + date + ")");
-        // na podstawie username pobrac użytkownika
+        LOGGER.info("createX(" + dueDate + ")");
+        // na podstawie username pobrać użytkownika
         User userByUsername = userService.findByUsername(username);
-        if ( userByUsername == null) {
+        if (userByUsername == null) {
             modelMap.addAttribute("error", "User not found");
             return "visit-create";
         }
@@ -83,15 +91,34 @@ public class VisitController {
         }
         // na podstawie serviceId pobrać service
 
-        Visit visit = new Visit();
-        visit.setShop(shop);
-        visit.setService(service);
-        visit.setDueDate(LocalDateTime.parse(date));
+        Visit newVisit = new Visit();
+        newVisit.setShop(shop);
+        newVisit.setService(service);
+        newVisit.setDueDate(LocalDate.parse(dueDate, DateTimeFormatter.ISO_DATE).atStartOfDay());
 
-        Visit createdVisit = visitService.create(visit);
+        Visit createdVisit = visitService.create(newVisit);
         LOGGER.info("createX(...)= " + createdVisit);
         return "redirect:/visits";
     }
+
+    @PostMapping(value = "/create/user")
+    public String createWithUsername(@RequestBody String username, ModelMap modelMap) {
+        LOGGER.info("createWithUsername(" + username + ")");
+        User userByUsername = userService.findByUsername(username);
+        if (userByUsername == null) {
+            modelMap.addAttribute("error", "User not found");
+            return "visit-create";
+        }
+        List<Service> services = serviceService.list();
+        List<Shop> shops = shopService.list();
+        modelMap.addAttribute("services", services);
+        modelMap.addAttribute("shops", shops);
+        modelMap.addAttribute("visit", new Visit());
+        modelMap.addAttribute("isEdit", false);
+        LOGGER.info("createWithUsername(...)= ");
+        return "visit-create";
+    }
+
 // TODO: 13.03.2025 poniżej: 
     // 1. Użytkownik wybiera salon(shop),
     // 2. Użytkownik wybiera usługę(service) dla danego salonu(shop),

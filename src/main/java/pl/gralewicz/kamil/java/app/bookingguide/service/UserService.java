@@ -1,7 +1,7 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.RoleEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
@@ -20,9 +20,10 @@ import java.util.stream.Collectors;
 public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
 
-    @Autowired
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private UserMapper userMapper;
+    private RoleMapper roleMapper;
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, RoleMapper roleMapper) {
         this.userRepository = userRepository;
@@ -30,10 +31,6 @@ public class UserService {
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;
     }
-
-    @Autowired
-    private UserMapper userMapper;
-    private RoleMapper roleMapper;
 
     public List<User> list() {
         LOGGER.info("list()");
@@ -43,10 +40,13 @@ public class UserService {
         return users;
     }
 
+    @Transactional
     public User findByUsername(String username) {
         LOGGER.info("findByUsername(" + username + ")");
+        List<UserEntity> byUsernameIgnoreCase = userRepository.findByUsernameIgnoreCase(username);
+        LOGGER.info("byUsernameIgnoreCase: " + byUsernameIgnoreCase);
         UserEntity userByUsername = userRepository.findByUsername(username);
-        LOGGER.info("userByUsername(" + userByUsername + ")");
+        LOGGER.info("userByUsername: " + userByUsername);
         User user = userMapper.from(userByUsername);
         LOGGER.info("findByUsername(...)=" + user);
         return user;
@@ -54,12 +54,16 @@ public class UserService {
 
     public User create(User user) {
         LOGGER.info("create(" + user + ")");
-        Long userRoleId = user.getRoleId();
-        Optional<RoleEntity> optionalRoleEntity = roleRepository.findById(userRoleId);
-        RoleEntity roleEntity = optionalRoleEntity.orElseThrow();
-        LOGGER.info("create(...)= " + optionalRoleEntity);
         UserEntity userEntity = userMapper.from(user);
-        userEntity.addRole(roleEntity);
+
+        Long userRoleId = user.getRoleId();
+        if (userRoleId != null) {
+            Optional<RoleEntity> optionalRoleEntity = roleRepository.findById(userRoleId);
+            RoleEntity roleEntity = optionalRoleEntity.orElseThrow();
+            LOGGER.info("create(...)= " + optionalRoleEntity);
+            userEntity.addRole(roleEntity);
+        }
+
         UserEntity savedUserEntity = userRepository.save(userEntity);
         User savedUser = userMapper.from(savedUserEntity);
         LOGGER.info("create(...)= " + savedUser);
