@@ -23,7 +23,7 @@ public class ShopController {
         this.shopService = shopService;
     }
 
-    @GetMapping
+    @GetMapping(value="/dashboard")
     public String list(String name, ModelMap modelMap) {
         LOGGER.info("list(" + name + ")");
         List<Shop> shops = shopService.list();
