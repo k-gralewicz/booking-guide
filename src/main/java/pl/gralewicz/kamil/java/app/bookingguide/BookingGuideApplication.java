@@ -85,3 +85,5 @@ public class BookingGuideApplication {
 //<br/> <button><a th:href="@{/visits/create?username=__${#authentication.name}__}">Book a new visit</a></button> </div>
 // dokończyć dashboard - filtrowanie usług dla danego shopa -> filtrowanie serwisów dla użytkownika
 // dodać tym razem poprawnie testy jednostkowe dla serwisów!
+
+// TODO: 08.05.2025 z chatem GPT rozwiązać problem z userByUsername

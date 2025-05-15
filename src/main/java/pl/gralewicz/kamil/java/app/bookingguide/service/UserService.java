@@ -1,6 +1,7 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.RoleEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
@@ -39,8 +40,11 @@ public class UserService {
         return users;
     }
 
+    @Transactional
     public User findByUsername(String username) {
         LOGGER.info("findByUsername(" + username + ")");
+        List<UserEntity> byUsernameIgnoreCase = userRepository.findByUsernameIgnoreCase(username);
+        LOGGER.info("byUsernameIgnoreCase: " + byUsernameIgnoreCase);
         UserEntity userByUsername = userRepository.findByUsername(username);
         LOGGER.info("userByUsername: " + userByUsername);
         User user = userMapper.from(userByUsername);

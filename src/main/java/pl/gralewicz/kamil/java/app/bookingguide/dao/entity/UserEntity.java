@@ -21,7 +21,7 @@ public class UserEntity {
     private String username;
     private String password;
     private String email;
-    private String roleId;
+//    private String roleId;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<RoleEntity> roles = new ArrayList<>();
@@ -66,13 +66,13 @@ public class UserEntity {
         this.email = email;
     }
 
-    public String getRoleId() {
-        return roleId;
-    }
+//    public String getRoleId() {
+//        return roleId;
+//    }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
-    }
+//    public void setRoleId(String roleId) {
+//        this.roleId = roleId;
+//    }
 
     public List<RoleEntity> getRoles() {
         return roles;
@@ -89,7 +89,7 @@ public class UserEntity {
                 ", username='" + username + '\'' +
 //                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", roleId='" + roleId + '\'' +
+//                ", roleId='" + roleId + '\'' +
                 ", roles=" + roles +
                 '}';
     }
