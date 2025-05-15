@@ -9,7 +9,7 @@
 <div>Shop list</div>
 <div>
     <div th:replace="fragments/navbar::navigation"></div>
-    <div sec:authorise="hasRole('ROLE_ADMIN')">
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
         <table>
             <tr>
                 <th>ID</th>
