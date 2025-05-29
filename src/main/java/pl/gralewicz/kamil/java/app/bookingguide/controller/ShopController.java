@@ -3,7 +3,9 @@ package pl.gralewicz.kamil.java.app.bookingguide.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
@@ -39,6 +41,24 @@ public class ShopController {
         modelMap.addAttribute("shopId", id);
         LOGGER.info("details(...)= ");
         return "shop-details";
+    }
+
+    @GetMapping(value = "/create")
+    public String createView(ModelMap modelMap){
+        LOGGER.info("createView()");
+
+        modelMap.addAttribute("createMassage", "Fill out the form fields");
+        modelMap.addAttribute("shop", new Shop());
+        LOGGER.info("createView(...)= ");
+        return "shop-create";
+    }
+
+    @PostMapping
+    public String create(@ModelAttribute Shop shop) {
+        LOGGER.info("create(" + shop + ")");
+        Shop createdShop = shopService.create(shop);
+        LOGGER.info("create(...)= " + createdShop);
+        return "redirect:/shops";
     }
 
     @GetMapping(value = "/clients/{id}")
