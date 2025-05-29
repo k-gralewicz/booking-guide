@@ -10,6 +10,9 @@
 <div>
     <div th:replace="fragments/navbar::navigation"></div>
     <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <div class="col">
+            <a href="/shops/create" class="btn btn-primary">Create Shop</a>
+        </div>
         <table>
             <tr>
                 <th>ID</th>

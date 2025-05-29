@@ -25,7 +25,7 @@ public class ShopController {
         this.shopService = shopService;
     }
 
-    @GetMapping(value = "/dashboard")
+    @GetMapping
     public String list(String name, ModelMap modelMap) {
         LOGGER.info("list(" + name + ")");
         List<Shop> shops = shopService.list();
@@ -50,7 +50,7 @@ public class ShopController {
         modelMap.addAttribute("createMassage", "Fill out the form fields");
         modelMap.addAttribute("shop", new Shop());
         LOGGER.info("createView(...)= ");
-        return "shop-dashboard";
+        return "shop-create";
     }
 
     @PostMapping
@@ -58,7 +58,7 @@ public class ShopController {
         LOGGER.info("create(" + shop + ")");
         Shop createdShop = shopService.create(shop);
         LOGGER.info("create(...)= " + createdShop);
-        return "shop-dashboard";
+        return "redirect:/shops";
     }
 
     @GetMapping(value = "/clients/{id}")
