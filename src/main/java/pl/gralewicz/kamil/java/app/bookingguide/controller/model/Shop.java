@@ -20,12 +20,12 @@ public class Shop {
     public Shop (){
     }
 
-    public Shop(String name, String description, String phoneNumber, Address address) {
-        this.name = name;
-        this.description = description;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-    }
+//    public Shop(String name, String description, String phoneNumber, Address address) {
+//        this.name = name;
+//        this.description = description;
+//        this.phoneNumber = phoneNumber;
+//        this.address = address;
+//    }
 
     public boolean visitAvailable(LocalDateTime dueDate) {
         LOGGER.info("visitAvailable(" + dueDate + ")");

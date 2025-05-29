@@ -88,4 +88,6 @@ public class BookingGuideApplication {
 
 // TODO: 08.05.2025 z chatem GPT rozwiązać problem z userByUsername
 
-// TODO: 15.05.2025 sprawdzić czy dodawanie shopa działa i wyświetla się dla admina 
+// TODO: 15.05.2025 sprawdzić czy dodawanie shopa działa i wyświetla się dla admina
+
+// TODO: 29.05.2025 dodać do shopa metody update i delete
