@@ -38,7 +38,12 @@ public class ShopController {
     public String details(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("details(" + id + ")");
 //        modelMap.addAttribute("SHOP_ID_SESSION", id);
+//        na podstawie Long id pobrać szczegóły sklepu
+//        ze szczegółow sklepu pobrać nazwę i wstawić jako atrybut na widok
         modelMap.addAttribute("shopId", id);
+        Shop readShop = shopService.read(id);
+        String readShopName = readShop.getName();
+        modelMap.addAttribute("shopName", readShopName);
         LOGGER.info("details(...)= ");
         return "shop-details";
     }

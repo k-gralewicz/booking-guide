@@ -5,7 +5,10 @@
     <title>Details</title>
 </head>
 <body>
-<div>Shop details</div>
+<div>Shop details for:</div>
+<div>
+    <td th:text="${shopName}">Shop Name:</td>
+</div>
 <div class="mb-3">
     <a th:href="@{/shops/clients/{id}(id = ${shopId})}">Clients</a>
 <!--    <a th:href="@{/clients/filter/{shopId}(id = ${shop.id})}">Details</a>-->

@@ -17,10 +17,6 @@ public class VisitEntity {
     @GeneratedValue
     private Long id;
 
-//    private ClientEntity client;
-//    private ServiceEntity service;
-//    private ShopEntity shop;
-
     private LocalDateTime dueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

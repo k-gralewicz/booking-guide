@@ -2,7 +2,6 @@ package pl.gralewicz.kamil.java.app.bookingguide.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 
@@ -14,7 +13,7 @@ class VisitIntegrationTest {
     @Test
     void bookingForBookedVisit() {
         // given
-        Shop shop = new Shop("Cudny Masaż", "studio masażu", "501222333", new Address());
+        Shop shop = new Shop();
         Visit alaVisit = new Visit();
         Visit kajaVisit = new Visit();
 

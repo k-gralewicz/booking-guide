@@ -16,7 +16,7 @@ class ShopTest {
     @Test
     void givenShop_whenVisitAvailableForDueDate_thenVisitAvailableForDueDate() {
         //given - tworzymy obiekt klasy testowanej
-        Shop shop = new Shop("Studio", "Randomowe studio urody", "555444888", null);
+        Shop shop = new Shop();
         LocalDateTime dueDate = LocalDateTime.of(2023, Month.JULY, 14, 20, 0);
 
         //when - wywołujemy testowaną metodę dla klasy testowej
@@ -35,7 +35,7 @@ class ShopTest {
         Client ulaClient = new Client();
         Service ustaService = new Service();
 
-        Shop zuziaShop = new Shop("Makjiaże", "Makijaże permanentne", "608448998", null);
+        Shop zuziaShop = new Shop();
 
         LocalDateTime dueDate = LocalDateTime.of(2023, Month.JULY, 22, 10, 0);
         Visit ulaVisit = new Visit();
