@@ -31,8 +31,8 @@ public class ShopService {
         return shops;
     }
 
-    public Shop findById(Long id){
-        LOGGER.info("findById(" + id +")");
+    public Shop findById(Long id) {
+        LOGGER.info("findById(" + id + ")");
         Optional<ShopEntity> optionalShopEntity = shopRepository.findById(id);
         ShopEntity shopEntity = optionalShopEntity
                 .orElseThrow(() -> new NoSuchElementException("Nie znaleziono sklepu o ID: " + id));
@@ -55,9 +55,22 @@ public class ShopService {
         Optional<ShopEntity> optionalShopEntity = shopRepository.findById(id);
         ShopEntity shopEntity = optionalShopEntity
                 .orElseThrow(() -> new NoSuchElementException("Nie znaleziono sklepu o ID: " + id));
-        Shop shop = shopMapper.from(shopEntity);
-        LOGGER.info("read(...)= " + shop);
-        return shop;
+        Shop mappedShop = shopMapper.from(shopEntity);
+//        Shop shop = shopMapper.from(shopEntity);
+        LOGGER.info("read(...)= " + mappedShop);
+        return mappedShop;
+    }
+
+    public Shop update(Long id, Shop shop) {
+        LOGGER.info("update(" + id + "," + shop + ")");
+//        Dwa sposoby:
+//        1. za pomocą ID odczytać dane z tabeli, podmienić wartości i zapisać ponownie,
+//        2. dla danych przesłanych z widoku dodać ID i zapisać do bazy.
+        shop.setId(id);
+        ShopEntity shopEntity = shopMapper.from(shop);
+        shopRepository.save(shopEntity);
+        LOGGER.info("update(...)=");
+        return null;
     }
 
     public void delete(Long id) {

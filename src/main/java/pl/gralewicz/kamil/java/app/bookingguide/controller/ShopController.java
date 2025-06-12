@@ -49,11 +49,11 @@ public class ShopController {
     }
 
     @GetMapping(value = "/create")
-    public String createView(ModelMap modelMap){
+    public String createView(ModelMap modelMap) {
         LOGGER.info("createView()");
-
         modelMap.addAttribute("createMassage", "Fill out the form fields");
         modelMap.addAttribute("shop", new Shop());
+        modelMap.addAttribute("isEdit", false);
         LOGGER.info("createView(...)= ");
         return "shop-create";
     }
@@ -66,12 +66,52 @@ public class ShopController {
         return "redirect:/shops";
     }
 
+    @GetMapping(value = "/id")
+    public String read(@PathVariable Long id, String name, String description, String phoneNumber, String address, ModelMap modelMap) {
+        LOGGER.info("read(" + id + ")");
+        LOGGER.info("read(" + name + ")");
+        LOGGER.info("read(" + description + ")");
+        LOGGER.info("read(" + phoneNumber + ")");
+        LOGGER.info("read(" + address + ")");
+        Shop readShop = shopService.read(id);
+        modelMap.addAttribute("createMessage", "This is shop: " + readShop);
+        boolean isEdit = true;
+        modelMap.addAttribute("isEdit", isEdit);
+        LOGGER.info("read(...)= ");
+        return "shop-read.html";
+    }
+
     @GetMapping(value = "/clients/{id}")
     public String clients(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("clients(" + id + ")");
 //        Object shopIdSession = modelMap.getAttribute("SHOP_ID_SESSION");
 //        LOGGER.info("shopIdSession: " + shopIdSession);
         return "shop-details";
+    }
+
+    @GetMapping(value = "/update/{id}")
+    public String updateView(@PathVariable Long id, ModelMap modelMap) {
+        LOGGER.info("updateView()");
+        Shop readShop = shopService.read(id);
+        modelMap.addAttribute("shop", readShop);
+        modelMap.addAttribute("isEdit", true);
+        LOGGER.info("updateView(...)= " + readShop);
+        return "shop-create";
+    }
+
+    @PostMapping(value = "/update/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute Shop shop) {
+        LOGGER.info("update(" + id + "," + shop + ")");
+        Shop updatedShop = shopService.update(id, shop);
+        LOGGER.info("update(...)= " + updatedShop);
+        return "redirect:/shops";
+    }
+
+    @GetMapping(value = "/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        LOGGER.info("delete(" + id + ")");
+        shopService.delete(id);
+        return "redirect:/shops";
     }
 }
 
