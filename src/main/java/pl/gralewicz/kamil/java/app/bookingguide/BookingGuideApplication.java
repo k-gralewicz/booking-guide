@@ -94,3 +94,5 @@ public class BookingGuideApplication {
 // TODO: 29.05.2025 w teście VisitRepositoryTest dokończyć test poprzez przypisanie sklepu 
 
 // TODO: 12.06.2025 shop - create żeby dodawał z adresem i następnie update też z adresem. 
+
+// TODO: 26.06.2025 różnica między sygnaturą metody a definicją metody.  

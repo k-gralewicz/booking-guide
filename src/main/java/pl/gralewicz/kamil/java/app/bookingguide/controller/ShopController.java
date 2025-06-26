@@ -66,14 +66,16 @@ public class ShopController {
         return "redirect:/shops";
     }
 
-    @GetMapping(value = "/id")
-    public String read(@PathVariable Long id, String name, String description, String phoneNumber, String address, ModelMap modelMap) {
+    @GetMapping(value = "/{id}")
+//    public String read(@PathVariable Long id, String name, String description, String phoneNumber, String address, ModelMap modelMap) {
+    public String read(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("read(" + id + ")");
-        LOGGER.info("read(" + name + ")");
-        LOGGER.info("read(" + description + ")");
-        LOGGER.info("read(" + phoneNumber + ")");
-        LOGGER.info("read(" + address + ")");
+//        LOGGER.info("read(" + name + ")");
+//        LOGGER.info("read(" + description + ")");
+//        LOGGER.info("read(" + phoneNumber + ")");
+//        LOGGER.info("read(" + address + ")");
         Shop readShop = shopService.read(id);
+        modelMap.addAttribute("shop", readShop);
         modelMap.addAttribute("createMessage", "This is shop: " + readShop);
         boolean isEdit = true;
         modelMap.addAttribute("isEdit", isEdit);

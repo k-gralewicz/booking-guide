@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+</head>
+<body>
+<div>Shop details for:</div>
+<div>
+    <div>
+        <label for="name">Shop name:</label>
+        <span id="name" th:text="${shop.name}">Shop Name:</span>
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <span id="description" th:text="${shop.description}">Description:</span>
+    </div>
+    <div>
+        <label for="phoneNumber">Phone Number:</label>
+        <span id="phoneNumber" th:text="${shop.phoneNumber}">Phone Number:</span>
+    </div>
+</div>
+<div class="mb-3">
+    <a th:href="@{/shops/clients/{id}(id = ${shopId})}">Clients</a>
+<!--    <a th:href="@{/clients/filter/{shopId}(id = ${shop.id})}">Details</a>-->
+</div>
+</body>
+</html>
