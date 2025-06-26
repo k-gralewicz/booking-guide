@@ -91,3 +91,8 @@ public class BookingGuideApplication {
 // TODO: 15.05.2025 sprawdzić czy dodawanie shopa działa i wyświetla się dla admina
 
 // TODO: 29.05.2025 dodać do shopa metody update i delete
+// TODO: 29.05.2025 w teście VisitRepositoryTest dokończyć test poprzez przypisanie sklepu 
+
+// TODO: 12.06.2025 shop - create żeby dodawał z adresem i następnie update też z adresem. 
+
+// TODO: 26.06.2025 różnica między sygnaturą metody a definicją metody.  

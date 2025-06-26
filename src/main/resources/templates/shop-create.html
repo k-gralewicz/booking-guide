@@ -8,7 +8,9 @@
 <body>
 <div th:replace="fragments/navbar::navigation"></div>
   <div class="container">
-    <form action="#" th:action="@{/shops}" th:object="${shop}" method="post">
+    <form th:action="${isEdit} ? @{/shops/update/{id}(id=${shop.id})} : @{/shops}" th:object="${shop}" method="post">
+<!--      <input type="hidden" th:field="*{id}"/>-->
+<!--    <form action="#" th:action="@{/shops}" th:object="${shop}" method="post">-->
       <div class="form-group">
         <label for="name">Name:</label>
         <input type="text" id="name" th:field="*{name}" class="form-control" required/>

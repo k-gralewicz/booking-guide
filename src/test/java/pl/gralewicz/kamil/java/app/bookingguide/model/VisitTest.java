@@ -2,7 +2,6 @@ package pl.gralewicz.kamil.java.app.bookingguide.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Address;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
@@ -19,7 +18,7 @@ class VisitTest {
 //        Client client = new Client("Anna", "Nowak", "anna.nowak@wp.pl", "505444555", new Address());
         Client client = new Client();
         Service service = new Service();
-        Shop shop = new Shop("Cudny Masaż", "studio masażu", "501222333", new Address());
+        Shop shop = new Shop();
         Visit visit = new Visit();
 
         //when

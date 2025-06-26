@@ -22,7 +22,6 @@
                 <th>READ</th>
                 <th>UPDATE</th>
                 <th>DELETE</th>
-                <th>DETAILS</th>
             </tr>
             <tr th:if="${#lists.isEmpty(shops)}">
                 <td colspan="6">This list is empty</td>
@@ -35,7 +34,7 @@
                 <td><a th:href="@{/shops/{id}(id = ${shop.id})}">Read</a></td>
                 <td><a th:href="@{/shops/update/{id}(id = ${shop.id})}">Update</a></td>
                 <td><a th:href="@{/shops/delete/{id}(id = ${shop.id})}">Delete</a></td>
-                <td><a th:href="@{/shops/details/{id}(id = ${shop.id})}">Details</a></td>
+<!--                <td><a th:href="@{/shops/details/{id}(id = ${shop.id})}">Details</a></td>-->
             </tr>
         </table>
     </div>

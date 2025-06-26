@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,7 +19,8 @@ public class ShopEntity {
     private String description;
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
-//    private Address address;
+    @OneToOne
+    private AddressEntity address;
 //    private List<Visit> visits = new ArrayList<>();
 
     public ShopEntity() {
@@ -56,14 +58,14 @@ public class ShopEntity {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-//
-//    public Address getAddress() {
-//        return address;
-//    }
-//
-//    public void setAddress(Address address) {
-//        this.address = address;
-//    }
+
+    public AddressEntity getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressEntity address) {
+        this.address = address;
+    }
 //
 //    public List<Visit> getVisits() {
 //        return visits;
@@ -80,7 +82,7 @@ public class ShopEntity {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-//                ", address=" + address +
+                ", address=" + address +
 //                ", visits=" + visits +
                 '}';
     }
