@@ -1,7 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +19,7 @@ public class ShopEntity {
     private String description;
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private AddressEntity address;
 //    private List<Visit> visits = new ArrayList<>();
 

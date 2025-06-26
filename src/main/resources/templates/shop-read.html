@@ -19,6 +19,26 @@
         <label for="phoneNumber">Phone Number:</label>
         <span id="phoneNumber" th:text="${shop.phoneNumber}">Phone Number:</span>
     </div>
+    <div>
+        <label for="address.street">Address street:</label>
+        <span id="address.street" th:text="${shop.address?.street}">Address street:</span>
+    </div>
+    <div>
+        <label for="address.flatNumber">Address flat number:</label>
+        <span id="address.flatNumber" th:text="${shop.address?.flatNumber}">Address flat number:</span>
+    </div>
+    <div>
+        <label for="address.postCode">Address post code:</label>
+        <span id="address.postCode" th:text="${shop.address?.postCode}">Address post code:</span>
+    </div>
+    <div>
+        <label for="address.city">Address city:</label>
+        <span id="address.city" th:text="${shop.address?.city}">Address city:</span>
+    </div>
+    <div>
+        <label for="address.country">Address country:</label>
+        <span id="address.country" th:text="${shop.address?.country}">Address country:</span>
+    </div>
 </div>
 <div class="mb-3">
     <a th:href="@{/shops/clients/{id}(id = ${shopId})}">Clients</a>
