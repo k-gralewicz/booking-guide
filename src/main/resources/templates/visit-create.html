@@ -18,38 +18,36 @@
     <div class="row">
         <div class="col">
             <div th:if="${visit != null}">
-            <form action="#" th:action="@{/visits/create}" th:object="${visit}" method="post">
-                <div class="mb-3">
-                    <label for="firstName">Client First Name</label>
-<!--                    <input th:field="${visit.client.firstName}" class="form-control">-->
-                </div>
-                <div class="mb-3">
-                    <label for="lastName">Client Last Name</label>
-                    <input name="username" th:value="${#authentication.name}" class="form-control">
-                    <div sec:authentication="name"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="serviceName">Service</label>
-<!--                    <input th:field="${visit.service.name}" class="form-control" readonly>-->
-                <select id="services" name="serviceId" th:field="*{serviceId}" class="form-control">
-                    <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.name}"></option>
-                </select>
-                </div>
-                <div class="mb-3">
-                    <label for="shopName">Shop</label>
-<!--                    <input th:field="${visit.shop.name}" class="form-control">-->
-                    <select id="shops" name="shopId" th:field="*{shopId}" class="form-control">
-                        <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}"></option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="dueDate">Date</label>
-                    <input type="date" id="dueDate" name="dueDate" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-            </form>
+                <form action="#" th:action="@{/visits/create}" th:object="${visit}" method="post">
+                    <div class="mb-3">
+                        <label for="firstName">Client First Name</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName">Client Last Name</label>
+                        <input name="username" th:value="${#authentication.name}" class="form-control">
+                        <div sec:authentication="name"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceName">Service</label>
+                        <select id="services" name="serviceId" th:field="*{serviceId}" class="form-control">
+                            <option th:each="service : ${services}" th:value="${service.id}"
+                                    th:text="${service.name}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="shopName">Shop</label>
+                        <select id="shops" name="shopId" th:field="*{shopId}" class="form-control">
+                            <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dueDate">Date</label>
+                        <input type="date" id="dueDate" name="dueDate" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="col">
