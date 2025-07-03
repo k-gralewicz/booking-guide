@@ -96,3 +96,6 @@ public class BookingGuideApplication {
 // TODO: 12.06.2025 shop - create żeby dodawał z adresem i następnie update też z adresem. 
 
 // TODO: 26.06.2025 różnica między sygnaturą metody a definicją metody.  
+// TODO: 26.06.2025 dokończyć implementację visitCreate z poziomu service.  
+// TODO: 26.06.2025 albo dla danej usługi znaleźć sklep 
+// TODO: 26.06.2025 albo pozostać przy liście usług i sklepów i dla wybranego sklepu wyświetlić dostępne usługi.  

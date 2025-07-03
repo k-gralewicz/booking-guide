@@ -79,6 +79,7 @@ public class VisitController {
             return "visit-create";
         }
         // na podstawie shopId pobrać shop,
+        shopId = 602L;
         Shop shop = shopService.findById(shopId);
         if (shop == null) {
             modelMap.addAttribute("error", "Shop not found");
@@ -138,7 +139,6 @@ public class VisitController {
 
         LOGGER.info("createWithService(" + visit + ")");
 
-        modelMap.addAttribute("createMassage", "Fill out the form fields");
         modelMap.addAttribute("visit", visit);
         modelMap.addAttribute("isEdit", false);
         LOGGER.info("createWithService(...)= ");
