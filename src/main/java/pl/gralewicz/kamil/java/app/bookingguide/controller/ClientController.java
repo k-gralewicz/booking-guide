@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ClientService;
+import pl.gralewicz.kamil.java.app.bookingguide.service.ServiceService;
+import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
 import java.util.List;
@@ -22,10 +26,14 @@ public class ClientController {
 
     private ClientService clientService;
     private VisitService visitService;
+    private ShopService shopService;
+    private ServiceService serviceService;
 
-    public ClientController(ClientService clientService, VisitService visitService) {
+    public ClientController(ClientService clientService, VisitService visitService, ShopService shopService, ServiceService serviceService) {
         this.clientService = clientService;
         this.visitService = visitService;
+        this.shopService = shopService;
+        this.serviceService = serviceService;
     }
 
     @GetMapping(value="/dashboard")
@@ -33,7 +41,13 @@ public class ClientController {
         LOGGER.info("dashboard()");
         List<Visit> visits = visitService.list();
         modelMap.addAttribute("visits", visits);
+        List<Shop> shops = shopService.list();
+        modelMap.addAttribute("shops", shops);
+        List<Service> services = serviceService.list();
+        modelMap.addAttribute("services", services);
         LOGGER.info("dashboard(...)= " + visits);
+        LOGGER.info("dashboard(...)= " + shops);
+        LOGGER.info("dashboard(...)= " + services);
         return "client-dashboard";
     }
 

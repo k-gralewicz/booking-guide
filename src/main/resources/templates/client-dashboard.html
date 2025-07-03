@@ -7,12 +7,13 @@
 </head>
 <body>
 <div>
+    <div th:replace="fragments/navbar::navigation"></div>
     <h1>Client Dashboard</h1>
     <div>
-        <!-- Filter Form -->
         <form th:action="@{/dashboard}" method="get">
             <div class="form-group">
                 <label for="shop">Select Shop</label>
+<!--                <span id="shop" th:text="${shops}"></span>-->
                 <select class="form-control" id="shop" name="shop">
                     <option value="">--Select Shop--</option>
                     <tr th:each="shop : ${shops}">
@@ -23,6 +24,7 @@
 
             <div class="form-group">
                 <label for="service">Select Service</label>
+<!--                <span id="service" th:text="${services}"></span>-->
                 <select class="form-control" id="service" name="service">
                     <option value="">--Select Service--</option>
                     <tr th:each="service : ${services}">
@@ -35,7 +37,6 @@
         </form>
         <br/>
 
-        <!-- Table of Visits -->
         <table class="table">
             <thead>
             <tr>
