@@ -99,3 +99,7 @@ public class BookingGuideApplication {
 // TODO: 26.06.2025 dokończyć implementację visitCreate z poziomu service.  
 // TODO: 26.06.2025 albo dla danej usługi znaleźć sklep 
 // TODO: 26.06.2025 albo pozostać przy liście usług i sklepów i dla wybranego sklepu wyświetlić dostępne usługi.  
+
+// TODO: 03.07.2025 dokończyć implementację funkcji selectShop w javascript:
+// TODO: 03.07.2025 pobranie identyfikatora wybranego shopa, 
+// TODO: 03.07.2025 wykonanie request pod endpoint który wyświetla visit-create.html 

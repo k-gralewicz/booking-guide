@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Client Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script type="text/javascript" src="/js/client-dashboard.js"></script>
 </head>
 <body>
 <div>
@@ -14,7 +15,7 @@
             <div class="form-group">
                 <label for="shop">Select Shop</label>
 <!--                <span id="shop" th:text="${shops}"></span>-->
-                <select class="form-control" id="shop" name="shop">
+                <select class="form-control" id="shop" name="shop" onchange="selectShop();">
                     <option value="">--Select Shop--</option>
                     <tr th:each="shop : ${shops}">
                         <option th:value="${shop.id}" th:text="${shop.name}"></option>
