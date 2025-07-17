@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
@@ -103,7 +103,7 @@ public class VisitController {
     }
 
     @PostMapping(value = "/create/user")
-    public String createWithUsername(@RequestBody String username, ModelMap modelMap) {
+    public String createWithUsername(@RequestParam String username, ModelMap modelMap) {
         LOGGER.info("createWithUsername(" + username + ")");
         User userByUsername = userService.findByUsername(username);
         if (userByUsername == null) {

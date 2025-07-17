@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
-@RequestMapping(value="/clients")
+@RequestMapping(value = "/clients")
 public class ClientController {
     private static final Logger LOGGER = Logger.getLogger(ClientController.class.getName());
 
@@ -36,23 +36,31 @@ public class ClientController {
         this.serviceService = serviceService;
     }
 
-    @GetMapping(value="/dashboard")
-    public String dashboard(ModelMap modelMap){
+    @GetMapping(value = "/dashboard")
+    public String dashboard(String shopId, String serviceId, ModelMap modelMap) {
         LOGGER.info("dashboard()");
+        LOGGER.info("dashboard(" + shopId + ")");
+        if (shopId != null) {
+            // dodać metodę filtrującą listę shopów po Id.
+        } else {
+            List<Shop> shops = shopService.list();
+            modelMap.addAttribute("shops", shops);
+        }
+
         List<Visit> visits = visitService.list();
         modelMap.addAttribute("visits", visits);
-        List<Shop> shops = shopService.list();
-        modelMap.addAttribute("shops", shops);
+
         List<Service> services = serviceService.list();
         modelMap.addAttribute("services", services);
+
         LOGGER.info("dashboard(...)= " + visits);
-        LOGGER.info("dashboard(...)= " + shops);
+//        LOGGER.info("dashboard(...)= " + shops);
         LOGGER.info("dashboard(...)= " + services);
         return "client-dashboard";
     }
 
     @GetMapping
-    public String list(ModelMap modelMap){
+    public String list(ModelMap modelMap) {
         LOGGER.info("list()");
         List<Client> clients = clientService.list();
         modelMap.addAttribute("clients", clients);
@@ -60,8 +68,8 @@ public class ClientController {
         return "clients";
     }
 
-    @GetMapping(value="/create")
-    public String createView(ModelMap modelMap){
+    @GetMapping(value = "/create")
+    public String createView(ModelMap modelMap) {
         LOGGER.info("createView()");
         modelMap.addAttribute("createMassage", "Fill out the form fields");
         modelMap.addAttribute("client", new Client());
@@ -70,7 +78,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Client client){
+    public String create(@ModelAttribute Client client) {
         LOGGER.info("create(" + client + ")");
         Client createdClient = clientService.create(client);
         LOGGER.info("create(...)= " + createdClient);
@@ -79,12 +87,12 @@ public class ClientController {
 
     @GetMapping(value = "/id")
     public String read(@PathVariable Long id, String firstName, String lastName, String email, String phoneNumber, String address, ModelMap modelMap) {
-        LOGGER.info("read("+ id +")");
-        LOGGER.info("read("+ firstName +")");
-        LOGGER.info("read("+ lastName +")");
-        LOGGER.info("read("+ email +")");
-        LOGGER.info("read("+ phoneNumber +")");
-        LOGGER.info("read("+ address +")");
+        LOGGER.info("read(" + id + ")");
+        LOGGER.info("read(" + firstName + ")");
+        LOGGER.info("read(" + lastName + ")");
+        LOGGER.info("read(" + email + ")");
+        LOGGER.info("read(" + phoneNumber + ")");
+        LOGGER.info("read(" + address + ")");
         Client readClient = clientService.read(id);
         modelMap.addAttribute("createMessage", "This is client: " + readClient);
         LOGGER.info("read(...)= ");
@@ -101,14 +109,19 @@ public class ClientController {
 
     @GetMapping(value = "/delete/{id}")
     public String delete(@PathVariable Long id, String firstName, String lastName, String email, String phoneNumber, String address, ModelMap modelMap) {
-        LOGGER.info("delete("+ id +")");
-        LOGGER.info("delete("+ firstName +")");
-        LOGGER.info("delete("+ lastName +")");
-        LOGGER.info("delete("+ email +")");
-        LOGGER.info("delete("+ phoneNumber +")");
-        LOGGER.info("delete("+ address +")");
+        LOGGER.info("delete(" + id + ")");
+        LOGGER.info("delete(" + firstName + ")");
+        LOGGER.info("delete(" + lastName + ")");
+        LOGGER.info("delete(" + email + ")");
+        LOGGER.info("delete(" + phoneNumber + ")");
+        LOGGER.info("delete(" + address + ")");
         clientService.delete(id);
         return "redirect:/clients";
     }
 }
 // TODO: 21.08.2024 poprawić controller
+
+// TODO: 10.07.2025 : 
+// wybrany shopId przesłać do backendu
+// w backend na podstawie shopId wybrać odpowiednie serwisy
+// na frontend zwrócić shopID oraz serviceID i zaznaczyć odpowiednie opcje w dropdown.

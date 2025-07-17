@@ -1,14 +1,14 @@
 function selectShop() {
     //    alert("Wybrano sklep JS");
+            var shopId = $('#shop').val();
 
-    const params = new URLSearchParams({ username: 'Kamil' });
-    const url = '/visits/create?' + params;
+    const params = new URLSearchParams({ username: 'Kamil', shopId: shopId });
+    const url = '/clients/dashboard?' + params;
     fetch(url)
         // .then(response => response.json())
         .then(data => {
             // handle the response data
-            var shopValue = $('#shop').val();
-            console.log(shopValue);
+            console.log(shopId);
             // reload the page with the fetch URL
             window.location.href = url;
 

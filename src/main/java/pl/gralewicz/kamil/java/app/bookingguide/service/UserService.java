@@ -43,11 +43,11 @@ public class UserService {
     @Transactional
     public User findByUsername(String username) {
         LOGGER.info("findByUsername(" + username + ")");
-        List<UserEntity> byUsernameIgnoreCase = userRepository.findByUsernameIgnoreCase(username);
-        LOGGER.info("byUsernameIgnoreCase: " + byUsernameIgnoreCase);
-        UserEntity userByUsername = userRepository.findByUsername(username);
-        LOGGER.info("userByUsername: " + userByUsername);
-        User user = userMapper.from(userByUsername);
+        List<UserEntity> users = userRepository.findByUsernameIgnoreCase(username);
+        if (users == null || users.isEmpty()) {
+            throw new NoSuchElementException("User not found: username=" + username);
+        }
+        User user = userMapper.from(users.get(0));
         LOGGER.info("findByUsername(...)=" + user);
         return user;
     }
