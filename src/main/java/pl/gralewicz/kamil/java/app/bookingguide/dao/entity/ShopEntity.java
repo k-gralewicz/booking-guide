@@ -5,8 +5,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "SHOPS")
@@ -23,8 +27,16 @@ public class ShopEntity {
     private AddressEntity address;
 //    private List<Visit> visits = new ArrayList<>();
 
+    @ManyToMany
+    private List<UserEntity> users = new ArrayList<>();
+
     public ShopEntity() {
 
+    }
+
+    public void addUser(UserEntity user){
+        users.add(user);
+        user.getShops().add(this);
     }
 
     public Long getId() {
@@ -66,7 +78,16 @@ public class ShopEntity {
     public void setAddress(AddressEntity address) {
         this.address = address;
     }
-//
+
+    public List<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
+    }
+
+    //
 //    public List<Visit> getVisits() {
 //        return visits;
 //    }
@@ -83,7 +104,7 @@ public class ShopEntity {
                 ", description='" + description + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address=" + address +
-//                ", visits=" + visits +
+                ", users=" + users +
                 '}';
     }
 }

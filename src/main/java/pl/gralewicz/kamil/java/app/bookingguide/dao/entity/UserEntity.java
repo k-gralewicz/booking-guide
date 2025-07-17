@@ -26,6 +26,9 @@ public class UserEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<RoleEntity> roles = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "users")
+    private List<ShopEntity> shops = new ArrayList<>();
+
     public UserEntity() {
     }
 
@@ -66,7 +69,14 @@ public class UserEntity {
         this.email = email;
     }
 
-//    public String getRoleId() {
+    public List<ShopEntity> getShops() {
+        return shops;
+    }
+
+    public void setShops(List<ShopEntity> shops) {
+        this.shops = shops;
+    }
+    //    public String getRoleId() {
 //        return roleId;
 //    }
 
@@ -87,10 +97,10 @@ public class UserEntity {
         return "UserEntity{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-//                ", password='" + password + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-//                ", roleId='" + roleId + '\'' +
                 ", roles=" + roles +
+                ", shops=" + shops +
                 '}';
     }
 }
