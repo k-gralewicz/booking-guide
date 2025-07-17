@@ -4,10 +4,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.RoleEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.RoleRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.RoleMapper;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.UserMapper;
 
 import java.util.List;
@@ -22,14 +25,18 @@ public class UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private ShopRepository shopRepository;
     private UserMapper userMapper;
     private RoleMapper roleMapper;
+    private ShopMapper shopMapper;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, RoleMapper roleMapper) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, ShopRepository shopRepository, UserMapper userMapper, RoleMapper roleMapper, ShopMapper shopMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.shopRepository = shopRepository;
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;
+        this.shopMapper = shopMapper;
     }
 
     public List<User> list() {
@@ -60,8 +67,16 @@ public class UserService {
         if (userRoleId != null) {
             Optional<RoleEntity> optionalRoleEntity = roleRepository.findById(userRoleId);
             RoleEntity roleEntity = optionalRoleEntity.orElseThrow();
-            LOGGER.info("create(...)= " + optionalRoleEntity);
+            LOGGER.info("roleEntity: " + optionalRoleEntity);
             userEntity.addRole(roleEntity);
+        }
+
+        Long userShopId = user.getShopId();
+        if (userShopId != null) {
+            Optional<ShopEntity> optionalShopEntity = shopRepository.findById(userShopId);
+            ShopEntity shopEntity = optionalShopEntity.orElseThrow();
+            LOGGER.info("shopEntity: " + optionalShopEntity);
+            shopEntity.addUser(userEntity);
         }
 
         UserEntity savedUserEntity = userRepository.save(userEntity);

@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.service.RoleService;
+import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 
 import java.util.List;
@@ -23,11 +25,13 @@ public class UserController {
     private final UserService userService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final ShopService shopService;
 
-    public UserController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder, ShopService shopService) {
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
+        this.shopService = shopService;
     }
 
     @GetMapping
@@ -42,6 +46,8 @@ public class UserController {
     @GetMapping(value = "/create")
     public String createView(ModelMap modelMap) {
         LOGGER.info("createView()");
+        List<Shop> shops = shopService.list();
+        modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("createMessage", "Fill out the form fields");
         modelMap.addAttribute("user", new User());
         modelMap.addAttribute("isEdit", false);

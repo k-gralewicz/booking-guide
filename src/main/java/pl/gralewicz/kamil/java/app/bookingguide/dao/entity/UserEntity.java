@@ -100,7 +100,7 @@ public class UserEntity {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", roles=" + roles +
-                ", shops=" + shops +
+//                ", shops=" + shops +
                 '}';
     }
 }
