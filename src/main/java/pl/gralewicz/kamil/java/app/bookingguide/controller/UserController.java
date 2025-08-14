@@ -107,4 +107,10 @@ public class UserController {
         userService.delete(id);
         return "redirect:/users";
     }
+
+    @GetMapping(value = "/dashboard")
+    public String dashboard(){
+
+        return "user-dashboard.html";
+    }
 }
