@@ -101,3 +101,6 @@ public class BookingGuideApplication {
 // TODO: 26.06.2025 albo pozostać przy liście usług i sklepów i dla wybranego sklepu wyświetlić dostępne usługi.
 
 // TODO: 17.07.2025 1b:     b. posiada więcej niż 1 Shop - ma możliwość wyboru Shop'a (nowy ekran z dropdown/select),
+
+// TODO: 14.08.2025 wyciągnąć po username przypisane shopy w UserController.
+// TODO: 14.08.2025 1b:     b. posiada więcej niż 1 Shop - ma możliwość wyboru Shop'a (nowy ekran z dropdown/select),

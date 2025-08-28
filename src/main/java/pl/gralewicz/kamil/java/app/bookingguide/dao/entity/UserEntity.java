@@ -37,6 +37,11 @@ public class UserEntity {
         role.getUsers().add(this);
     }
 
+    public void addShop(ShopEntity shop){
+        shops.add(shop);
+        shop.getUsers().add(this);
+    }
+
     public Long getId() {
         return id;
     }
@@ -76,13 +81,6 @@ public class UserEntity {
     public void setShops(List<ShopEntity> shops) {
         this.shops = shops;
     }
-    //    public String getRoleId() {
-//        return roleId;
-//    }
-
-//    public void setRoleId(String roleId) {
-//        this.roleId = roleId;
-//    }
 
     public List<RoleEntity> getRoles() {
         return roles;

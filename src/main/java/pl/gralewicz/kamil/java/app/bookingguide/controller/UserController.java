@@ -1,5 +1,7 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -109,8 +111,14 @@ public class UserController {
     }
 
     @GetMapping(value = "/dashboard")
-    public String dashboard(){
-
+    public String dashboard(ModelMap modelMap) {
+        LOGGER.info("dashboard()");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        LOGGER.info("username= " + username);
+        List<Shop> shops = userService.getShopsForUser(username);
+        modelMap.addAttribute("shops", shops);
+        LOGGER.info("dashboard(...)= ");
         return "user-dashboard.html";
     }
 }

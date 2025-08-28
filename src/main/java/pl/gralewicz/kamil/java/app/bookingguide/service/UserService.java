@@ -2,6 +2,7 @@ package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.RoleEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
@@ -13,6 +14,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.RoleMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.UserMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -29,14 +31,16 @@ public class UserService {
     private UserMapper userMapper;
     private RoleMapper roleMapper;
     private ShopMapper shopMapper;
+    private ShopService shopService;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, ShopRepository shopRepository, UserMapper userMapper, RoleMapper roleMapper, ShopMapper shopMapper) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, ShopRepository shopRepository, UserMapper userMapper, RoleMapper roleMapper, ShopMapper shopMapper, ShopService shopService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.shopRepository = shopRepository;
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;
         this.shopMapper = shopMapper;
+        this.shopService = shopService;
     }
 
     public List<User> list() {
@@ -151,5 +155,17 @@ public class UserService {
         }
         userRepository.deleteById(id);
         LOGGER.info("delete(...) completed for ID: " + id);
+    }
+
+    public List<Shop> getShopsForUser(String username) {
+        LOGGER.info("getShopsForUser(" + username + ")");
+        UserEntity userEntity = userRepository.findByUsername(username);
+        if (userEntity != null) {
+            List<ShopEntity> shopEntities = userEntity.getShops();
+            List<Shop> shops = shopMapper.fromEntities(shopEntities);
+            LOGGER.info("getShopsForUser(...)= " + shops);
+            return shops;
+        }
+        return new ArrayList<>();
     }
 }

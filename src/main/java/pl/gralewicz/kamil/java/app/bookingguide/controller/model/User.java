@@ -12,6 +12,7 @@ public class User {
     private Long shopId;
 
     private List<Role> roles = new ArrayList<>();
+    private List<Shop> shops = new ArrayList<>();
 
     public User() {
     }
@@ -64,6 +65,14 @@ public class User {
         this.roles = roles;
     }
 
+    public List<Shop> getShops() {
+        return shops;
+    }
+
+    public void setShops(List<Shop> shops) {
+        this.shops = shops;
+    }
+
     public Long getShopId() {
         return shopId;
     }
@@ -82,6 +91,7 @@ public class User {
                 ", roleId=" + roleId +
                 ", shopId=" + shopId +
                 ", roles=" + roles +
+                ", shops=" + shops +
                 '}';
     }
 }
