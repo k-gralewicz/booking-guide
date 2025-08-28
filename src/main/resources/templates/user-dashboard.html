@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <title>User Dashboard</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>User Dashboard</title>
 </head>
 <body>
 <div>
-  <div th:replace="fragments/navbar::navigation"></div>
-  <div>Welcome to:</div>
+    <div th:replace="fragments/navbar::navigation"></div>
+    <div>Welcome to:</div>
+    <!--  <div th:text="${shops}"></div>-->
+    <div class="mb-3">
+        <label for="shopName">Shop</label>
+<!--        <select id="shops" name="shopId" th:field="*{shopId}" class="form-control">-->
+        <select id="shops" name="shopId" class="form-control">
+            <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}"></option>
+        </select>
+    </div>
 </div>
 </body>
 </html>
