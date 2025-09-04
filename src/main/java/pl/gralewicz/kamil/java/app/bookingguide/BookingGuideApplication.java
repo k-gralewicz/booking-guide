@@ -98,4 +98,16 @@ public class BookingGuideApplication {
 // TODO: 26.06.2025 różnica między sygnaturą metody a definicją metody.  
 // TODO: 26.06.2025 dokończyć implementację visitCreate z poziomu service.  
 // TODO: 26.06.2025 albo dla danej usługi znaleźć sklep 
-// TODO: 26.06.2025 albo pozostać przy liście usług i sklepów i dla wybranego sklepu wyświetlić dostępne usługi.  
+// TODO: 26.06.2025 albo pozostać przy liście usług i sklepów i dla wybranego sklepu wyświetlić dostępne usługi.
+
+// TODO: 17.07.2025 1b:     b. posiada więcej niż 1 Shop - ma możliwość wyboru Shop'a (nowy ekran z dropdown/select),
+
+// TODO: 14.08.2025 wyciągnąć po username przypisane shopy w UserController.
+// TODO: 14.08.2025 1b:     b. posiada więcej niż 1 Shop - ma możliwość wyboru Shop'a (nowy ekran z dropdown/select),
+
+// TODO: 28.08.2025 dodać do Usera funkcjonalność dodawania kolejnego sklepu,
+// TODO: 28.08.2025 za pomocą mechanizmu sesji dodać wybrany Shop do sesji,
+// TODO: 28.08.2025 w NavBar wyświetlić informacje o wybranym Shop pobranym z sesji.
+
+// TODO: 04.09.2025 usunąć mechanizm sesji zaimplementowany w GlobalControllerAdvice i zaimplementować za pomocą
+// TODO: 04.09.2025 @SessionAttributes("SHOP_ID_SESSION")

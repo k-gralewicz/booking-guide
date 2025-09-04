@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 
-import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Controller
@@ -28,7 +28,7 @@ public class ShopController {
     @GetMapping
     public String list(String name, ModelMap modelMap) {
         LOGGER.info("list(" + name + ")");
-        List<Shop> shops = shopService.list();
+        Set<Shop> shops = shopService.list();
         modelMap.addAttribute("shops", shops);
         LOGGER.info("list(...)= ");
         return "shop-dashboard";

@@ -9,8 +9,10 @@ public class User {
     private String password;
     private String email;
     private Long roleId;
+    private Long shopId;
 
     private List<Role> roles = new ArrayList<>();
+    private List<Shop> shops = new ArrayList<>();
 
     public User() {
     }
@@ -63,6 +65,22 @@ public class User {
         this.roles = roles;
     }
 
+    public List<Shop> getShops() {
+        return shops;
+    }
+
+    public void setShops(List<Shop> shops) {
+        this.shops = shops;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -71,7 +89,9 @@ public class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", roleId=" + roleId +
+                ", shopId=" + shopId +
                 ", roles=" + roles +
+                ", shops=" + shops +
                 '}';
     }
 }

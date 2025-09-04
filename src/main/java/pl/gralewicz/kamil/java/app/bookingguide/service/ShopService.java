@@ -4,11 +4,13 @@ import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 
-import java.util.List; // Dodaj import dla List
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Service
@@ -17,17 +19,19 @@ public class ShopService {
 
     private final ShopRepository shopRepository;
     private final ShopMapper shopMapper;
+    private final UserRepository userRepository;
 
-    public ShopService(ShopRepository shopRepository, ShopMapper shopMapper) {
+    public ShopService(ShopRepository shopRepository, ShopMapper shopMapper, UserRepository userRepository) {
         this.shopRepository = shopRepository;
         this.shopMapper = shopMapper;
+        this.userRepository = userRepository;
     }
 
-    public List<Shop> list() {
+    public Set<Shop> list() {
         LOGGER.info("list()");
         List<ShopEntity> shopEntities = shopRepository.findAll();
-        List<Shop> shops = shopMapper.fromEntities(shopEntities);
-        LOGGER.info("list(...) found " + shops.size() + " shops"); // Lepszy log
+        Set<Shop> shops = shopMapper.fromEntities(shopEntities);
+        LOGGER.info("list(...) found " + shops.size() + " shops");
         return shops;
     }
 

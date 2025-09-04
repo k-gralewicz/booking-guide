@@ -8,8 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="USERS")
@@ -21,10 +21,12 @@ public class UserEntity {
     private String username;
     private String password;
     private String email;
-//    private String roleId;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<RoleEntity> roles = new ArrayList<>();
+    private Set<RoleEntity> roles = new HashSet<>();
+
+    @ManyToMany(mappedBy = "users")
+    private Set<ShopEntity> shops = new HashSet<>();
 
     public UserEntity() {
     }
@@ -32,6 +34,11 @@ public class UserEntity {
     public void addRole(RoleEntity role) {
         roles.add(role);
         role.getUsers().add(this);
+    }
+
+    public void addShop(ShopEntity shop){
+        shops.add(shop);
+        shop.getUsers().add(this);
     }
 
     public Long getId() {
@@ -66,20 +73,20 @@ public class UserEntity {
         this.email = email;
     }
 
-//    public String getRoleId() {
-//        return roleId;
-//    }
-
-//    public void setRoleId(String roleId) {
-//        this.roleId = roleId;
-//    }
-
-    public List<RoleEntity> getRoles() {
+    public Set<RoleEntity> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<RoleEntity> roles) {
+    public Set<ShopEntity> getShops() {
+        return shops;
+    }
+
+    public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
+    }
+
+    public void setShops(Set<ShopEntity> shops) {
+        this.shops = shops;
     }
 
     @Override
@@ -87,10 +94,10 @@ public class UserEntity {
         return "UserEntity{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-//                ", password='" + password + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-//                ", roleId='" + roleId + '\'' +
                 ", roles=" + roles +
+//                ", shops=" + shops +
                 '}';
     }
 }

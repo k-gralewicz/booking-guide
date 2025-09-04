@@ -1,5 +1,8 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller;
 
+import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -8,26 +11,37 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.service.RoleService;
+import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.logging.Logger;
+
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SHOP_SESSION;
 
 @Controller
 @RequestMapping(value = "/users")
+@SessionAttributes(SHOP_SESSION)
 public class UserController {
     private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
     private final UserService userService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final ShopService shopService;
 
-    public UserController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder, ShopService shopService) {
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
+        this.shopService = shopService;
     }
 
     @GetMapping
@@ -42,6 +56,8 @@ public class UserController {
     @GetMapping(value = "/create")
     public String createView(ModelMap modelMap) {
         LOGGER.info("createView()");
+        Set<Shop> shops = shopService.list();
+        modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("createMessage", "Fill out the form fields");
         modelMap.addAttribute("user", new User());
         modelMap.addAttribute("isEdit", false);
@@ -100,5 +116,52 @@ public class UserController {
         LOGGER.info("delete(" + id + ")");
         userService.delete(id);
         return "redirect:/users";
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard(ModelMap modelMap, HttpSession session) {
+        LOGGER.info("dashboard()");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        LOGGER.info("username= " + username);
+
+        Set<Shop> assignedShops = userService.getShopsForUser(username);
+        Set<Shop> allShops = shopService.list();
+
+        List<Shop> unassignedShops = allShops.stream()
+                .filter(shop -> !assignedShops.contains(shop))
+                .toList();
+
+        modelMap.addAttribute("shops", assignedShops);
+        modelMap.addAttribute("unassignedShops", unassignedShops);
+
+        Shop selectedShop = (Shop) session.getAttribute("selectedShop");
+        modelMap.addAttribute("selectedShop", selectedShop);
+
+        LOGGER.info("dashboard(...)");
+        return "user-dashboard.html";
+    }
+
+    @PostMapping("/shops/assign")
+    public String assignShopToUser(@RequestParam Long shopId) {
+        LOGGER.info("assignShopToUser(" + shopId + ")");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            throw new NoSuchElementException("Nie znaleziono użytkownika o nazwie: " + username);
+        }
+        userService.updateUser(user.getId(), shopId);
+
+        LOGGER.info("assignShopToUser(...) completed");
+        return "redirect:/users/dashboard";
+    }
+    @PostMapping("/shops/select")
+    public String selectShop(@RequestParam Long shopId, ModelMap modelMap) {
+        Shop selectedShop = shopService.read(shopId);
+//        session.setAttribute("selectedShop", selectedShop);
+        modelMap.addAttribute(SHOP_SESSION, selectedShop);
+        return "redirect:/users/dashboard";
     }
 }

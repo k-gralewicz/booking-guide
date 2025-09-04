@@ -2,17 +2,23 @@ package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.RoleEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.RoleRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.RoleMapper;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.UserMapper;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -22,14 +28,20 @@ public class UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private ShopRepository shopRepository;
     private UserMapper userMapper;
     private RoleMapper roleMapper;
+    private ShopMapper shopMapper;
+    private ShopService shopService;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, RoleMapper roleMapper) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, ShopRepository shopRepository, UserMapper userMapper, RoleMapper roleMapper, ShopMapper shopMapper, ShopService shopService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.shopRepository = shopRepository;
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;
+        this.shopMapper = shopMapper;
+        this.shopService = shopService;
     }
 
     public List<User> list() {
@@ -56,73 +68,53 @@ public class UserService {
         LOGGER.info("create(" + user + ")");
         UserEntity userEntity = userMapper.from(user);
 
-        Long userRoleId = user.getRoleId();
-        if (userRoleId != null) {
-            Optional<RoleEntity> optionalRoleEntity = roleRepository.findById(userRoleId);
-            RoleEntity roleEntity = optionalRoleEntity.orElseThrow();
-            LOGGER.info("create(...)= " + optionalRoleEntity);
+        if (user.getRoleId() != null) {
+            RoleEntity roleEntity = roleRepository.findById(user.getRoleId())
+                    .orElseThrow(() -> new NoSuchElementException("Role not found"));
             userEntity.addRole(roleEntity);
         }
 
-        UserEntity savedUserEntity = userRepository.save(userEntity);
-        User savedUser = userMapper.from(savedUserEntity);
-        LOGGER.info("create(...)= " + savedUser);
-        return savedUser;
+        if (user.getShopId() != null) {
+            ShopEntity shopEntity = shopRepository.findById(user.getShopId())
+                    .orElseThrow(() -> new NoSuchElementException("Shop not found"));
+            userEntity.addShop(shopEntity);
+        }
+
+        UserEntity saved = userRepository.save(userEntity);
+        return userMapper.from(saved);
     }
 
-    public User updateUser(Long id, User updatedUserDto) { // Zmieniono nazwę parametru DTO dla jasności
-        LOGGER.info("updateUser(" + id + ", " + updatedUserDto + ") using manual field update");
+    @Transactional
+    public User updateUser(Long userId, Long shopId) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
+        UserEntity userEntity = optionalUserEntity.orElseThrow(
+                () -> new NoSuchElementException("User not found"));
 
-        // 1. Znajdź istniejącą encję w bazie lub rzuć wyjątek
-        UserEntity existingUserEntity = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id)); // Można użyć bardziej specyficznego wyjątku
+        Optional<ShopEntity> optionalShopEntity = shopRepository.findById(shopId);
+        ShopEntity shopEntity = optionalShopEntity.orElseThrow(
+                () -> new NoSuchElementException("Shop not found"));
 
-        // 2. Ręcznie zaktualizuj pola istniejącej encji wartościami z DTO
-        existingUserEntity.setUsername(updatedUserDto.getUsername());
-        existingUserEntity.setEmail(updatedUserDto.getEmail());
+        userEntity.addShop(shopEntity);
+        User user = userMapper.from(userEntity);
+        return user;
+    }
 
-        // 3. Obsługa aktualizacji hasła (tylko jeśli nowe hasło zostało podane w DTO)
-        //    Zakładamy, że kontroler przekazuje już ZAKODOWANE hasło w DTO, jeśli ma być zmienione.
-        //    Jeśli kodowanie ma się odbyć tutaj, musisz wstrzyknąć PasswordEncoder.
-        if (updatedUserDto.getPassword() != null && !updatedUserDto.getPassword().isEmpty() && !updatedUserDto.getPassword().isBlank()) {
-            LOGGER.info("Updating password for user ID: " + id);
-            existingUserEntity.setPassword(updatedUserDto.getPassword()); // Ustawiamy już zakodowane hasło
-        } else {
-            LOGGER.info("Password not provided in update DTO, keeping existing password for user ID: " + id);
-            // Nie robimy nic - istniejące hasło pozostaje
-        }
+    public User updateUser(Long id, User updatedUser) {
+        LOGGER.info("updateUser(" + id + ", " + updatedUser + ")");
+//        UserEntity existingUser = userRepository.findById(id).orElseThrow(
+//                () -> new RuntimeException("User not found"));
 
-        // 4. Obsługa aktualizacji roli (tylko jeśli roleId zostało podane w DTO)
-        //    Zakładamy, że użytkownik ma jedną rolę (lub chcemy zastąpić wszystkie jedną nową).
-        if (updatedUserDto.getRoleId() != null) {
-            LOGGER.info("Updating role for user ID: " + id + " to role ID: " + updatedUserDto.getRoleId());
-            // Znajdź encję nowej roli
-            RoleEntity roleEntity = roleRepository.findById(updatedUserDto.getRoleId())
-                    .orElseThrow(() -> new NoSuchElementException("Role not found with id: " + updatedUserDto.getRoleId()));
-
-            // Zaktualizuj kolekcję ról w encji użytkownika
-            // Najprostsze podejście dla pojedynczej roli: wyczyść stare, dodaj nową
-            // Upewnij się, że getRoles() zwraca modyfikowalną kolekcję (np. zainicjalizowaną jako new ArrayList<>() w UserEntity)
-            existingUserEntity.getRoles().clear();
-            existingUserEntity.addRole(roleEntity); // Zakładamy, że UserEntity ma metodę addRole(RoleEntity)
-        } else {
-            LOGGER.info("Role ID not provided in update DTO, keeping existing roles for user ID: " + id);
-            // Nie robimy nic z rolami
-        }
-
-        // 5. Zapisz zaktualizowaną encję (teraz `existingUserEntity` zawiera zmiany)
-        UserEntity savedUserEntity = userRepository.save(existingUserEntity);
-
-        // 6. Zmapuj zapisaną encję z powrotem na DTO
+        UserEntity userEntity = userMapper.from(updatedUser);
+        UserEntity savedUserEntity = userRepository.save(userEntity);
         User savedUser = userMapper.from(savedUserEntity);
-        LOGGER.info("updateUser(...) updated and saved: " + savedUser);
+        LOGGER.info("updateUser(...)= " + savedUser);
         return savedUser;
     }
 
     public User read(Long id) {
         LOGGER.info("read(" + id + ")");
         UserEntity readUserEntity = userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + id)); // Rzuca wyjątek, gdy Optional jest pusty
+                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + id));
         User readUser = userMapper.from(readUserEntity);
         LOGGER.info("read(...)= " + readUser);
         return readUser;
@@ -136,5 +128,30 @@ public class UserService {
         }
         userRepository.deleteById(id);
         LOGGER.info("delete(...) completed for ID: " + id);
+    }
+
+    public Set<Shop> getShopsForUser(String username) {
+        LOGGER.info("getShopsForUser(" + username + ")");
+        UserEntity userEntity = userRepository.findByUsername(username);
+        if (userEntity != null) {
+            Set<ShopEntity> shopEntities = userEntity.getShops();
+            Set<Shop> shops = shopMapper.fromEntities(shopEntities);
+            LOGGER.info("getShopsForUser(...)= " + shops);
+            return shops;
+        }
+        return new HashSet<>();
+    }
+
+    @Transactional
+    public void assignShopToUser(Long userId, Long shopId) {
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + userId));
+        ShopEntity shopEntity = shopRepository.findById(shopId)
+                .orElseThrow(() -> new NoSuchElementException("Shop not found with id: " + shopId));
+
+        if (!userEntity.getShops().contains(shopEntity)) {
+            userEntity.addShop(shopEntity);
+            userRepository.save(userEntity);
+        }
     }
 }
