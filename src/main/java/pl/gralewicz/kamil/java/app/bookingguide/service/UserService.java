@@ -99,6 +99,18 @@ public class UserService {
         return user;
     }
 
+    public User updateUser(Long id, User updatedUser) {
+        LOGGER.info("updateUser(" + id + ", " + updatedUser + ")");
+//        UserEntity existingUser = userRepository.findById(id).orElseThrow(
+//                () -> new RuntimeException("User not found"));
+        
+        UserEntity userEntity = userMapper.from(updatedUser);
+        UserEntity savedUserEntity = userRepository.save(userEntity);
+        User savedUser = userMapper.from(savedUserEntity);
+        LOGGER.info("updateUser(...)= " + savedUser);
+        return savedUser;
+    }
+
     public User read(Long id) {
         LOGGER.info("read(" + id + ")");
         UserEntity readUserEntity = userRepository.findById(id)

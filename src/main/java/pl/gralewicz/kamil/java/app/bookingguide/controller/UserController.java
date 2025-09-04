@@ -102,8 +102,8 @@ public class UserController {
             User existingUser = userService.read(id);
             user.setPassword(existingUser.getPassword());
         }
-//        User updatedUser = userService.updateUser(id, user);
-//        LOGGER.info("update(...)= " + updatedUser);
+        User updatedUser = userService.updateUser(id, user);
+        LOGGER.info("update(...)= " + updatedUser);
         return "redirect:/users";
     }
 
