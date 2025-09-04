@@ -148,13 +148,7 @@ public class UserController {
         if (user == null) {
             throw new NoSuchElementException("Nie znaleziono użytkownika o nazwie: " + username);
         }
-
-        Shop shop = shopService.read(shopId);
-
-        if (!user.getShops().contains(shop)) {
-            user.getShops().add(shop);
-            userService.updateUser(user.getId(), shopId);
-        }
+        userService.updateUser(user.getId(), shopId);
 
         LOGGER.info("assignShopToUser(...) completed");
         return "redirect:/users/dashboard";
