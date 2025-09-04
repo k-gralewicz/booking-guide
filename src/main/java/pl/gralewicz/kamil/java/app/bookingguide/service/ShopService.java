@@ -10,6 +10,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Service
@@ -26,10 +27,10 @@ public class ShopService {
         this.userRepository = userRepository;
     }
 
-    public List<Shop> list() {
+    public Set<Shop> list() {
         LOGGER.info("list()");
         List<ShopEntity> shopEntities = shopRepository.findAll();
-        List<Shop> shops = shopMapper.fromEntities(shopEntities);
+        Set<Shop> shops = shopMapper.fromEntities(shopEntities);
         LOGGER.info("list(...) found " + shops.size() + " shops");
         return shops;
     }

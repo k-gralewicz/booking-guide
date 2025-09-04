@@ -14,9 +14,11 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.RoleMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.UserMapper;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -83,36 +85,18 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUser(Long id, User updatedUserDto) {
-        UserEntity existingUserEntity = userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+    public User updateUser(Long userId, Long shopId) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
+        UserEntity userEntity = optionalUserEntity.orElseThrow(
+                () -> new NoSuchElementException("User not found"));
 
-        existingUserEntity.setUsername(updatedUserDto.getUsername());
-        existingUserEntity.setEmail(updatedUserDto.getEmail());
+        Optional<ShopEntity> optionalShopEntity = shopRepository.findById(shopId);
+        ShopEntity shopEntity = optionalShopEntity.orElseThrow(
+                () -> new NoSuchElementException("Shop not found"));
 
-        if (updatedUserDto.getPassword() != null && !updatedUserDto.getPassword().isBlank()) {
-            existingUserEntity.setPassword(updatedUserDto.getPassword());
-        }
-
-        if (updatedUserDto.getRoleId() != null) {
-            RoleEntity roleEntity = roleRepository.findById(updatedUserDto.getRoleId())
-                    .orElseThrow(() -> new NoSuchElementException("Role not found"));
-            existingUserEntity.getRoles().clear();
-            existingUserEntity.addRole(roleEntity);
-        }
-
-        if (updatedUserDto.getShops() != null) {
-            existingUserEntity.getShops().clear();
-
-            for (Shop shopDto : updatedUserDto.getShops()) {
-                ShopEntity shopEntity = shopRepository.findById(shopDto.getId())
-                        .orElseThrow(() -> new NoSuchElementException("Shop not found with id: " + shopDto.getId()));
-                existingUserEntity.addShop(shopEntity);
-            }
-        }
-
-        UserEntity saved = userRepository.save(existingUserEntity);
-        return userMapper.from(saved);
+        userEntity.addShop(shopEntity);
+        User user = userMapper.from(userEntity);
+        return user;
     }
 
     public User read(Long id) {
@@ -134,16 +118,16 @@ public class UserService {
         LOGGER.info("delete(...) completed for ID: " + id);
     }
 
-    public List<Shop> getShopsForUser(String username) {
+    public Set<Shop> getShopsForUser(String username) {
         LOGGER.info("getShopsForUser(" + username + ")");
         UserEntity userEntity = userRepository.findByUsername(username);
         if (userEntity != null) {
-            List<ShopEntity> shopEntities = userEntity.getShops();
-            List<Shop> shops = shopMapper.fromEntities(shopEntities);
+            Set<ShopEntity> shopEntities = userEntity.getShops();
+            Set<Shop> shops = shopMapper.fromEntities(shopEntities);
             LOGGER.info("getShopsForUser(...)= " + shops);
             return shops;
         }
-        return new ArrayList<>();
+        return new HashSet<>();
     }
 
     @Transactional

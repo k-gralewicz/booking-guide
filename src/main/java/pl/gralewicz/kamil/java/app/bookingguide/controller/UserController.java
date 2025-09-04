@@ -20,6 +20,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Controller
@@ -51,7 +52,7 @@ public class UserController {
     @GetMapping(value = "/create")
     public String createView(ModelMap modelMap) {
         LOGGER.info("createView()");
-        List<Shop> shops = shopService.list();
+        Set<Shop> shops = shopService.list();
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("createMessage", "Fill out the form fields");
         modelMap.addAttribute("user", new User());
@@ -101,8 +102,8 @@ public class UserController {
             User existingUser = userService.read(id);
             user.setPassword(existingUser.getPassword());
         }
-        User updatedUser = userService.updateUser(id, user);
-        LOGGER.info("update(...)= " + updatedUser);
+//        User updatedUser = userService.updateUser(id, user);
+//        LOGGER.info("update(...)= " + updatedUser);
         return "redirect:/users";
     }
 
@@ -120,8 +121,8 @@ public class UserController {
         String username = authentication.getName();
         LOGGER.info("username= " + username);
 
-        List<Shop> assignedShops = userService.getShopsForUser(username);
-        List<Shop> allShops = shopService.list();
+        Set<Shop> assignedShops = userService.getShopsForUser(username);
+        Set<Shop> allShops = shopService.list();
 
         List<Shop> unassignedShops = allShops.stream()
                 .filter(shop -> !assignedShops.contains(shop))
@@ -152,7 +153,7 @@ public class UserController {
 
         if (!user.getShops().contains(shop)) {
             user.getShops().add(shop);
-            userService.updateUser(user.getId(), user);
+            userService.updateUser(user.getId(), shopId);
         }
 
         LOGGER.info("assignShopToUser(...) completed");

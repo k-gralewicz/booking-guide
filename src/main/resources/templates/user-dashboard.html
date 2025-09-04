@@ -18,7 +18,8 @@
             </ul>
         </div>
     </div>
-    <div class="card mb-4" th:if="${shops != null and !shops.isEmpty()}">
+    <div class="card mb-4">
+<!--        th:if="${shops != null and !shops.isEmpty()}"-->
         <div class="card-header">Select Active Shop</div>
         <div class="card-body">
             <form th:action="@{/users/shops/select}" method="post">
@@ -37,7 +38,7 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-header">Assign Another Shop to Yourself</div>
+        <div class="card-header">Assign Another Shop</div>
         <div class="card-body">
             <form th:action="@{/users/shops/assign}" method="post">
                 <div class="form-group">
@@ -50,8 +51,8 @@
                         <option th:if="${shops != null and !shops.isEmpty()}"disabled>No available shops to assign</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success mt-2"
-                        th:if="${shops != null and !shops.isEmpty()}">Assign to Me</button>
+                <button type="submit" class="btn btn-success mt-2">Assign to Me</button>
+<!--                th:if="${shops != null and !shops.isEmpty()}"-->
             </form>
         </div>
     </div>
