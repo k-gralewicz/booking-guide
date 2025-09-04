@@ -36,10 +36,10 @@
 
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item me-3">
-                        <span class="navbar-text" th:if="${selectedShop != null}">
-                            Active Shop: <strong th:text="${selectedShop.name}">Shop Name</strong>
+                        <span class="navbar-text" th:if="${session.SHOP_SESSION != null}">
+                            Active Shop: <strong th:text="${session.SHOP_SESSION.name}">Shop Name</strong>
                         </span>
-                        <span class="navbar-text" th:if="${selectedShop == null}">
+                        <span class="navbar-text" th:if="${session.SHOP_SESSION == null}">
                             No active shop selected
                         </span>
                     </li>

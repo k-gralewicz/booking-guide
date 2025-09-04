@@ -103,7 +103,7 @@ public class UserService {
         LOGGER.info("updateUser(" + id + ", " + updatedUser + ")");
 //        UserEntity existingUser = userRepository.findById(id).orElseThrow(
 //                () -> new RuntimeException("User not found"));
-        
+
         UserEntity userEntity = userMapper.from(updatedUser);
         UserEntity savedUserEntity = userRepository.save(userEntity);
         User savedUser = userMapper.from(savedUserEntity);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.service.RoleService;
@@ -23,8 +24,11 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SHOP_SESSION;
+
 @Controller
 @RequestMapping(value = "/users")
+@SessionAttributes(SHOP_SESSION)
 public class UserController {
     private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
@@ -154,9 +158,10 @@ public class UserController {
         return "redirect:/users/dashboard";
     }
     @PostMapping("/shops/select")
-    public String selectShop(@RequestParam Long shopId, HttpSession session) {
+    public String selectShop(@RequestParam Long shopId, ModelMap modelMap) {
         Shop selectedShop = shopService.read(shopId);
-        session.setAttribute("selectedShop", selectedShop);
+//        session.setAttribute("selectedShop", selectedShop);
+        modelMap.addAttribute(SHOP_SESSION, selectedShop);
         return "redirect:/users/dashboard";
     }
 }
