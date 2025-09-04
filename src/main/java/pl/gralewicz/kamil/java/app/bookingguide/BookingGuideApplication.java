@@ -105,4 +105,6 @@ public class BookingGuideApplication {
 // TODO: 14.08.2025 wyciągnąć po username przypisane shopy w UserController.
 // TODO: 14.08.2025 1b:     b. posiada więcej niż 1 Shop - ma możliwość wyboru Shop'a (nowy ekran z dropdown/select),
 
-// TODO: 28.08.2025 dodać do Usera funkcjonalność dodawania kolejnego sklepu, 
+// TODO: 28.08.2025 dodać do Usera funkcjonalność dodawania kolejnego sklepu,
+// TODO: 28.08.2025 za pomocą mechanizmu sesji dodać wybrany Shop do sesji,
+// TODO: 28.08.2025 w NavBar wyświetlić informacje o wybranym Shop pobranym z sesji.

@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.service.RoleService;
@@ -17,6 +19,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 @Controller
@@ -110,15 +113,55 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping(value = "/dashboard")
-    public String dashboard(ModelMap modelMap) {
+    @GetMapping("/dashboard")
+    public String dashboard(ModelMap modelMap, HttpSession session) {
         LOGGER.info("dashboard()");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         LOGGER.info("username= " + username);
-        List<Shop> shops = userService.getShopsForUser(username);
-        modelMap.addAttribute("shops", shops);
-        LOGGER.info("dashboard(...)= ");
+
+        List<Shop> assignedShops = userService.getShopsForUser(username);
+        List<Shop> allShops = shopService.list();
+
+        List<Shop> unassignedShops = allShops.stream()
+                .filter(shop -> !assignedShops.contains(shop))
+                .toList();
+
+        modelMap.addAttribute("shops", assignedShops);
+        modelMap.addAttribute("unassignedShops", unassignedShops);
+
+        Shop selectedShop = (Shop) session.getAttribute("selectedShop");
+        modelMap.addAttribute("selectedShop", selectedShop);
+
+        LOGGER.info("dashboard(...)");
         return "user-dashboard.html";
+    }
+
+    @PostMapping("/shops/assign")
+    public String assignShopToUser(@RequestParam Long shopId) {
+        LOGGER.info("assignShopToUser(" + shopId + ")");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            throw new NoSuchElementException("Nie znaleziono użytkownika o nazwie: " + username);
+        }
+
+        Shop shop = shopService.read(shopId);
+
+        if (!user.getShops().contains(shop)) {
+            user.getShops().add(shop);
+            userService.updateUser(user.getId(), user);
+        }
+
+        LOGGER.info("assignShopToUser(...) completed");
+        return "redirect:/users/dashboard";
+    }
+    @PostMapping("/shops/select")
+    public String selectShop(@RequestParam Long shopId, HttpSession session) {
+        Shop selectedShop = shopService.read(shopId);
+        session.setAttribute("selectedShop", selectedShop);
+        return "redirect:/users/dashboard";
     }
 }
