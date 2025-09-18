@@ -8,8 +8,8 @@ import org.springframework.util.Assert;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.RoleEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootTest
 class UserRepositoryTest {
@@ -37,7 +37,7 @@ class UserRepositoryTest {
     @Test
     void createWithRole(){
         // given
-        List<RoleEntity> roles = new ArrayList<>();
+        Set<RoleEntity> roles = new HashSet<>();
         RoleEntity roleEntity = new RoleEntity();
         UserEntity userEntity = new UserEntity();
 
@@ -52,7 +52,7 @@ class UserRepositoryTest {
         Assertions.assertAll(
                 ()-> Assert.notNull(savedUserEntity, "SavedUserEntity is null"),
                 ()-> Assert.notNull(savedUserEntity.getId(), "SavedUserEntity ID is null"),
-                ()-> Assert.notNull(savedUserEntity.getRoles().get(0), "SavedUserEntity Role ID is null")
+                ()-> Assert.notNull(savedUserEntity.getRoles().iterator(), "SavedUserEntity Role ID is null")
         );
     }
 }

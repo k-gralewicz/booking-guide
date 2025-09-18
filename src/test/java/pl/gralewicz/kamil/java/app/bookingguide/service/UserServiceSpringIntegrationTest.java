@@ -10,6 +10,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 //@Transactional
 @SpringBootTest
@@ -178,7 +179,7 @@ class UserServiceSpringIntegrationTest {
 
         User createdUser = userService.create(user);
 
-        List<Shop> shopsForUser = userService.getShopsForUser(createdFirstShop.getName());
+        Set<Shop> shopsForUser = userService.getShopsForUser(createdFirstShop.getName());
 
         // then
         Assertions.assertAll(

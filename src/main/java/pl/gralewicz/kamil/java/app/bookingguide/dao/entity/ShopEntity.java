@@ -10,7 +10,9 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "SHOPS")
@@ -30,6 +32,10 @@ public class ShopEntity {
     @ManyToMany
     private List<UserEntity> users = new ArrayList<>();
 
+    @ManyToMany
+    private Set<ServiceEntity> services = new HashSet<>();
+
+
     public ShopEntity() {
 
     }
@@ -37,6 +43,11 @@ public class ShopEntity {
     public void addUser(UserEntity user){
         users.add(user);
         user.getShops().add(this);
+    }
+
+    public void addService(ServiceEntity service){
+        services.add(service);
+//        service.getServices().add(this);
     }
 
     public Long getId() {
@@ -85,6 +96,14 @@ public class ShopEntity {
 
     public void setUsers(List<UserEntity> users) {
         this.users = users;
+    }
+
+    public Set<ServiceEntity> getServices() {
+        return services;
+    }
+
+    public void setServices(Set<ServiceEntity> services) {
+        this.services = services;
     }
 
     //

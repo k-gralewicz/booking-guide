@@ -109,5 +109,4 @@ public class BookingGuideApplication {
 // TODO: 28.08.2025 za pomocą mechanizmu sesji dodać wybrany Shop do sesji,
 // TODO: 28.08.2025 w NavBar wyświetlić informacje o wybranym Shop pobranym z sesji.
 
-// TODO: 04.09.2025 usunąć mechanizm sesji zaimplementowany w GlobalControllerAdvice i zaimplementować za pomocą
-// TODO: 04.09.2025 @SessionAttributes("SHOP_ID_SESSION")
+// TODO: 04.09.2025 dokończyć implementację dodawania Service do Shop.

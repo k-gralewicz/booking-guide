@@ -13,9 +13,9 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.RoleEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootTest
 class BookingGuideUserDetailsServiceSpringTest {
@@ -57,7 +57,7 @@ class BookingGuideUserDetailsServiceSpringTest {
         RoleEntity secondRoleEntity = new RoleEntity();
         secondRoleEntity.setName(RoleType.ADMIN);
 
-        List<RoleEntity> roles = new ArrayList<>();
+        Set<RoleEntity> roles = new HashSet<>();
         roles.add(roleEntity);
         roles.add(secondRoleEntity);
 
