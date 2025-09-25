@@ -1,6 +1,8 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Service {
 
@@ -14,6 +16,8 @@ public class Service {
 
     public Service() {
     }
+
+    private Set<Shop> shops = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -63,6 +67,14 @@ public class Service {
         this.durationType = durationType;
     }
 
+    public Set<Shop> getShops() {
+        return shops;
+    }
+
+    public void setShops(Set<Shop> shops) {
+        this.shops = shops;
+    }
+
     @Override
     public String toString() {
         return "Service{" +
@@ -72,6 +84,7 @@ public class Service {
                 ", price=" + price +
                 ", duration=" + duration +
                 ", durationType=" + durationType +
+                ", shops=" + shops +
                 '}';
     }
 }

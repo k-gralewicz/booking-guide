@@ -1,7 +1,9 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -26,12 +28,17 @@ public class ServiceEntity {
     @Column(name = "DURATION_TYPE")
     private DurationType durationType;
 
+    @ManyToMany(mappedBy = "services", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ShopEntity> shops = new HashSet<>();
+
     public ServiceEntity() {
 
     }
 
-    @ManyToMany(mappedBy = "services")
-    private Set<ShopEntity> shops = new HashSet<>();
+    public void addShop(ShopEntity shop){
+        shops.add(shop);
+        shop.getServices().add(this);
+    }
 
     public Long getId() {
         return id;
@@ -88,6 +95,7 @@ public class ServiceEntity {
     public void setDurationType(DurationType durationType) {
         this.durationType = durationType;
     }
+
     @Override
     public String toString() {
         return "ServiceEntity{" +

@@ -1,8 +1,10 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -32,7 +34,7 @@ public class ShopEntity {
     @ManyToMany
     private List<UserEntity> users = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ServiceEntity> services = new HashSet<>();
 
 
@@ -124,6 +126,7 @@ public class ShopEntity {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address=" + address +
                 ", users=" + users +
+                ", services=" + services +
                 '}';
     }
 }

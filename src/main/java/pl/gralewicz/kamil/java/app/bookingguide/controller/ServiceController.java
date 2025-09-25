@@ -8,16 +8,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ServiceService;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SHOP_SESSION;
+
 @Controller
 @RequestMapping(value = "/services")
+@SessionAttributes(SHOP_SESSION)
 public class ServiceController {
     private static final Logger LOGGER = Logger.getLogger(ServiceController.class.getName());
 
@@ -58,7 +63,9 @@ public class ServiceController {
             return "service-create";
         }
         try {
-            Service createdService = serviceService.create(service);
+            Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
+            service.getShops().add(selectedShop);
+            Service createdService = serviceService.createWithShop(service, selectedShop.getId());
             LOGGER.info("Successfully created service: " + createdService);
             return "redirect:/services";
         } catch (Exception e) {
@@ -71,16 +78,20 @@ public class ServiceController {
         }
     }
 
-    @GetMapping(value = "/id")
-    public String read(@PathVariable Long id, String name, String description, BigDecimal price, int duration, DurationType durationType, ModelMap modelMap) {
-        LOGGER.info("read(" + id + ")");
-        LOGGER.info("read(" + name + ")");
-        LOGGER.info("read(" + description + ")");
-        LOGGER.info("read(" + price + ")");
-        LOGGER.info("read(" + duration + ")");
-        LOGGER.info("read(" + durationType + ")");
+    @GetMapping(value = "/{id}")
+//    public String read(@PathVariable Long id, String name, String description, BigDecimal price, int duration, DurationType durationType, ModelMap modelMap) {
+    public String read(@PathVariable Long id, ModelMap modelMap) {
+            LOGGER.info("read(" + id + ")");
+//        LOGGER.info("read(" + name + ")");
+//        LOGGER.info("read(" + description + ")");
+//        LOGGER.info("read(" + price + ")");
+//        LOGGER.info("read(" + duration + ")");
+//        LOGGER.info("read(" + durationType + ")");
         Service readService = serviceService.read(id);
+        modelMap.addAttribute("service", readService);
         modelMap.addAttribute("createMessage", "This is service: " + readService);
+        boolean isEdit = true;
+        modelMap.addAttribute("isEdit", isEdit);
         LOGGER.info("read(...)= ");
         return "service-read.html";
     }
