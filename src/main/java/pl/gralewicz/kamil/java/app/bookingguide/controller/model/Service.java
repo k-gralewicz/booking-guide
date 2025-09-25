@@ -2,6 +2,7 @@ package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Service {
@@ -73,6 +74,19 @@ public class Service {
 
     public void setShops(Set<Shop> shops) {
         this.shops = shops;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Service service = (Service) o;
+        return duration == service.duration && id.equals(service.id) && Objects.equals(name, service.name) && Objects.equals(description, service.description) && Objects.equals(price, service.price) && durationType == service.durationType && Objects.equals(shops, service.shops);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, price, duration, durationType, shops);
     }
 
     @Override

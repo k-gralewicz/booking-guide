@@ -62,20 +62,20 @@ public class ServiceController {
             modelMap.addAttribute("isEdit", false);
             return "service-create";
         }
-        try {
+//        try {
             Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
             service.getShops().add(selectedShop);
             Service createdService = serviceService.createWithShop(service, selectedShop.getId());
             LOGGER.info("Successfully created service: " + createdService);
             return "redirect:/services";
-        } catch (Exception e) {
-            LOGGER.severe("Error saving service: " + e.getMessage());
-            modelMap.addAttribute("createMessage", "Error saving service: " + e.getMessage());
-            modelMap.addAttribute("durationTypes", DurationType.values());
-            modelMap.addAttribute("isEdit", false);
-            modelMap.addAttribute("service", service);
-            return "service-create";
-        }
+//        } catch (Exception e) {
+//            LOGGER.severe("Error saving service: " + e.getMessage());
+//            modelMap.addAttribute("createMessage", "Error saving service: " + e.getMessage());
+//            modelMap.addAttribute("durationTypes", DurationType.values());
+//            modelMap.addAttribute("isEdit", false);
+//            modelMap.addAttribute("service", service);
+//            return "service-create";
+//        }
     }
 
     @GetMapping(value = "/{id}")

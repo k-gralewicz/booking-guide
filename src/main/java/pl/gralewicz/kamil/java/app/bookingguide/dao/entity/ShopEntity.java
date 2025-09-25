@@ -27,7 +27,7 @@ public class ShopEntity {
     private String description;
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private AddressEntity address;
 //    private List<Visit> visits = new ArrayList<>();
 

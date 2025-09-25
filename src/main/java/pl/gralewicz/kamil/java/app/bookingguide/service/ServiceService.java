@@ -1,6 +1,5 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
-import org.springframework.transaction.annotation.Transactional;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
@@ -56,7 +55,7 @@ public class ServiceService {
         return mappedService;
     }
 
-    @Transactional
+//    @Transactional
     public Service createWithShop(Service service, Long shopId) {
         LOGGER.info("createWithShop(" + service + ", " + shopId + ")");
         Optional<ShopEntity> optionalShopEntity = shopRepository.findById(shopId);
@@ -64,7 +63,7 @@ public class ServiceService {
 //        LOGGER.info("####ShopEntity: " + shopEntity);
         ServiceEntity serviceEntity = serviceMapper.from(service);
         serviceEntity.addShop(shopEntity);
-//        shopEntity.addService(serviceEntity);
+        shopEntity.addService(serviceEntity);
         ServiceEntity createdServiceEntity = serviceRepository.save(serviceEntity);
         Service createdService = serviceMapper.from(createdServiceEntity);
 //        Shop shop = shopMapper.from(shopEntity);
