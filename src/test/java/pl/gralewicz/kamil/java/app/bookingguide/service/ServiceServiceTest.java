@@ -28,13 +28,8 @@ class ServiceServiceTest {
         Service service = new Service();
         service.setName("Masaż twarzy");
 
-//        Set<Shop> shops = new HashSet<>();
-//        shops.add(createdShop);
-//        service.setShops(shops);
-
         // when
         Service createdService = serviceService.createWithShop(service, createdShop.getId());
-
 
         // then
         Assertions.assertAll(

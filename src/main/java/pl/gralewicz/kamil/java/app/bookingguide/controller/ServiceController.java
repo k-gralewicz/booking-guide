@@ -54,7 +54,7 @@ public class ServiceController {
 
     @PostMapping
     public String create(@ModelAttribute Service service, BindingResult bindingResult, ModelMap modelMap) {
-        LOGGER.info("Attempting to create service: " + service);
+        LOGGER.info("create(" + service + ")");
         if (bindingResult.hasErrors()) {
             LOGGER.warning("Binding errors occurred: " + bindingResult.getAllErrors());
             modelMap.addAttribute("createMessage", "Please correct the errors below.");
@@ -62,20 +62,10 @@ public class ServiceController {
             modelMap.addAttribute("isEdit", false);
             return "service-create";
         }
-//        try {
             Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
-            service.getShops().add(selectedShop);
             Service createdService = serviceService.createWithShop(service, selectedShop.getId());
-            LOGGER.info("Successfully created service: " + createdService);
+            LOGGER.info("create(...)= " + createdService);
             return "redirect:/services";
-//        } catch (Exception e) {
-//            LOGGER.severe("Error saving service: " + e.getMessage());
-//            modelMap.addAttribute("createMessage", "Error saving service: " + e.getMessage());
-//            modelMap.addAttribute("durationTypes", DurationType.values());
-//            modelMap.addAttribute("isEdit", false);
-//            modelMap.addAttribute("service", service);
-//            return "service-create";
-//        }
     }
 
     @GetMapping(value = "/{id}")

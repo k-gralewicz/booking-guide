@@ -12,6 +12,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -94,6 +95,19 @@ public class ServiceEntity {
 
     public void setDurationType(DurationType durationType) {
         this.durationType = durationType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ServiceEntity that = (ServiceEntity) o;
+        return duration == that.duration && id.equals(that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(price, that.price) && durationType == that.durationType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, price, duration, durationType);
     }
 
     @Override
