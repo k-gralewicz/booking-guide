@@ -31,7 +31,7 @@ public class ShopService {
         LOGGER.info("list()");
         List<ShopEntity> shopEntities = shopRepository.findAll();
         Set<Shop> shops = shopMapper.fromEntities(shopEntities);
-        LOGGER.info("list(...) found " + shops.size() + " shops");
+        LOGGER.info("list(...)= " + shops);
         return shops;
     }
 

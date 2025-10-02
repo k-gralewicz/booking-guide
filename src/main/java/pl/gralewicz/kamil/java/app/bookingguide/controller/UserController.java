@@ -106,7 +106,7 @@ public class UserController {
             User existingUser = userService.read(id);
             user.setPassword(existingUser.getPassword());
         }
-        User updatedUser = userService.updateUser(id, user);
+        User updatedUser = userService.assignShopToUser(id, user);
         LOGGER.info("update(...)= " + updatedUser);
         return "redirect:/users";
     }
@@ -152,7 +152,7 @@ public class UserController {
         if (user == null) {
             throw new NoSuchElementException("Nie znaleziono użytkownika o nazwie: " + username);
         }
-        userService.updateUser(user.getId(), shopId);
+        userService.assignShopToUser(user.getId(), shopId);
 
         LOGGER.info("assignShopToUser(...) completed");
         return "redirect:/users/dashboard";

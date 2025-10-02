@@ -121,3 +121,7 @@ public class BookingGuideApplication {
 //<div class="container-fluid">
 //<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
 //        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+// TODO: 25.09.2025 przy rezerwacji wizyty przypisywać zapisany w sesji shop zarówno wizualnie w html jak i w kodzie java, 
+
+// TODO: 02.10.2025 to co wyżej + 
+// TODO: 02.10.2025 client-read.html,  

@@ -81,8 +81,18 @@ public class ClientController {
     public String updateView(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("updateView()");
         Client readClient = clientService.read(id);
+        modelMap.addAttribute("client", readClient);
+        modelMap.addAttribute("isEdit", true);
         LOGGER.info("updateView(...)= " + readClient);
         return "client-create";
+    }
+
+    @PostMapping(value = "/update/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute Client client) {
+        LOGGER.info("update(" + id + "," + client + ")");
+        Client updatedClient = clientService.update(client);
+        LOGGER.info("update(...)= " + updatedClient);
+        return "redirect:/clients";
     }
 
     @GetMapping(value = "/delete/{id}")
