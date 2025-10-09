@@ -63,8 +63,11 @@ public class ServiceController {
             return "service-create";
         }
             Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
-            Service createdService = serviceService.createWithShop(service, selectedShop.getId());
-            LOGGER.info("create(...)= " + createdService);
+            if(selectedShop!= null){
+                Service createdService = serviceService.createWithShop(service, selectedShop.getId());
+                LOGGER.info("create(...)= " + createdService);
+            }
+            LOGGER.info("create(...)= ");
             return "redirect:/services";
     }
 

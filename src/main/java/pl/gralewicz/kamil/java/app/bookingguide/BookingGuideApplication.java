@@ -117,7 +117,7 @@ public class BookingGuideApplication {
 // TODO: 18.09.2025 do naprawy services metoda READ, 
 // TODO: 18.09.2025 sprawdzić czy działa metoda createWithShop - albo testami albo ręcznie,
 
-// TODO: 25.09.2025 do pozostałych plików html dodać
+// TODO: 02.10.2025 do pozostałych plików html dodać
 //<div class="container-fluid">
 //<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
 //        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
