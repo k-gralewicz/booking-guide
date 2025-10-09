@@ -109,5 +109,19 @@ public class BookingGuideApplication {
 // TODO: 28.08.2025 za pomocą mechanizmu sesji dodać wybrany Shop do sesji,
 // TODO: 28.08.2025 w NavBar wyświetlić informacje o wybranym Shop pobranym z sesji.
 
-// TODO: 04.09.2025 usunąć mechanizm sesji zaimplementowany w GlobalControllerAdvice i zaimplementować za pomocą
-// TODO: 04.09.2025 @SessionAttributes("SHOP_ID_SESSION")
+// TODO: 04.09.2025 dokończyć implementację dodawania Service do Shop.
+
+// TODO: 18.09.2025 Navbar - obok wybranego shop dać możliwość zmiany CHANGE jeśli user ma więcej niż 1 shop, 
+// TODO: 18.09.2025 Napisać test integracyjny bez Mock dla ServiceService - nowa klasa testowa, 
+// TODO: 18.09.2025 services.html - dodać NavBar, 
+// TODO: 18.09.2025 do naprawy services metoda READ, 
+// TODO: 18.09.2025 sprawdzić czy działa metoda createWithShop - albo testami albo ręcznie,
+
+// TODO: 02.10.2025 do pozostałych plików html dodać
+//<div class="container-fluid">
+//<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+//        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+// TODO: 25.09.2025 przy rezerwacji wizyty przypisywać zapisany w sesji shop zarówno wizualnie w html jak i w kodzie java, 
+
+// TODO: 02.10.2025 to co wyżej + 
+// TODO: 02.10.2025 client-read.html,  

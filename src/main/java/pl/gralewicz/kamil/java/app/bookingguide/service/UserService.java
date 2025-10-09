@@ -85,7 +85,7 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUser(Long userId, Long shopId) {
+    public User assignShopToUser(Long userId, Long shopId) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
         UserEntity userEntity = optionalUserEntity.orElseThrow(
                 () -> new NoSuchElementException("User not found"));
@@ -99,7 +99,7 @@ public class UserService {
         return user;
     }
 
-    public User updateUser(Long id, User updatedUser) {
+    public User assignShopToUser(Long id, User updatedUser) {
         LOGGER.info("updateUser(" + id + ", " + updatedUser + ")");
 //        UserEntity existingUser = userRepository.findById(id).orElseThrow(
 //                () -> new RuntimeException("User not found"));
@@ -118,6 +118,17 @@ public class UserService {
         User readUser = userMapper.from(readUserEntity);
         LOGGER.info("read(...)= " + readUser);
         return readUser;
+    }
+
+    public User update(User user) {
+        LOGGER.info("update(" + user + ")");
+        if (user != null) {
+            Long userId = user.getId();
+            Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
+            UserEntity userEntity = optionalUserEntity.orElseThrow(() -> new NoSuchElementException("Nie znaleziono klienta o ID: " + userId));
+            userRepository.save(userEntity);
+        }
+        return null;
     }
 
     public void delete(Long id) {
@@ -140,18 +151,5 @@ public class UserService {
             return shops;
         }
         return new HashSet<>();
-    }
-
-    @Transactional
-    public void assignShopToUser(Long userId, Long shopId) {
-        UserEntity userEntity = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + userId));
-        ShopEntity shopEntity = shopRepository.findById(shopId)
-                .orElseThrow(() -> new NoSuchElementException("Shop not found with id: " + shopId));
-
-        if (!userEntity.getShops().contains(shopEntity)) {
-            userEntity.addShop(shopEntity);
-            userRepository.save(userEntity);
-        }
     }
 }

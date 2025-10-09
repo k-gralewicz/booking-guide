@@ -1,8 +1,10 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -10,7 +12,10 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "SHOPS")
@@ -23,12 +28,16 @@ public class ShopEntity {
     private String description;
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private AddressEntity address;
 //    private List<Visit> visits = new ArrayList<>();
 
     @ManyToMany
     private List<UserEntity> users = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ServiceEntity> services = new HashSet<>();
+
 
     public ShopEntity() {
 
@@ -37,6 +46,11 @@ public class ShopEntity {
     public void addUser(UserEntity user){
         users.add(user);
         user.getShops().add(this);
+    }
+
+    public void addService(ServiceEntity service){
+        services.add(service);
+//        service.getServices().add(this);
     }
 
     public Long getId() {
@@ -87,6 +101,14 @@ public class ShopEntity {
         this.users = users;
     }
 
+    public Set<ServiceEntity> getServices() {
+        return services;
+    }
+
+    public void setServices(Set<ServiceEntity> services) {
+        this.services = services;
+    }
+
     //
 //    public List<Visit> getVisits() {
 //        return visits;
@@ -95,6 +117,20 @@ public class ShopEntity {
 //    public void setVisits(List<Visit> visits) {
 //        this.visits = visits;
 //    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ShopEntity that = (ShopEntity) o;
+        return id.equals(that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(address, that.address) && Objects.equals(users, that.users) && Objects.equals(services, that.services);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, phoneNumber, address, users, services);
+    }
 
     @Override
     public String toString() {
@@ -105,6 +141,7 @@ public class ShopEntity {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address=" + address +
                 ", users=" + users +
+                ", services=" + services +
                 '}';
     }
 }

@@ -5,8 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
+
+import java.util.Optional;
 
 @SpringBootTest
 public class ShopRepositoryIntegrationTest {
@@ -16,6 +19,9 @@ public class ShopRepositoryIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ServiceRepository serviceRepository;
 
     @Test
     void create(){
@@ -61,5 +67,30 @@ public class ShopRepositoryIntegrationTest {
                 ()->Assertions.assertNotNull(createdShopEntity, "createdShopEntity is null"),
                 ()->Assertions.assertEquals(2, size, "createdShopEntity is not equals")
         );
+    }
+
+    @Test
+    void createShopWithServices(){
+        // given
+        ShopEntity shopEntity = new ShopEntity();
+        shopEntity.setName("Salon");
+
+        ServiceEntity serviceEntity = new ServiceEntity();
+        serviceEntity.setName("Masaż");
+
+        serviceRepository.save(serviceEntity);
+        shopEntity.addService(serviceEntity);
+
+        // when
+        ShopEntity createdShopEntity = shopRepository.save(shopEntity);
+        Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(createdShopEntity.getId());
+
+        // then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(createdShopEntity, "createdShopEntity is null"),
+                () -> Assertions.assertTrue(optionalServiceEntity.isPresent(), "Shop not found in DB"),
+                () -> Assertions.assertEquals("Salon", optionalServiceEntity.get().getName(), "Shop name mismatch")
+        );
+
     }
 }

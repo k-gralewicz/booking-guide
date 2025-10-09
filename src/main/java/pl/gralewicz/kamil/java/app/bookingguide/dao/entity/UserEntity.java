@@ -77,12 +77,12 @@ public class UserEntity {
         return roles;
     }
 
-    public Set<ShopEntity> getShops() {
-        return shops;
-    }
-
     public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
+    }
+
+    public Set<ShopEntity> getShops() {
+        return shops;
     }
 
     public void setShops(Set<ShopEntity> shops) {

@@ -257,7 +257,7 @@ class UserServiceMockTest {
         when(userMapperMock.from(finalSavedEntity)).thenReturn(finalOutputDto); // Mapper mapuje finalną encję
 
         // When
-        User actualUpdatedUser = userService.updateUser(userId, updatedUserDto);
+        User actualUpdatedUser = userService.assignShopToUser(userId, updatedUserDto);
 
         // Then
         Assertions.assertAll("Sprawdzenie zaktualizowanego użytkownika",
@@ -298,7 +298,7 @@ class UserServiceMockTest {
 
         // When & Then
         assertThrows(RuntimeException.class, () -> {
-            userService.updateUser(nonExistentId, updatedUserDto);
+            userService.assignShopToUser(nonExistentId, updatedUserDto);
         }, "Oczekiwano RuntimeException, gdy użytkownik do aktualizacji nie istnieje");
 
         verify(userRepositoryMock).findById(nonExistentId);

@@ -40,7 +40,7 @@ public class ShopMapper {
         Set<Shop> shops = shopEntities.stream()
                 .map(this::from)
                 .collect(Collectors.toSet());
-        LOGGER.info("fromEntities(...) returns " + shops.size() + " shops");
+        LOGGER.info("fromEntities(...)= " + shops);
         return shops;
     }
 }
