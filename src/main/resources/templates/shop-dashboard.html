@@ -9,39 +9,45 @@
 </head>
 <body>
 <div class="container-fluid">
-    <div>
-        <div th:replace="fragments/navbar::navigation"></div>
-        <div sec:authorize="hasRole('ROLE_ADMIN')">
+    <div th:replace="fragments/navbar::navigation"></div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <h1>Shop  List</h1>
+        <div class="row mb-3">
             <div class="col">
                 <a href="/shops/create" class="btn btn-primary">Create Shop</a>
             </div>
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>NAME</th>
-                    <th>DESCRIPTION</th>
-                    <th>PHONE NUMBER</th>
-                    <th>READ</th>
-                    <th>UPDATE</th>
-                    <th>DELETE</th>
-                </tr>
-                <tr th:if="${#lists.isEmpty(shops)}">
-                    <td colspan="6">This list is empty</td>
-                </tr>
-                <tr th:each="shop : ${shops}">
-                    <td th:text="${shop.id}"></td>
-                    <td th:text="${shop.name}"></td>
-                    <td th:text="${shop.description}"></td>
-                    <td th:text="${shop.phoneNumber}"></td>
-                    <td><a th:href="@{/shops/{id}(id = ${shop.id})}">Read</a></td>
-                    <td><a th:href="@{/shops/update/{id}(id = ${shop.id})}">Update</a></td>
-                    <td><a th:href="@{/shops/delete/{id}(id = ${shop.id})}">Delete</a></td>
-                    <!--                <td><a th:href="@{/shops/details/{id}(id = ${shop.id})}">Details</a></td>-->
-                </tr>
-            </table>
         </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>DESCRIPTION</th>
+                <th>PHONE NUMBER</th>
+                <th>READ</th>
+                <th>UPDATE</th>
+                <th>DELETE</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(shops)}">
+                <td colspan="6">This list is empty</td>
+            </tr>
+            <tr th:each="shop : ${shops}">
+                <td th:text="${shop.id}"></td>
+                <td th:text="${shop.name}"></td>
+                <td th:text="${shop.description}"></td>
+                <td th:text="${shop.phoneNumber}"></td>
+                <td><a th:href="@{/shops/{id}(id = ${shop.id})}">Read</a></td>
+                <td><a th:href="@{/shops/update/{id}(id = ${shop.id})}">Update</a></td>
+                <td><a th:href="@{/shops/delete/{id}(id = ${shop.id})}">Delete</a></td>
+                <!--                <td><a th:href="@{/shops/details/{id}(id = ${shop.id})}">Details</a></td>-->
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <!--    <div th:text="${shops}"></div>-->
+</div>
+<!--    <div th:text="${shops}"></div>-->
 </div>
 </body>
 </html>

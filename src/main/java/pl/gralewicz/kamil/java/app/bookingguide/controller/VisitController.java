@@ -147,8 +147,10 @@ public class VisitController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Visit visit) {
-        LOGGER.info("create(" + visit + ")");
+    public String create(@ModelAttribute Visit visit, Long shopId) {
+        LOGGER.info("create(" + visit + ", " + shopId + ")");
+
+
         Visit createdVisit = visitService.create(visit);
         LOGGER.info("create(...)= " + createdVisit);
         return "redirect:/visits";

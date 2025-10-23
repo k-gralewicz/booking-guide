@@ -31,13 +31,20 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
     @Autowired
     private VisitService visitService;
     @Autowired
+    private ClientService clientService;
+    @Autowired
+    private ShopService shopService;
+    @Autowired
+    private ServiceService serviceService;
+
+    @Autowired
     private VisitRepository visitRepository;
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
-    private ServiceRepository serviceRepository;
-    @Autowired
     private ShopRepository shopRepository;
+    @Autowired
+    private ServiceRepository serviceRepository;
 
     private ClientEntity clientEntity;
     private ServiceEntity serviceEntity;
@@ -85,7 +92,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
         // when
         List<Visit> visits = visitService.list();
 
-    // then
+        // then
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(visits, "Lista wizyt nie powinna być null"),
                 () -> Assertions.assertEquals(2, visits.size(), "Lista powinna zawierać 2 wizyty"),
@@ -158,6 +165,30 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
                         Assertions.assertEquals(shopEntity.getId(), persistedEntity.getShop().getId(), "FK sklepu w bazie niezgodne");
                     });
                 }
+        );
+    }
+
+    @Test
+    void createWithShop() {
+        // given
+        Client client = new Client();
+        Client createdClient = clientService.create(client);
+
+        Shop shop = new Shop();
+        Shop createdShop = shopService.create(shop);
+
+        Service service = new Service();
+        Service createdService = serviceService.createWithShop(service, createdShop.getId());
+
+        Visit visit = new Visit();
+        visit.setService(createdService);
+
+        // when
+        Visit createdVisit = visitService.createWithShop(null, null);
+
+        // then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(createdVisit, "Created visit is null")
         );
     }
 

@@ -98,14 +98,15 @@ public class ServiceController {
     }
 
     @GetMapping(value = "/delete/{id}")
-    public String delete(@PathVariable Long id, String name, String description, BigDecimal price, int duration, DurationType durationType, ModelMap modelMap) {
+    public String delete(@PathVariable Long id, String name, String description, BigDecimal price, Integer duration, DurationType durationType, ModelMap modelMap) {
         LOGGER.info("read(" + id + ")");
-        LOGGER.info("read(" + name + ")");
-        LOGGER.info("read(" + description + ")");
-        LOGGER.info("read(" + price + ")");
-        LOGGER.info("read(" + duration + ")");
-        LOGGER.info("read(" + durationType + ")");
-        serviceService.delete(id);
+
+        Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
+        if(selectedShop!= null) {
+            Long selectedShopId = selectedShop.getId();
+            serviceService.delete(id, selectedShopId);
+        }
+
         return "redirect:/services";
     }
 }

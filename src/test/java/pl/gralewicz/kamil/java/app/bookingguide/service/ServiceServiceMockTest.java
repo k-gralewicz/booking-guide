@@ -257,7 +257,7 @@ class ServiceServiceMockTest {
         Long idToDelete = 15L;
 
         // When
-        serviceService.delete(idToDelete);
+        serviceService.delete(idToDelete, selectedShopId);
 
         // Then
         // Weryfikujemy tylko wywołanie metody repozytorium

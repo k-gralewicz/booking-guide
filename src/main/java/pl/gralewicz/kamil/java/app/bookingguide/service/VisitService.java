@@ -2,7 +2,9 @@ package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
@@ -15,20 +17,34 @@ import java.util.logging.Logger;
 public class VisitService {
     private static final Logger LOGGER = Logger.getLogger(VisitService.class.getName());
 
-    private VisitRepository visitRepository; // zależności
-    private VisitMapper visitMapper;
+    private final VisitRepository visitRepository; // zależności
+    private final VisitMapper visitMapper;
+    private final ShopRepository shopRepository;
 
-    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper) { // wstrzykiwanie zależności
+    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper, ShopRepository shopRepository) { // wstrzykiwanie zależności
         this.visitRepository = visitRepository;
         this.visitMapper = visitMapper;
+        this.shopRepository = shopRepository;
     }
 
     public Visit create(Visit visit) {
-        LOGGER.info("create()");
+        LOGGER.info("create(" + visit + ")");
         VisitEntity visitEntity = visitMapper.from(visit); // delegacja
         VisitEntity createdVisitEntity = visitRepository.save(visitEntity);
         Visit mappedVisit = visitMapper.from(createdVisitEntity);
         LOGGER.info("create(...) = " + mappedVisit);
+        return mappedVisit;
+    }
+
+    public Visit createWithShop(Visit visit, Long shopId) {
+        LOGGER.info("createWithShop(" + visit + ", " + shopId + ")");
+        Optional<ShopEntity> optionalShopEntity = shopRepository.findById(shopId);
+        ShopEntity shopEntity = optionalShopEntity.orElseThrow(() -> new NoSuchElementException("Nie znaleziono shop o ID: " + shopId));
+        VisitEntity visitEntity = visitMapper.from(visit);
+        visitEntity.setShop(shopEntity);
+        VisitEntity createdVisitEntity = visitRepository.save(visitEntity);
+        Visit mappedVisit = visitMapper.from(createdVisitEntity);
+        LOGGER.info("createWithShop(...)= " + mappedVisit);
         return mappedVisit;
     }
 
