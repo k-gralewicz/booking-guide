@@ -1,7 +1,9 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,6 +16,9 @@ public class Service {
     private int duration;
 //    private String durationType; // TODO: stworzyć i użyć enum zamiast String
     private DurationType durationType;
+    private Long statusId;
+
+    private List<Status> statuses = new ArrayList<>();
 
     public Service() {
     }
@@ -68,6 +73,22 @@ public class Service {
         this.durationType = durationType;
     }
 
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
+    }
+
+    public List<Status> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(List<Status> statuses) {
+        this.statuses = statuses;
+    }
+
     public Set<Shop> getShops() {
         return shops;
     }
@@ -98,6 +119,8 @@ public class Service {
                 ", price=" + price +
                 ", duration=" + duration +
                 ", durationType=" + durationType +
+                ", statusId=" + statusId +
+                ", statuses=" + statuses +
                 ", shops=" + shops +
                 '}';
     }

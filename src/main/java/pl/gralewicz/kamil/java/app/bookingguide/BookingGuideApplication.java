@@ -124,4 +124,18 @@ public class BookingGuideApplication {
 // TODO: 25.09.2025 przy rezerwacji wizyty przypisywać zapisany w sesji shop zarówno wizualnie w html jak i w kodzie java, 
 
 // TODO: 02.10.2025 to co wyżej + 
-// TODO: 02.10.2025 client-read.html,  
+// TODO: 02.10.2025 client-read.html,
+
+// TODO: 09.10.2025 dodanie mechanizmu usuwania usług w Service: proponowany sposób realizacji:
+// TODO: 09.10.2025 dodanie nowej kolumny STATUS w bazie danych,
+// TODO: 09.10.2025 dodanie kolumny za pomocą pola w modelu i encji,
+// TODO: 09.10.2025 wartości statusów za pomocą ENUM lub oddzielnych INSERT,
+// TODO: 09.10.2025 testy dla nowej kolumny (delete),
+// TODO: 09.10.2025 m.in. możliwość zmiany statusów w edycji service (np. z aktywny na nieaktywny i odwrotnie),
+
+// w visit-create.html wyświetlenie shop
+// analogicznie do navbar wyświetlić nazwę wybranego shop
+// analogicznie do user-dashboard zaimplementować sposób wybierania shopa.
+// do sesji dodać shopId analogicznie do ShopName
+
+// createX - sprawdzić o co chodzi na następnym spotkaniu

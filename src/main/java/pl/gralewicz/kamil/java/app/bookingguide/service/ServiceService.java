@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+@Transactional
 @org.springframework.stereotype.Service
 public class ServiceService {
     private static final Logger LOGGER = Logger.getLogger(ServiceService.class.getName());
@@ -79,9 +80,25 @@ public class ServiceService {
         return mappedService;
     }
 
-    public void delete(Long id) {
+    public void delete(Long id, Long selectedShopId) {
         LOGGER.info("delete(" + id + ")");
-        serviceRepository.deleteById(id);
+        Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);
+        ServiceEntity serviceEntity = optionalServiceEntity.orElseThrow(() -> new NoSuchElementException("Nie znaleziono serwisu o ID " + id));
+        ShopEntity shopEntity = shopRepository.findById(selectedShopId).orElseThrow(() -> new NoSuchElementException("Nie znaleziono shop o ID" + selectedShopId));
+//        if (optionalServiceEntity.isPresent()) {
+//            serviceRepository.delete(optionalServiceEntity.get());
+//        }
+
+        LOGGER.info("serviceEntity BEFORE delete shop: " + serviceEntity);
+//        serviceEntity.delete(selectedShopId);
+        serviceEntity.deleteShop(shopEntity);
+        LOGGER.info("serviceEntity AFTER delete shop: " + serviceEntity);
+
+        ServiceEntity savedServiceEntity = serviceRepository.save(serviceEntity);
+        LOGGER.info("savedServiceEntity AFTER extra save: " + savedServiceEntity);
+
+        serviceRepository.delete(savedServiceEntity);
+//        serviceRepository.deleteById(id);
         LOGGER.info("delete(...)= ");
     }
 }

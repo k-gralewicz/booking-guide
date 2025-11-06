@@ -9,38 +9,40 @@
 </head>
 <body>
 <div class="container-fluid">
-    <div>
     <div th:replace="fragments/navbar::navigation"></div>
     <h1>Users List</h1>
-    <div>
-        <a class="btn btn-primary" th:href="@{/users/create}">Add New User</a>
+    <div class="row mb-3">
+        <div class="col">
+            <div>
+                <a class="btn btn-primary" th:href="@{/users/create}">Add New User</a>
+            </div>
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.username}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td>
+                            <a class="btn btn-secondary" th:href="@{/users/update/{id}(id=${user.id})}">Edit</a>
+                            <a class="btn btn-danger" th:href="@{/users/delete/{id}(id=${user.id})}">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.id}"></td>
-                <td th:text="${user.username}"></td>
-                <td th:text="${user.email}"></td>
-                <td>
-                    <a class="btn btn-secondary" th:href="@{/users/update/{id}(id=${user.id})}">Edit</a>
-                    <a class="btn btn-danger" th:href="@{/users/delete/{id}(id=${user.id})}">Delete</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
     </div>
-</div>
-<div>
-</div>
 </div>
 </body>
 </html>

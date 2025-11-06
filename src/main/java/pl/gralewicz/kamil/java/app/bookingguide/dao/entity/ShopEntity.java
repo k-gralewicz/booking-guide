@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
@@ -14,14 +15,16 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
+
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
 
 @Entity
 @Table(name = "SHOPS")
 public class ShopEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -32,10 +35,10 @@ public class ShopEntity {
     private AddressEntity address;
 //    private List<Visit> visits = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<UserEntity> users = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {PERSIST, MERGE}, fetch = FetchType.EAGER)
     private Set<ServiceEntity> services = new HashSet<>();
 
 
@@ -50,7 +53,7 @@ public class ShopEntity {
 
     public void addService(ServiceEntity service){
         services.add(service);
-//        service.getServices().add(this);
+        service.getShops().add(this);
     }
 
     public Long getId() {
@@ -119,18 +122,18 @@ public class ShopEntity {
 //    }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ShopEntity that = (ShopEntity) o;
-        return id.equals(that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(address, that.address) && Objects.equals(users, that.users) && Objects.equals(services, that.services);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        ShopEntity that = (ShopEntity) o;
+//        return id.equals(that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(address, that.address) && Objects.equals(users, that.users) && Objects.equals(services, that.services);
+//    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, phoneNumber, address, users, services);
-    }
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, name, description, phoneNumber, address, users, services);
+//    }
 
     @Override
     public String toString() {
@@ -141,7 +144,7 @@ public class ShopEntity {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address=" + address +
                 ", users=" + users +
-                ", services=" + services +
+//                ", services=" + services +
                 '}';
     }
 }
