@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "VISITS")
 public class VisitEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     private LocalDateTime dueDate;

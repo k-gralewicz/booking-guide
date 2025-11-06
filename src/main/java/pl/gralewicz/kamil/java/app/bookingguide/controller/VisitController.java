@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
@@ -23,8 +24,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SERVICE_SESSION;
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SHOP_SESSION;
+
 @Controller // przyjmuje dane od użytkownika i zwraca dane do użytkownika za pomocą protokołu http
 @RequestMapping(value = "/visits")
+@SessionAttributes({SHOP_SESSION, SERVICE_SESSION})
 public class VisitController {
     private static final Logger LOGGER = Logger.getLogger(VisitController.class.getName());
 
@@ -50,7 +55,7 @@ public class VisitController {
     }
 
     @GetMapping(value = "/create")
-    public String createView(String username, ModelMap modelMap) {
+    public String createView(String username, Long serviceId, ModelMap modelMap) {
         LOGGER.info("createView()");
         User userByUsername = userService.findByUsername(username);
         if (userByUsername == null) {
@@ -80,7 +85,7 @@ public class VisitController {
             return "visit-create";
         }
         // na podstawie shopId pobrać shop,
-        shopId = 602L;
+//        shopId = 602L;
         Shop shop = shopService.findById(shopId);
         if (shop == null) {
             modelMap.addAttribute("error", "Shop not found");
@@ -131,9 +136,11 @@ public class VisitController {
     //      4a. Blokada godzinowa usługi w danym salonie.
 
     @GetMapping(value = "/create/{id}")
-    public String createWithService(@PathVariable(name = "id") Long serviceId, ModelMap modelMap) {
+    public String createWithService(@PathVariable(name = "id") Long serviceId, Long shopId, ModelMap modelMap) {
         LOGGER.info("createWithService(" + serviceId + ")");
+        LOGGER.info("createWithService(" + shopId + ")");
         Service service = serviceService.read(serviceId);
+        modelMap.addAttribute(SERVICE_SESSION, service);
 
         Visit visit = new Visit();
         visit.setService(service);

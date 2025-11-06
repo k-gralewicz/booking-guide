@@ -17,6 +17,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Controller
@@ -43,7 +44,7 @@ public class ClientController {
         if (shopId != null) {
             // dodać metodę filtrującą listę shopów po Id.
         } else {
-            List<Shop> shops = shopService.list();
+            Set<Shop> shops = shopService.list();
             modelMap.addAttribute("shops", shops);
         }
 
