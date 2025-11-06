@@ -3,6 +3,7 @@ package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Shop {
@@ -110,6 +111,19 @@ public class Shop {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Shop shop = (Shop) o;
+        return id.equals(shop.id) && Objects.equals(name, shop.name) && Objects.equals(description, shop.description) && Objects.equals(phoneNumber, shop.phoneNumber) && Objects.equals(address, shop.address) && Objects.equals(visits, shop.visits);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, phoneNumber, address, visits);
     }
 
     @Override

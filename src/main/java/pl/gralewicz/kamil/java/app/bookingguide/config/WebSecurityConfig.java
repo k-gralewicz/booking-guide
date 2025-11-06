@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,6 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -27,7 +31,11 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin((form) -> form.permitAll())
+                .formLogin(form -> form
+//                        .loginPage("/login")
+                        .successHandler(successHandler)
+                        .permitAll()
+                )
                 .logout((logout) -> logout.permitAll());
 
         return http.build();

@@ -8,16 +8,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ServiceService;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SHOP_SESSION;
+
 @Controller
 @RequestMapping(value = "/services")
+@SessionAttributes(SHOP_SESSION)
 public class ServiceController {
     private static final Logger LOGGER = Logger.getLogger(ServiceController.class.getName());
 
@@ -49,7 +54,7 @@ public class ServiceController {
 
     @PostMapping
     public String create(@ModelAttribute Service service, BindingResult bindingResult, ModelMap modelMap) {
-        LOGGER.info("Attempting to create service: " + service);
+        LOGGER.info("create(" + service + ")");
         if (bindingResult.hasErrors()) {
             LOGGER.warning("Binding errors occurred: " + bindingResult.getAllErrors());
             modelMap.addAttribute("createMessage", "Please correct the errors below.");
@@ -57,30 +62,29 @@ public class ServiceController {
             modelMap.addAttribute("isEdit", false);
             return "service-create";
         }
-        try {
-            Service createdService = serviceService.create(service);
-            LOGGER.info("Successfully created service: " + createdService);
+            Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
+            if(selectedShop!= null){
+                Service createdService = serviceService.createWithShop(service, selectedShop.getId());
+                LOGGER.info("create(...)= " + createdService);
+            }
+            LOGGER.info("create(...)= ");
             return "redirect:/services";
-        } catch (Exception e) {
-            LOGGER.severe("Error saving service: " + e.getMessage());
-            modelMap.addAttribute("createMessage", "Error saving service: " + e.getMessage());
-            modelMap.addAttribute("durationTypes", DurationType.values());
-            modelMap.addAttribute("isEdit", false);
-            modelMap.addAttribute("service", service);
-            return "service-create";
-        }
     }
 
-    @GetMapping(value = "/id")
-    public String read(@PathVariable Long id, String name, String description, BigDecimal price, int duration, DurationType durationType, ModelMap modelMap) {
-        LOGGER.info("read(" + id + ")");
-        LOGGER.info("read(" + name + ")");
-        LOGGER.info("read(" + description + ")");
-        LOGGER.info("read(" + price + ")");
-        LOGGER.info("read(" + duration + ")");
-        LOGGER.info("read(" + durationType + ")");
+    @GetMapping(value = "/{id}")
+//    public String read(@PathVariable Long id, String name, String description, BigDecimal price, int duration, DurationType durationType, ModelMap modelMap) {
+    public String read(@PathVariable Long id, ModelMap modelMap) {
+            LOGGER.info("read(" + id + ")");
+//        LOGGER.info("read(" + name + ")");
+//        LOGGER.info("read(" + description + ")");
+//        LOGGER.info("read(" + price + ")");
+//        LOGGER.info("read(" + duration + ")");
+//        LOGGER.info("read(" + durationType + ")");
         Service readService = serviceService.read(id);
+        modelMap.addAttribute("service", readService);
         modelMap.addAttribute("createMessage", "This is service: " + readService);
+        boolean isEdit = true;
+        modelMap.addAttribute("isEdit", isEdit);
         LOGGER.info("read(...)= ");
         return "service-read.html";
     }
@@ -94,14 +98,15 @@ public class ServiceController {
     }
 
     @GetMapping(value = "/delete/{id}")
-    public String delete(@PathVariable Long id, String name, String description, BigDecimal price, int duration, DurationType durationType, ModelMap modelMap) {
+    public String delete(@PathVariable Long id, String name, String description, BigDecimal price, Integer duration, DurationType durationType, ModelMap modelMap) {
         LOGGER.info("read(" + id + ")");
-        LOGGER.info("read(" + name + ")");
-        LOGGER.info("read(" + description + ")");
-        LOGGER.info("read(" + price + ")");
-        LOGGER.info("read(" + duration + ")");
-        LOGGER.info("read(" + durationType + ")");
-        serviceService.delete(id);
+
+        Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
+        if(selectedShop!= null) {
+            Long selectedShopId = selectedShop.getId();
+            serviceService.delete(id, selectedShopId);
+        }
+
         return "redirect:/services";
     }
 }

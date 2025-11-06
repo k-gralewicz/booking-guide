@@ -50,6 +50,21 @@ public class ClientService {
         return mappedClient;
     }
 
+    public Client update(Client client) {
+        LOGGER.info("update(" + client + ")");
+        if (client != null) {
+//            Long clientId = client.getId();
+//            Optional<ClientEntity> optionalClientEntity = clientRepository.findById(clientId);
+//            ClientEntity clientEntity = optionalClientEntity.orElseThrow(() -> new NoSuchElementException("Nie znaleziono klienta o ID: " + clientId));
+            ClientEntity clientEntity = clientMapper.from(client);
+            ClientEntity createdClientEntity = clientRepository.save(clientEntity);
+            Client mappedClient = clientMapper.from(createdClientEntity);
+            LOGGER.info("update(...) = " + mappedClient);
+            return mappedClient;
+        }
+        return null;
+    }
+
     public void delete(Long id) {
         LOGGER.info("delete(" + id + ")");
         clientRepository.deleteById(id);

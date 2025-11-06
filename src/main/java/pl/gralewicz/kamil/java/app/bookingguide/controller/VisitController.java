@@ -20,6 +20,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Controller // przyjmuje dane od użytkownika i zwraca dane do użytkownika za pomocą protokołu http
@@ -57,7 +58,7 @@ public class VisitController {
             return "visit-create";
         }
         List<Service> services = serviceService.list();
-        List<Shop> shops = shopService.list();
+        Set<Shop> shops = shopService.list();
         modelMap.addAttribute("services", services);
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("visit", new Visit());
@@ -111,7 +112,7 @@ public class VisitController {
             return "visit-create";
         }
         List<Service> services = serviceService.list();
-        List<Shop> shops = shopService.list();
+        Set<Shop> shops = shopService.list();
         modelMap.addAttribute("services", services);
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("visit", new Visit());
@@ -146,8 +147,10 @@ public class VisitController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Visit visit) {
-        LOGGER.info("create(" + visit + ")");
+    public String create(@ModelAttribute Visit visit, Long shopId) {
+        LOGGER.info("create(" + visit + ", " + shopId + ")");
+
+
         Visit createdVisit = visitService.create(visit);
         LOGGER.info("create(...)= " + createdVisit);
         return "redirect:/visits";

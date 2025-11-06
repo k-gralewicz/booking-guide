@@ -1,24 +1,34 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ServiceRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ServiceMapper;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+@Transactional
 @org.springframework.stereotype.Service
 public class ServiceService {
     private static final Logger LOGGER = Logger.getLogger(ServiceService.class.getName());
 
-    private ServiceRepository serviceRepository;
-    private ServiceMapper serviceMapper;
+    private final ServiceRepository serviceRepository;
+    private final ServiceMapper serviceMapper;
+    private final ShopRepository shopRepository;
+    private final ShopMapper shopMapper;
 
-    public ServiceService(ServiceRepository serviceRepository, ServiceMapper serviceMapper) {
+    public ServiceService(ServiceRepository serviceRepository, ServiceMapper serviceMapper, ShopRepository shopRepository, ShopMapper shopMapper) {
         this.serviceRepository = serviceRepository;
         this.serviceMapper = serviceMapper;
+        this.shopRepository = shopRepository;
+        this.shopMapper = shopMapper;
     }
 
     public List<Service> list() {
@@ -29,7 +39,7 @@ public class ServiceService {
         return services;
     }
 
-    public Service findById(Long id){
+    public Service findById(Long id) {
         LOGGER.info("findById()");
         Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);
         ServiceEntity serviceEntity = optionalServiceEntity.orElseThrow();
@@ -47,18 +57,48 @@ public class ServiceService {
         return mappedService;
     }
 
+    @Transactional
+    public Service createWithShop(Service service, Long shopId) {
+        LOGGER.info("createWithShop(" + service + ", " + shopId + ")");
+        Optional<ShopEntity> optionalShopEntity = shopRepository.findById(shopId);
+        ShopEntity shopEntity = optionalShopEntity.orElseThrow();
+        ServiceEntity serviceEntity = serviceMapper.from(service);
+        serviceEntity.addShop(shopEntity);
+        ServiceEntity createdServiceEntity = serviceRepository.save(serviceEntity);
+        Service createdService = serviceMapper.from(createdServiceEntity);
+        LOGGER.info("createWithShop(...) =" + createdService);
+        return createdService;
+    }
+
     public Service read(Long id) {
         LOGGER.info("read(" + id + ")");
         Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);
-        ServiceEntity serviceEntity = optionalServiceEntity.orElseThrow();
-        Service service = serviceMapper.from(serviceEntity);
-        LOGGER.info("read(...)= " + service);
-        return service;
+        ServiceEntity serviceEntity = optionalServiceEntity
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono service o ID " + id));
+        Service mappedService = serviceMapper.from(serviceEntity);
+        LOGGER.info("read(...)= " + mappedService);
+        return mappedService;
     }
 
-    public void delete(Long id) {
+    public void delete(Long id, Long selectedShopId) {
         LOGGER.info("delete(" + id + ")");
-        serviceRepository.deleteById(id);
+        Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);
+        ServiceEntity serviceEntity = optionalServiceEntity.orElseThrow(() -> new NoSuchElementException("Nie znaleziono serwisu o ID " + id));
+        ShopEntity shopEntity = shopRepository.findById(selectedShopId).orElseThrow(() -> new NoSuchElementException("Nie znaleziono shop o ID" + selectedShopId));
+//        if (optionalServiceEntity.isPresent()) {
+//            serviceRepository.delete(optionalServiceEntity.get());
+//        }
+
+        LOGGER.info("serviceEntity BEFORE delete shop: " + serviceEntity);
+//        serviceEntity.delete(selectedShopId);
+        serviceEntity.deleteShop(shopEntity);
+        LOGGER.info("serviceEntity AFTER delete shop: " + serviceEntity);
+
+        ServiceEntity savedServiceEntity = serviceRepository.save(serviceEntity);
+        LOGGER.info("savedServiceEntity AFTER extra save: " + savedServiceEntity);
+
+        serviceRepository.delete(savedServiceEntity);
+//        serviceRepository.deleteById(id);
         LOGGER.info("delete(...)= ");
     }
 }

@@ -1,30 +1,59 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
 
 @Entity
 @Table(name = "SHOPS")
 public class ShopEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private String description;
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private AddressEntity address;
 //    private List<Visit> visits = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<UserEntity> users = new ArrayList<>();
+
+    @ManyToMany(cascade = {PERSIST, MERGE}, fetch = FetchType.EAGER)
+    private Set<ServiceEntity> services = new HashSet<>();
+
+
     public ShopEntity() {
 
+    }
+
+    public void addUser(UserEntity user){
+        users.add(user);
+        user.getShops().add(this);
+    }
+
+    public void addService(ServiceEntity service){
+        services.add(service);
+        service.getShops().add(this);
     }
 
     public Long getId() {
@@ -66,13 +95,44 @@ public class ShopEntity {
     public void setAddress(AddressEntity address) {
         this.address = address;
     }
-//
+
+    public List<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
+    }
+
+    public Set<ServiceEntity> getServices() {
+        return services;
+    }
+
+    public void setServices(Set<ServiceEntity> services) {
+        this.services = services;
+    }
+
+    //
 //    public List<Visit> getVisits() {
 //        return visits;
 //    }
 //
 //    public void setVisits(List<Visit> visits) {
 //        this.visits = visits;
+//    }
+
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        ShopEntity that = (ShopEntity) o;
+//        return id.equals(that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(address, that.address) && Objects.equals(users, that.users) && Objects.equals(services, that.services);
+//    }
+
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, name, description, phoneNumber, address, users, services);
 //    }
 
     @Override
@@ -83,7 +143,8 @@ public class ShopEntity {
                 ", description='" + description + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address=" + address +
-//                ", visits=" + visits +
+                ", users=" + users +
+//                ", services=" + services +
                 '}';
     }
 }

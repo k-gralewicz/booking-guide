@@ -85,16 +85,19 @@ public class ClientController {
         return "redirect:/clients";
     }
 
-    @GetMapping(value = "/id")
-    public String read(@PathVariable Long id, String firstName, String lastName, String email, String phoneNumber, String address, ModelMap modelMap) {
+    @GetMapping(value = "/{id}")
+    public String read(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("read(" + id + ")");
-        LOGGER.info("read(" + firstName + ")");
-        LOGGER.info("read(" + lastName + ")");
-        LOGGER.info("read(" + email + ")");
-        LOGGER.info("read(" + phoneNumber + ")");
-        LOGGER.info("read(" + address + ")");
+//        LOGGER.info("read(" + firstName + ")");
+//        LOGGER.info("read(" + lastName + ")");
+//        LOGGER.info("read(" + email + ")");
+//        LOGGER.info("read(" + phoneNumber + ")");
+//        LOGGER.info("read(" + address + ")");
         Client readClient = clientService.read(id);
+        modelMap.addAttribute("client", readClient);
         modelMap.addAttribute("createMessage", "This is client: " + readClient);
+        boolean isEdit = true;
+        modelMap.addAttribute("isEdit", isEdit);
         LOGGER.info("read(...)= ");
         return "client-read.html";
     }
@@ -103,8 +106,18 @@ public class ClientController {
     public String updateView(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("updateView()");
         Client readClient = clientService.read(id);
+        modelMap.addAttribute("client", readClient);
+        modelMap.addAttribute("isEdit", true);
         LOGGER.info("updateView(...)= " + readClient);
         return "client-create";
+    }
+
+    @PostMapping(value = "/update/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute Client client) {
+        LOGGER.info("update(" + id + "," + client + ")");
+        Client updatedClient = clientService.update(client);
+        LOGGER.info("update(...)= " + updatedClient);
+        return "redirect:/clients";
     }
 
     @GetMapping(value = "/delete/{id}")
@@ -121,7 +134,7 @@ public class ClientController {
 }
 // TODO: 21.08.2024 poprawić controller
 
-// TODO: 10.07.2025 : 
+// TODO: 10.07.2025 :
 // wybrany shopId przesłać do backendu
 // w backend na podstawie shopId wybrać odpowiednie serwisy
 // na frontend zwrócić shopID oraz serviceID i zaznaczyć odpowiednie opcje w dropdown.

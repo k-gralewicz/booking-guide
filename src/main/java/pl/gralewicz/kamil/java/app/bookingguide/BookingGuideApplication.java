@@ -102,4 +102,45 @@ public class BookingGuideApplication {
 
 // TODO: 03.07.2025 dokończyć implementację funkcji selectShop w javascript:
 // TODO: 03.07.2025 pobranie identyfikatora wybranego shopa, 
-// TODO: 03.07.2025 wykonanie request pod endpoint który wyświetla visit-create.html 
+// TODO: 03.07.2025 wykonanie request pod endpoint który wyświetla visit-create.html
+// TODO: 26.06.2025 albo pozostać przy liście usług i sklepów i dla wybranego sklepu wyświetlić dostępne usługi.
+
+// TODO: 17.07.2025 1b:     b. posiada więcej niż 1 Shop - ma możliwość wyboru Shop'a (nowy ekran z dropdown/select),
+
+// TODO: 14.08.2025 wyciągnąć po username przypisane shopy w UserController.
+// TODO: 14.08.2025 1b:     b. posiada więcej niż 1 Shop - ma możliwość wyboru Shop'a (nowy ekran z dropdown/select),
+
+// TODO: 28.08.2025 dodać do Usera funkcjonalność dodawania kolejnego sklepu,
+// TODO: 28.08.2025 za pomocą mechanizmu sesji dodać wybrany Shop do sesji,
+// TODO: 28.08.2025 w NavBar wyświetlić informacje o wybranym Shop pobranym z sesji.
+
+// TODO: 04.09.2025 dokończyć implementację dodawania Service do Shop.
+
+// TODO: 18.09.2025 Navbar - obok wybranego shop dać możliwość zmiany CHANGE jeśli user ma więcej niż 1 shop,
+// TODO: 18.09.2025 Napisać test integracyjny bez Mock dla ServiceService - nowa klasa testowa,
+// TODO: 18.09.2025 services.html - dodać NavBar,
+// TODO: 18.09.2025 do naprawy services metoda READ,
+// TODO: 18.09.2025 sprawdzić czy działa metoda createWithShop - albo testami albo ręcznie,
+
+// TODO: 02.10.2025 do pozostałych plików html dodać
+//<div class="container-fluid">
+//<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+//        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+// TODO: 25.09.2025 przy rezerwacji wizyty przypisywać zapisany w sesji shop zarówno wizualnie w html jak i w kodzie java,
+
+// TODO: 02.10.2025 to co wyżej +
+// TODO: 02.10.2025 client-read.html,
+
+// TODO: 09.10.2025 dodanie mechanizmu usuwania usług w Service: proponowany sposób realizacji:
+// TODO: 09.10.2025 dodanie nowej kolumny STATUS w bazie danych,
+// TODO: 09.10.2025 dodanie kolumny za pomocą pola w modelu i encji,
+// TODO: 09.10.2025 wartości statusów za pomocą ENUM lub oddzielnych INSERT,
+// TODO: 09.10.2025 testy dla nowej kolumny (delete),
+// TODO: 09.10.2025 m.in. możliwość zmiany statusów w edycji service (np. z aktywny na nieaktywny i odwrotnie),
+
+// w visit-create.html wyświetlenie shop
+// analogicznie do navbar wyświetlić nazwę wybranego shop
+// analogicznie do user-dashboard zaimplementować sposób wybierania shopa.
+// do sesji dodać shopId analogicznie do ShopName
+
+// createX - sprawdzić o co chodzi na następnym spotkaniu

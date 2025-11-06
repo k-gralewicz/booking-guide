@@ -4,8 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
+
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -30,15 +32,15 @@ public class ShopMapper {
         return shop;
     }
 
-    public List<Shop> fromEntities(List<ShopEntity> shopEntities) {
+    public Set<Shop> fromEntities(Collection<ShopEntity> shopEntities) {
         LOGGER.info("fromEntities(size=" + (shopEntities == null ? 0 : shopEntities.size()) + ")");
         if (shopEntities == null) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
-        List<Shop> shops = shopEntities.stream()
+        Set<Shop> shops = shopEntities.stream()
                 .map(this::from)
-                .collect(Collectors.toList());
-        LOGGER.info("fromEntities(...) returns " + shops.size() + " shops");
+                .collect(Collectors.toSet());
+        LOGGER.info("fromEntities(...)= " + shops);
         return shops;
     }
 }

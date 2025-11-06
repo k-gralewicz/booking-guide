@@ -37,11 +37,13 @@
                         <!--                        </select>-->
                     </div>
                     <div class="mb-3">
-                        <label for="shopName">Shop</label>
+<!--                        <label for="shopName">Shop</label>-->
+                        <span>Shop: <strong th:text="${session.SHOP_SESSION.name}">Shop Name</strong></span>
+                        <span>Shop: <strong th:text="${session.SHOP_SESSION.id}">Shop ID</strong></span>
                         <!--                        <input type="hidden" i="shopId" name="shopId" th:value="${visit.shopId}">-->
-                        <select id="shopId" name="shopId" th:field="*{shopId}" class="form-control">
-                            <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}"></option>
-                        </select>
+                        <!--                        <select id="shopId" name="shopId" th:field="*{shopId}" class="form-control">-->
+<!--                            <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}"></option>-->
+<!--                        </select>-->
                     </div>
                     <div class="mb-3">
                         <label for="dueDate">Date</label>
