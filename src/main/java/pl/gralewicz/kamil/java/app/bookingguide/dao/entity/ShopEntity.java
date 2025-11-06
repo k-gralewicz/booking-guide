@@ -24,7 +24,7 @@ import static jakarta.persistence.CascadeType.PERSIST;
 @Table(name = "SHOPS")
 public class ShopEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

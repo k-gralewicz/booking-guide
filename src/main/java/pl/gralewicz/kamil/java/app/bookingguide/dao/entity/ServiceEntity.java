@@ -21,7 +21,7 @@ import static jakarta.persistence.CascadeType.PERSIST;
 @Table(name = "SERVICES")
 public class ServiceEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -39,13 +39,18 @@ public class ServiceEntity {
 
     }
 
-    public void addShop(ShopEntity shop){
+    public void addShop(ShopEntity shop) {
         shops.add(shop);
         shop.getServices().add(this);
     }
 
     public void delete(Long shopId) {
         shops.removeIf(shop -> shop.getId().equals(shopId));
+    }
+
+    public void deleteShop(ShopEntity shop) {
+        shops.remove(shop);
+        shop.getServices().remove(this);
     }
 
     public Long getId() {

@@ -84,13 +84,14 @@ public class ServiceService {
         LOGGER.info("delete(" + id + ")");
         Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);
         ServiceEntity serviceEntity = optionalServiceEntity.orElseThrow(() -> new NoSuchElementException("Nie znaleziono serwisu o ID " + id));
-
+        ShopEntity shopEntity = shopRepository.findById(selectedShopId).orElseThrow(() -> new NoSuchElementException("Nie znaleziono shop o ID" + selectedShopId));
 //        if (optionalServiceEntity.isPresent()) {
 //            serviceRepository.delete(optionalServiceEntity.get());
 //        }
 
         LOGGER.info("serviceEntity BEFORE delete shop: " + serviceEntity);
-        serviceEntity.delete(selectedShopId);
+//        serviceEntity.delete(selectedShopId);
+        serviceEntity.deleteShop(shopEntity);
         LOGGER.info("serviceEntity AFTER delete shop: " + serviceEntity);
 
         ServiceEntity savedServiceEntity = serviceRepository.save(serviceEntity);

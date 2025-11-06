@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 @Table(name = "ADDRESSES")
 public class AddressEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String street;
