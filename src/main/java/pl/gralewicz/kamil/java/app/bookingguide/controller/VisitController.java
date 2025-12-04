@@ -18,8 +18,6 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -101,7 +99,7 @@ public class VisitController {
         Visit newVisit = new Visit();
         newVisit.setShop(shop);
         newVisit.setService(service);
-        newVisit.setDueDate(LocalDate.parse(dueDate, DateTimeFormatter.ISO_DATE).atStartOfDay());
+//        newVisit.setDueDate(LocalDate.from(LocalDate.parse(dueDate, DateTimeFormatter.ISO_DATE).atStartOfDay()));
 
         Visit createdVisit = visitService.create(newVisit);
         LOGGER.info("createX(...)= " + createdVisit);
@@ -177,12 +175,26 @@ public class VisitController {
 
     @GetMapping(value = "/update/{id}")
     public String updateView(@PathVariable Long id, ModelMap modelMap) {
-        LOGGER.info("updateView()");
+        LOGGER.info("updateView(" + id + ")");
         Visit readVisit = visitService.read(id);
         modelMap.addAttribute("visit", readVisit);
+
+        if (readVisit != null) {
+            Service service = readVisit.getService();
+            modelMap.addAttribute(SERVICE_SESSION, service);
+        }
+
         modelMap.addAttribute("isEdit", true);
         LOGGER.info("updateView(...)= " + readVisit);
         return "visit-create.html";
+    }
+
+    @PostMapping(value = "/update/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute Visit visit) {
+        LOGGER.info("update(" + id + "," + visit + ")");
+        Visit updatedVisit = visitService.update(id, visit);
+        LOGGER.info("update(...)= " + updatedVisit);
+        return "redirect:/visits";
     }
 
     @GetMapping(value = "/delete/{id}")

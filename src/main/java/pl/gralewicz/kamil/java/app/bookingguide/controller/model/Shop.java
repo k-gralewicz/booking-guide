@@ -32,15 +32,15 @@ public class Shop {
         LOGGER.info("visitAvailable(" + dueDate + ")");
         if (visits.size() > 0) {
             for (Visit visit : visits) {
-                LocalDateTime visitDueDate = visit.getDueDate();
-                boolean dueDateEquals = dueDate.isEqual(visitDueDate);
-                if (dueDateEquals) {
-                    System.out.println("Termin zajęty przez wizytę " + visit);
-                } else {
-                    System.out.println("Termin dostępny ");
-                    LOGGER.info("visitAvailable(...)=" + true);
-                    return true;
-                }
+//                LocalDateTime visitDueDate = visit.getDueDate();
+//                boolean dueDateEquals = dueDate.isEqual(visitDueDate);
+//                if (dueDateEquals) {
+//                    System.out.println("Termin zajęty przez wizytę " + visit);
+//                } else {
+//                    System.out.println("Termin dostępny ");
+//                    LOGGER.info("visitAvailable(...)=" + true);
+//                    return true;
+//                }
             }
         } else {
             LOGGER.info("visitAvailable(...)=" + true);
@@ -54,12 +54,12 @@ public class Shop {
     public Visit book(Visit visit) {
         LOGGER.info("book(" + visit + ")");
         if (visit != null) {
-            boolean isAvailable = visitAvailable(visit.getDueDate());
-            if (isAvailable) {
-                visits.add(visit);
-                LOGGER.info("book(...)=" + visit);
-                return visit;
-            }
+//            boolean isAvailable = visitAvailable(visit.getDueDate());
+//            if (isAvailable) {
+//                visits.add(visit);
+//                LOGGER.info("book(...)=" + visit);
+//                return visit;
+//            }
         }
         LOGGER.info("book(...)=" + null);
         return null;

@@ -144,3 +144,5 @@ public class BookingGuideApplication {
 // do sesji dodać shopId analogicznie do ShopName
 
 // createX - sprawdzić o co chodzi na następnym spotkaniu
+
+// TODO: 13.11.2025 na następnym spotkaniu wszystkie metody update do napisania OD NOWA ! 

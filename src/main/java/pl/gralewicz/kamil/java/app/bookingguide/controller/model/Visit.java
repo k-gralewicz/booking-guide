@@ -1,5 +1,8 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Visit {
@@ -11,7 +14,8 @@ public class Visit {
     private Long shopId;
     private Shop shop;
 
-    private LocalDateTime dueDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dueDate;
 
     public Visit(){
     }
@@ -72,11 +76,11 @@ public class Visit {
         this.shop = shop;
     }
 
-    public LocalDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 

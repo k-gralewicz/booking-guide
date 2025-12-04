@@ -9,8 +9,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "VISITS")
 public class VisitEntity {
@@ -18,7 +16,7 @@ public class VisitEntity {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
-    private LocalDateTime dueDate;
+//    private LocalDateTime dueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
@@ -67,13 +65,13 @@ public class VisitEntity {
         this.shop = shop;
     }
 
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
+//    public LocalDateTime getDueDate() {
+//        return dueDate;
+//    }
 
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
-    }
+//    public void setDueDate(LocalDateTime dueDate) {
+//        this.dueDate = dueDate;
+//    }
 
     @Override
     public String toString() {
@@ -82,7 +80,7 @@ public class VisitEntity {
                 ", client=" + client +
                 ", service=" + service +
                 ", shop=" + shop +
-                ", dueDate=" + dueDate +
+//                ", dueDate=" + dueDate +
                 '}';
     }
 }
