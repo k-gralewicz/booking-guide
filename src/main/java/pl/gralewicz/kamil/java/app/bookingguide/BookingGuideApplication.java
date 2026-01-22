@@ -145,4 +145,9 @@ public class BookingGuideApplication {
 
 // createX - sprawdzić o co chodzi na następnym spotkaniu
 
-// TODO: 13.11.2025 na następnym spotkaniu wszystkie metody update do napisania OD NOWA ! 
+// TODO: 13.11.2025 na następnym spotkaniu wszystkie metody update do napisania OD NOWA !
+
+// TODO: 12.01.2026 visitController dokończyć implementację clientWithService dla wybranego klienta
+// w html dokończyć wyświetlanie listy klientów.
+// dla roli ADMIN i USER lista rozwijana, dla CLIENT dane z sesji
+// 33 codeWars.

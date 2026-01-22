@@ -9,14 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
-import pl.gralewicz.kamil.java.app.bookingguide.service.ServiceService;
-import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
-import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
-import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
+import pl.gralewicz.kamil.java.app.bookingguide.service.*;
 
 import java.util.List;
 import java.util.Set;
@@ -30,17 +24,19 @@ import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants
 @SessionAttributes({SHOP_SESSION, SERVICE_SESSION})
 public class VisitController {
     private static final Logger LOGGER = Logger.getLogger(VisitController.class.getName());
+    private final ClientService clientService;
 
     private VisitService visitService;
     private ServiceService serviceService;
     private ShopService shopService;
     private UserService userService;
 
-    public VisitController(VisitService visitService, ServiceService serviceService, ShopService shopService, UserService userService) {
+    public VisitController(VisitService visitService, ServiceService serviceService, ShopService shopService, UserService userService, ClientService clientService) {
         this.visitService = visitService;
         this.serviceService = serviceService;
         this.shopService = shopService;
         this.userService = userService;
+        this.clientService = clientService;
     }
 
     @GetMapping
@@ -134,12 +130,13 @@ public class VisitController {
     //      4a. Blokada godzinowa usługi w danym salonie.
 
     @GetMapping(value = "/create/{id}")
-    public String createWithService(@PathVariable(name = "id") Long serviceId, Long shopId, ModelMap modelMap) {
+    public String createWithService(@PathVariable(name = "id") Long serviceId, Long shopId, Long clientId, ModelMap modelMap) {
         LOGGER.info("createWithService(" + serviceId + ")");
         LOGGER.info("createWithService(" + shopId + ")");
+        LOGGER.info("createWithService(" + clientId + ")");
         Service service = serviceService.read(serviceId);
         modelMap.addAttribute(SERVICE_SESSION, service);
-
+        List<Client> clients = clientService.list();
         Visit visit = new Visit();
         visit.setService(service);
 
@@ -147,6 +144,7 @@ public class VisitController {
 
         modelMap.addAttribute("visit", visit);
         modelMap.addAttribute("isEdit", false);
+        modelMap.addAttribute("clients", clients);
         LOGGER.info("createWithService(...)= ");
         return "visit-create.html";
     }
@@ -178,7 +176,7 @@ public class VisitController {
         LOGGER.info("updateView(" + id + ")");
         Visit readVisit = visitService.read(id);
         modelMap.addAttribute("visit", readVisit);
-
+        LOGGER.info("readVisit= " + readVisit);
         if (readVisit != null) {
             Service service = readVisit.getService();
             modelMap.addAttribute(SERVICE_SESSION, service);
@@ -196,6 +194,8 @@ public class VisitController {
         LOGGER.info("update(...)= " + updatedVisit);
         return "redirect:/visits";
     }
+
+    // parametry session.SERVICE_SESSION i session.SHOP_SESSION muszą być dostępne w metodzie update analogicznie jak w create.
 
     @GetMapping(value = "/delete/{id}")
     public String delete(@PathVariable Long id, ModelMap modelMap) {
