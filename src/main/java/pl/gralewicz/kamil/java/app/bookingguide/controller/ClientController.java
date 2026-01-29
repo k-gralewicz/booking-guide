@@ -1,12 +1,9 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
@@ -20,8 +17,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SHOP_SESSION;
+
 @Controller
 @RequestMapping(value = "/clients")
+@SessionAttributes(SHOP_SESSION)
 public class ClientController {
     private static final Logger LOGGER = Logger.getLogger(ClientController.class.getName());
 
@@ -38,13 +38,15 @@ public class ClientController {
     }
 
     @GetMapping(value = "/dashboard")
-    public String dashboard(String shopId, String serviceId, ModelMap modelMap) {
+    public String dashboard(Long shopId, Long serviceId, ModelMap modelMap, HttpSession session) {
         LOGGER.info("dashboard()");
         LOGGER.info("dashboard(" + shopId + ")");
         Set<Shop> shops = shopService.list();
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("selectedShopId", shopId);
         if (shopId != null) {
+            Shop selectedShop = shopService.read(shopId);
+            modelMap.addAttribute(SHOP_SESSION, selectedShop);
             // dodać metodę filtrującą listę services po shopId.
         } else {
         }
