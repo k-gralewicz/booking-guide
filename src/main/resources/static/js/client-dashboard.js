@@ -8,6 +8,7 @@ function selectShop() {
         // .then(response => response.json())
         .then(data => {
             // handle the response data
+            console.log(url);
             console.log(shopId);
             // reload the page with the fetch URL
             window.location.href = url;

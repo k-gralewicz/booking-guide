@@ -151,3 +151,7 @@ public class BookingGuideApplication {
 // w html dokończyć wyświetlanie listy klientów.
 // dla roli ADMIN i USER lista rozwijana, dla CLIENT dane z sesji
 // 33 codeWars.
+
+// TODO: 22.01.2026:
+// po zalogowaniu użytkownika typu CLIENT automatycznie przypisać do niego SHOP i wstawić do sesji.
+// dodać metodę filtrującą listę services po shopId.

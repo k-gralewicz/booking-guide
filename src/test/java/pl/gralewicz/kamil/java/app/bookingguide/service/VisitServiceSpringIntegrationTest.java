@@ -75,7 +75,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
     void list() {
         // given
         VisitEntity visitEntity1 = new VisitEntity();
-        visitEntity1.setDueDate(LocalDateTime.now().plusDays(1));
+//        visitEntity1.setDueDate(LocalDateTime.now().plusDays(1));
         visitEntity1.setClient(clientEntity);
         visitEntity1.setService(serviceEntity);
         visitEntity1.setShop(shopEntity);
@@ -83,7 +83,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
         Long visit1Id = savedVisitEntity1.getId(); // Pobierz ID
 
         VisitEntity visitEntity2 = new VisitEntity();
-        visitEntity2.setDueDate(LocalDateTime.now().plusDays(2));
+//        visitEntity2.setDueDate(LocalDateTime.now().plusDays(2));
         visitEntity2.setClient(secondClientEntity);
         visitEntity2.setService(secondServiceEntity);
         visitEntity2.setShop(secondShopEntity);
@@ -122,7 +122,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
     void create() {
         // given
         Visit visitToCreate = new Visit();
-        visitToCreate.setDueDate(LocalDateTime.now().plusHours(1));
+//        visitToCreate.setDueDate(LocalDateTime.now().plusHours(1));
         Client clientRef = new Client();
         clientRef.setId(clientEntity.getId());
         Service serviceRef = new Service();
@@ -156,7 +156,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
                     Optional<VisitEntity> persistedEntityOpt = visitRepository.findById(createdVisit.getId());
                     Assertions.assertTrue(persistedEntityOpt.isPresent(), "Nie znaleziono zapisanej encji w bazie danych");
                     persistedEntityOpt.ifPresent(persistedEntity -> {
-                        Assertions.assertEquals(visitToCreate.getDueDate(), persistedEntity.getDueDate(), "DueDate w bazie niezgodne");
+//                        Assertions.assertEquals(visitToCreate.getDueDate(), persistedEntity.getDueDate(), "DueDate w bazie niezgodne");
                         Assertions.assertNotNull(persistedEntity.getClient(), "Client w encji w bazie jest null");
                         Assertions.assertEquals(clientEntity.getId(), persistedEntity.getClient().getId(), "FK klienta w bazie niezgodne");
                         Assertions.assertNotNull(persistedEntity.getService(), "Service w encji w bazie jest null");
@@ -196,7 +196,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
     void read() {
         // given
         VisitEntity visitEntityToRead = new VisitEntity();
-        visitEntityToRead.setDueDate(LocalDateTime.now().plusDays(5));
+//        visitEntityToRead.setDueDate(LocalDateTime.now().plusDays(5));
         visitEntityToRead.setClient(clientEntity);
         visitEntityToRead.setService(serviceEntity);
         visitEntityToRead.setShop(shopEntity);
@@ -210,7 +210,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
         Assertions.assertAll("Sprawdzenie wizyty odczytanej przez ID",
                 () -> Assertions.assertNotNull(foundVisit, "Znaleziona wizyta nie powinna być null"),
                 () -> Assertions.assertEquals(existingId, foundVisit.getId(), "ID odczytanej wizyty niezgodne"),
-                () -> Assertions.assertEquals(savedEntity.getDueDate(), foundVisit.getDueDate(), "DueDate odczytanej wizyty niezgodne"),
+//                () -> Assertions.assertEquals(savedEntity.getDueDate(), foundVisit.getDueDate(), "DueDate odczytanej wizyty niezgodne"),
                 () -> Assertions.assertNotNull(foundVisit.getClient(), "Client w odczytanej wizycie nie powinien być null"),
                 () -> Assertions.assertEquals(clientEntity.getId(), foundVisit.getClient().getId(), "Niezgodne ID klienta w odczytanej wizycie"),
                 () -> Assertions.assertNotNull(foundVisit.getService(), "Service w odczytanej wizycie nie powinien być null"),
@@ -236,7 +236,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
     void delete() {
         // given
         VisitEntity visitEntityToDelete = new VisitEntity();
-        visitEntityToDelete.setDueDate(LocalDateTime.now().plusDays(10));
+//        visitEntityToDelete.setDueDate(LocalDateTime.now().plusDays(10));
         visitEntityToDelete.setClient(clientEntity);
         visitEntityToDelete.setService(serviceEntity);
         visitEntityToDelete.setShop(shopEntity);

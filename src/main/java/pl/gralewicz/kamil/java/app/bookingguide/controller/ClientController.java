@@ -41,11 +41,12 @@ public class ClientController {
     public String dashboard(String shopId, String serviceId, ModelMap modelMap) {
         LOGGER.info("dashboard()");
         LOGGER.info("dashboard(" + shopId + ")");
+        Set<Shop> shops = shopService.list();
+        modelMap.addAttribute("shops", shops);
+        modelMap.addAttribute("selectedShopId", shopId);
         if (shopId != null) {
-            // dodać metodę filtrującą listę shopów po Id.
+            // dodać metodę filtrującą listę services po shopId.
         } else {
-            Set<Shop> shops = shopService.list();
-            modelMap.addAttribute("shops", shops);
         }
 
         List<Visit> visits = visitService.list();
