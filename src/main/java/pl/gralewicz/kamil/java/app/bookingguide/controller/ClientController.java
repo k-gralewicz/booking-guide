@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SERVICE_SESSION;
 import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SHOP_SESSION;
 
 @Controller
@@ -38,19 +39,34 @@ public class ClientController {
     }
 
     @GetMapping(value = "/dashboard")
-    public String dashboard(Long shopId, Long serviceId, ModelMap modelMap, HttpSession session) {
+    public String dashboard(@RequestParam(required = false) Long selectedShopId,
+                            @RequestParam(required = false) Long selectedServiceId,
+                            ModelMap modelMap, HttpSession session) {
         LOGGER.info("dashboard()");
-        LOGGER.info("dashboard(" + shopId + ")");
+        LOGGER.info("dashboard(" + selectedShopId + ")");
+        LOGGER.info("dashboard(" + selectedServiceId + ")");
+
         Set<Shop> shops = shopService.list();
         modelMap.addAttribute("shops", shops);
-        modelMap.addAttribute("selectedShopId", shopId);
-        if (shopId != null) {
-            Shop selectedShop = shopService.read(shopId);
-            modelMap.addAttribute(SHOP_SESSION, selectedShop);
-            // dodać metodę filtrującą listę services po shopId.
-        } else {
-        }
+        modelMap.addAttribute("selectedShopId", selectedShopId);
+        modelMap.addAttribute("selectedServiceId", selectedServiceId);
 
+        if (selectedShopId != null) {
+            Shop selectedShop = shopService.read(selectedShopId);
+            modelMap.addAttribute(SHOP_SESSION, selectedShop);
+            // dodać metodę filtrującą listę services po selectedShopId.
+        } else {
+            modelMap.addAttribute("errorSelectedShopId", "choose shop");
+            return "client-dashboard";
+        }
+        if (selectedServiceId != null) {
+            Service selectedService = serviceService.read(selectedServiceId);
+            modelMap.addAttribute(SERVICE_SESSION, selectedService);
+        } else {
+            modelMap.addAttribute("errorSelectedServiceId", "choose service");
+            return "client-dashboard";
+        }
+// 2.02.2026 - dokończyć ClientController
         List<Visit> visits = visitService.list();
         modelMap.addAttribute("visits", visits);
 
@@ -135,6 +151,16 @@ public class ClientController {
         clientService.delete(id);
         return "redirect:/clients";
     }
+
+    @GetMapping(value = "/visit/create")
+    public String visitCreate(@RequestParam String username, Long shopId, Long serviceId) {
+        LOGGER.info("visitCreate(" + username + ")");
+        LOGGER.info("visitCreate(" + shopId + ")");
+        LOGGER.info("visitCreate(" + serviceId + ")");
+
+        return "redirect:/visits/create";
+    }
+
 }
 // TODO: 21.08.2024 poprawić controller
 

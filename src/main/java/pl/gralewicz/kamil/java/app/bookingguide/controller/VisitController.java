@@ -51,11 +51,11 @@ public class VisitController {
     @GetMapping(value = "/create")
     public String createView(String username, Long serviceId, ModelMap modelMap) {
         LOGGER.info("createView()");
-        User userByUsername = userService.findByUsername(username);
-        if (userByUsername == null) {
-            modelMap.addAttribute("error", "User not found");
-            return "visit-create";
-        }
+//        User userByUsername = userService.findByUsername(username);
+//        if (userByUsername == null) {
+//            modelMap.addAttribute("error", "User not found");
+//            return "visit-create";
+//        }
         List<Service> services = serviceService.list();
         Set<Shop> shops = shopService.list();
         modelMap.addAttribute("services", services);
