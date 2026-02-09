@@ -16,7 +16,7 @@
     <div th:replace="fragments/navbar::navigation"></div>
     <h1>Client Dashboard</h1>
     <div>
-        <form th:action="@{/dashboard}" method="get">
+        <form th:action="@{/clients/visit/create}" method="get">
             <div class="form-group">
                 <div th:text="${errorSelectedShopId}"></div>
                 <label for="shop">Select Shop</label>
@@ -28,7 +28,7 @@
                     </tr>
                 </select>
             </div>
-<!--            <input type="hidden" name="selectedShopId" th:value="${selectedShopId}">-->
+            <input type="hidden" name="selectedShopId" th:value="${selectedShopId}">
 
             <div class="form-group">
                 <div th:text="${errorSelectedServiceId}"></div>
@@ -40,9 +40,10 @@
                     </tr>
                 </select>
             </div>
-<!--            <input type="hidden" name="selectedServiceId" th:value="${selectedServiceId}">-->
+            <input type="hidden" name="selectedServiceId" th:value="${selectedServiceId}">
+            <input type="hidden" th:value="${#authentication.name}" name="username">
 
-            <button type="submit" class="btn btn-primary">Filter</button>
+            <button type="submit" class="btn btn-primary">Book a new visit</button>
         </form>
         <br/>
 
@@ -80,7 +81,6 @@
         <br/>
         <div>
             <form th:action="@{/clients/visit/create}" method="get">
-                <input type="hidden" th:value="${#authentication.name}" name="username">
                 <button type="submit">Book a new visit</button>
             </form>
         </div>

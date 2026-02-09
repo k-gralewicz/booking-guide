@@ -22,7 +22,7 @@ import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants
 
 @Controller
 @RequestMapping(value = "/clients")
-@SessionAttributes(SHOP_SESSION)
+@SessionAttributes({SHOP_SESSION, SERVICE_SESSION})
 public class ClientController {
     private static final Logger LOGGER = Logger.getLogger(ClientController.class.getName());
 
@@ -55,6 +55,11 @@ public class ClientController {
             Shop selectedShop = shopService.read(selectedShopId);
             modelMap.addAttribute(SHOP_SESSION, selectedShop);
             // dodać metodę filtrującą listę services po selectedShopId.
+
+            Set<Service> selectedShopServices = selectedShop.getServices();
+            modelMap.addAttribute("services", selectedShopServices);
+            LOGGER.info("selectedShopServices: (" + selectedShopServices + ")");
+
         } else {
             modelMap.addAttribute("errorSelectedShopId", "choose shop");
             return "client-dashboard";
@@ -70,12 +75,12 @@ public class ClientController {
         List<Visit> visits = visitService.list();
         modelMap.addAttribute("visits", visits);
 
-        List<Service> services = serviceService.list();
-        modelMap.addAttribute("services", services);
+//        List<Service> services = serviceService.list();
+//        modelMap.addAttribute("services", services);
 
         LOGGER.info("dashboard(...)= " + visits);
 //        LOGGER.info("dashboard(...)= " + shops);
-        LOGGER.info("dashboard(...)= " + services);
+//        LOGGER.info("dashboard(...)= " + services);
         return "client-dashboard";
     }
 
@@ -153,10 +158,18 @@ public class ClientController {
     }
 
     @GetMapping(value = "/visit/create")
-    public String visitCreate(@RequestParam String username, Long shopId, Long serviceId) {
+    public String visitCreate(@RequestParam String username, Long selectedShopId, Long selectedServiceId, ModelMap modelMap) {
         LOGGER.info("visitCreate(" + username + ")");
-        LOGGER.info("visitCreate(" + shopId + ")");
-        LOGGER.info("visitCreate(" + serviceId + ")");
+        LOGGER.info("visitCreate(" + selectedShopId + ")");
+        LOGGER.info("visitCreate(" + selectedServiceId + ")");
+
+        // na podstawie selected IDs pobrać shop i service i wstawić do sesji.
+
+        Shop selectedShop = shopService.read(selectedShopId);
+        modelMap.addAttribute(SHOP_SESSION, selectedShop);
+
+        Service selectedService = serviceService.read(selectedServiceId);
+        modelMap.addAttribute(SERVICE_SESSION, selectedService);
 
         return "redirect:/visits/create";
     }

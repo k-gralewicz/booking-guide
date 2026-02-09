@@ -1,9 +1,7 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Shop {
@@ -17,8 +15,9 @@ public class Shop {
 
     private Address address;
     private List<Visit> visits = new ArrayList<>();
+    private Set<Service> services = new HashSet<>();
 
-    public Shop (){
+    public Shop() {
     }
 
 //    public Shop(String name, String description, String phoneNumber, Address address) {
@@ -111,6 +110,14 @@ public class Shop {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Set<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(Set<Service> services) {
+        this.services = services;
     }
 
     @Override
