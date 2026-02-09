@@ -17,7 +17,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <form th:action="${isEdit} ? @{/visits/update/{id}(id=${visit.id})} : @{/visits}"
+            <form th:action="${isEdit} ? @{/visits/update/{id}(id=${visit.id})} : @{/visits/create}"
                   method="post"
                   th:object="${visit}">
                 <input type="hidden" th:if="${isEdit}" th:value="*{id}"/>

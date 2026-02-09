@@ -36,7 +36,8 @@
                 <select class="form-control" id="service" name="service" onchange="selectShopOrService();">
                     <option value="">--Select Service--</option>
                     <tr th:each="service : ${services}">
-                        <option th:value="${service.id}" th:text="${service.name}"></option>
+                        <option th:value="${service.id}" th:text="${service.name}"
+                                th:selected="${service.id} == ${selectedServiceId}"></option>
                     </tr>
                 </select>
             </div>

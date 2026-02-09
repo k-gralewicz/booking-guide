@@ -155,3 +155,8 @@ public class BookingGuideApplication {
 // TODO: 22.01.2026:
 // po zalogowaniu użytkownika typu CLIENT automatycznie przypisać do niego SHOP i wstawić do sesji.
 // dodać metodę filtrującą listę services po shopId.
+
+// TODO: 09.02.2026:
+// w navbar dodać link do odpowiedniego dashboard w zależności od typu zalogowanego użytkownika.
+// jeżeli nie wybrano żadnego shop to wyświetla się lista visit dla wszystkich shop - ClientDahboard.
+// jeżeli nie wybrano Shop lub Service obsłużyć sytuację - walidacja. 

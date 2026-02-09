@@ -49,8 +49,10 @@ public class VisitController {
     }
 
     @GetMapping(value = "/create")
-    public String createView(String username, Long serviceId, ModelMap modelMap) {
-        LOGGER.info("createView()");
+    public String createView(@RequestParam(required = false) Long serviceId,
+                             String username, ModelMap modelMap) {
+        LOGGER.info("createView(" + serviceId + ")");
+        LOGGER.info("createView(" + username + ")");
 //        User userByUsername = userService.findByUsername(username);
 //        if (userByUsername == null) {
 //            modelMap.addAttribute("error", "User not found");
