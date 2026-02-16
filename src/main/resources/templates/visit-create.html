@@ -1,64 +1,83 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <title th:text="${isEdit} ? 'Edit Visit' : 'Create Visit'">Visit Form</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <meta charset="UTF-8">
-    <title>Create Visits</title>
 </head>
 <body>
 <div class="container-fluid">
-    <div th:if="${!isEdit}">
-        <h1>Create Visit</h1>
-    </div>
-    <div th:if="${isEdit}">
-        <h1>Edit Visit</h1>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div th:if="${visit != null}">
-                <form action="#" th:action="@{/visits/create}" th:object="${visit}" method="post">
-                    <div class="mb-3">
-                        <label for="firstName">Client First Name</label>
-                    </div>
-                    <div class="mb-3">
-                        <label for="lastName">Client Last Name</label>
-                        <input name="username" th:value="${#authentication.name}" class="form-control">
-                        <div sec:authentication="name"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="serviceName">Service</label>
-                        <span id="visit.service" th:text="${visit?.service}"></span>
-                        <input type="hidden" id="serviceId" name="serviceId" th:value="${visit.service.id}">
-                        <!--                        <select id="services" name="serviceId" th:field="*{serviceId}" class="form-control">-->
-                        <!--                            <option th:each="service : ${services}" th:value="${service.id}"-->
-                        <!--                                    th:text="${service.name}"></option>-->
-                        <!--                        </select>-->
-                    </div>
-                    <div class="mb-3">
-<!--                        <label for="shopName">Shop</label>-->
-                        <span>Shop: <strong th:text="${session.SHOP_SESSION.name}">Shop Name</strong></span>
-                        <span>Shop: <strong th:text="${session.SHOP_SESSION.id}">Shop ID</strong></span>
-                        <!--                        <input type="hidden" i="shopId" name="shopId" th:value="${visit.shopId}">-->
-                        <!--                        <select id="shops" name="shopId" th:field="*{shopId}" class="form-control">-->
-<!--                            <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}"></option>-->
-<!--                        </select>-->
-                    </div>
-                    <div class="mb-3">
-                        <label for="dueDate">Date</label>
-                        <input type="date" id="dueDate" name="dueDate" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-primary">Create</button>
+    <div th:replace="~{fragments/navbar :: navigation}"></div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <h3 class="text-center" th:text="${isEdit} ? 'Edit Visit' : 'Create Visit'">Visit Form</h3>
+                <hr/>
+
+                <form th:action="${isEdit} ? @{/visits/update/{id}(id=${visit.id})} : @{/visits/create}"
+                      method="post"
+                      th:object="${visit}">
+
+                    <input type="hidden" th:if="${isEdit}" th:field="*{id}"/>
+
+                    <div th:if="${visit != null}">
+
+                        <div sec:authorize="hasRole('ROLE_ADMIN')" class="mb-4">
+                            <label class="fw-bold" for="client">Client:</label>
+                            <select id="client" th:field="*{client.id}" class="form-control" required>
+                                <option value="" disabled selected>Select a client</option>
+                                <option th:each="client : ${clients}"
+                                        th:value="${client.id}"
+                                        th:text="${client.firstName + ' ' + client.lastName}"></option>
+                            </select>
+                        </div>
+
+                        <div sec:authorize="!hasRole('ROLE_ADMIN')">
+                            <input type="hidden" name="username" th:value="${#authentication.name}">
+                        </div>
+
+                        <div class="mb-3 d-flex justify-content-between border-bottom pb-2">
+                            <label class="fw-bold">Service:</label>
+                            <span th:text="${session.SERVICE_SESSION?.name}">Service Name</span>
+                        </div>
+
+                        <div class="mb-3 d-flex justify-content-between border-bottom pb-2">
+                            <label class="fw-bold">Shop:</label>
+                            <span th:text="${session.SHOP_SESSION?.name}">Shop Name</span>
+                            <input type="hidden" name="shopId" th:value="${session.SHOP_SESSION?.id}">
+                            <input type="hidden" name="serviceId" th:value="${session.SERVICE_SESSION?.id}">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="fw-bold" for="dueDate">Date:</label>
+                            <input type="date" id="dueDate" th:field="*{dueDate}" class="form-control" required>
+                            <div class="form-text">Format: YYYY-MM-DD</div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <div class="btn-group w-100">
+                                <button type="submit" class="btn btn-primary"
+                                        th:text="${isEdit} ? 'Update' : 'Create Visit'">Action</button>
+                                <a th:href="@{/clients/dashboard}" class="btn btn-secondary ms-2">Cancel</a>
+                            </div>
+                        </div>
                     </div>
                 </form>
+
+                <div class="mt-3 text-center">
+                    <span class="text-danger" th:text="${error}"></span>
+                    <span class="text-info" th:text="${createMessage}"></span>
+                </div>
+
             </div>
-        </div>
-        <div class="col">
-            <div th:text="${createMessage}">&nbsp;</div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

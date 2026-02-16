@@ -6,38 +6,38 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
-import pl.gralewicz.kamil.java.app.bookingguide.service.ServiceService;
-import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
-import pl.gralewicz.kamil.java.app.bookingguide.service.UserService;
-import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
+import pl.gralewicz.kamil.java.app.bookingguide.service.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SERVICE_SESSION;
+import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants.SHOP_SESSION;
+
 @Controller // przyjmuje dane od użytkownika i zwraca dane do użytkownika za pomocą protokołu http
 @RequestMapping(value = "/visits")
+@SessionAttributes({SHOP_SESSION, SERVICE_SESSION})
 public class VisitController {
     private static final Logger LOGGER = Logger.getLogger(VisitController.class.getName());
+    private final ClientService clientService;
 
     private VisitService visitService;
     private ServiceService serviceService;
     private ShopService shopService;
     private UserService userService;
 
-    public VisitController(VisitService visitService, ServiceService serviceService, ShopService shopService, UserService userService) {
+    public VisitController(VisitService visitService, ServiceService serviceService, ShopService shopService, UserService userService, ClientService clientService) {
         this.visitService = visitService;
         this.serviceService = serviceService;
         this.shopService = shopService;
         this.userService = userService;
+        this.clientService = clientService;
     }
 
     @GetMapping
@@ -50,13 +50,15 @@ public class VisitController {
     }
 
     @GetMapping(value = "/create")
-    public String createView(String username, ModelMap modelMap) {
-        LOGGER.info("createView()");
-        User userByUsername = userService.findByUsername(username);
-        if (userByUsername == null) {
-            modelMap.addAttribute("error", "User not found");
-            return "visit-create";
-        }
+    public String createView(@RequestParam(required = false) Long serviceId,
+                             String username, ModelMap modelMap) {
+        LOGGER.info("createView(" + serviceId + ")");
+        LOGGER.info("createView(" + username + ")");
+//        User userByUsername = userService.findByUsername(username);
+//        if (userByUsername == null) {
+//            modelMap.addAttribute("error", "User not found");
+//            return "visit-create";
+//        }
         List<Service> services = serviceService.list();
         Set<Shop> shops = shopService.list();
         modelMap.addAttribute("services", services);
@@ -80,7 +82,7 @@ public class VisitController {
             return "visit-create";
         }
         // na podstawie shopId pobrać shop,
-        shopId = 602L;
+//        shopId = 602L;
         Shop shop = shopService.findById(shopId);
         if (shop == null) {
             modelMap.addAttribute("error", "Shop not found");
@@ -96,7 +98,7 @@ public class VisitController {
         Visit newVisit = new Visit();
         newVisit.setShop(shop);
         newVisit.setService(service);
-        newVisit.setDueDate(LocalDate.parse(dueDate, DateTimeFormatter.ISO_DATE).atStartOfDay());
+//        newVisit.setDueDate(LocalDate.from(LocalDate.parse(dueDate, DateTimeFormatter.ISO_DATE).atStartOfDay()));
 
         Visit createdVisit = visitService.create(newVisit);
         LOGGER.info("createX(...)= " + createdVisit);
@@ -104,7 +106,7 @@ public class VisitController {
     }
 
     @PostMapping(value = "/create/user")
-    public String createWithUsername(@RequestBody String username, ModelMap modelMap) {
+    public String createWithUsername(@RequestParam String username, ModelMap modelMap) {
         LOGGER.info("createWithUsername(" + username + ")");
         User userByUsername = userService.findByUsername(username);
         if (userByUsername == null) {
@@ -131,10 +133,13 @@ public class VisitController {
     //      4a. Blokada godzinowa usługi w danym salonie.
 
     @GetMapping(value = "/create/{id}")
-    public String createWithService(@PathVariable(name = "id") Long serviceId, ModelMap modelMap) {
+    public String createWithService(@PathVariable(name = "id") Long serviceId, Long shopId, Long clientId, ModelMap modelMap) {
         LOGGER.info("createWithService(" + serviceId + ")");
+        LOGGER.info("createWithService(" + shopId + ")");
+        LOGGER.info("createWithService(" + clientId + ")");
         Service service = serviceService.read(serviceId);
-
+        modelMap.addAttribute(SERVICE_SESSION, service);
+        List<Client> clients = clientService.list();
         Visit visit = new Visit();
         visit.setService(service);
 
@@ -142,6 +147,7 @@ public class VisitController {
 
         modelMap.addAttribute("visit", visit);
         modelMap.addAttribute("isEdit", false);
+        modelMap.addAttribute("clients", clients);
         LOGGER.info("createWithService(...)= ");
         return "visit-create.html";
     }
@@ -156,26 +162,55 @@ public class VisitController {
         return "redirect:/visits";
     }
 
-    //metoda obsługująca żadanie GET protokołu HTTP,
     @GetMapping(value = "/{id}")
-    public String read(@PathVariable Long id, ModelMap modelMap) { //id paramentr żądania prtokołu http w postaci zmiennej parametru URL.
+    public String read(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("read(" + id + ")");
         Visit readVisit = visitService.read(id);
-        modelMap.addAttribute("createMessage", "This is visit: " + readVisit);
-        boolean isEdit = true;
-        modelMap.addAttribute("isEdit", isEdit); // modelMap służy do komunikacji backend-frontend, ustawia zmienne(wartości) widoczne na frontendzie.
-        LOGGER.info("read(...)= ");
-        return "visit-read.html";
+        modelMap.addAttribute("visit", readVisit);
+        modelMap.addAttribute("isEdit", false);
+        LOGGER.info("read(...)= " + readVisit);
+        return "visit-read";
     }
 
     @GetMapping(value = "/update/{id}")
     public String updateView(@PathVariable Long id, ModelMap modelMap) {
-        LOGGER.info("updateView()");
+        LOGGER.info("updateView(" + id + ")");
         Visit readVisit = visitService.read(id);
-        modelMap.addAttribute("visit", readVisit);
+
+        if (readVisit != null) {
+            modelMap.addAttribute("visit", readVisit);
+            modelMap.addAttribute(SERVICE_SESSION, readVisit.getService());
+            modelMap.addAttribute(SHOP_SESSION, readVisit.getShop());
+            modelMap.addAttribute("clients", clientService.list());
+        }
+
         modelMap.addAttribute("isEdit", true);
         LOGGER.info("updateView(...)= " + readVisit);
-        return "visit-create.html";
+        return "visit-create";
+    }
+
+    @PostMapping(value = "/update/{id}")
+    public String update(@PathVariable Long id,
+                         @ModelAttribute Visit visit,
+                         @ModelAttribute(SHOP_SESSION) Shop sessionShop,
+                         @ModelAttribute(SERVICE_SESSION) Service sessionService) {
+        LOGGER.info("update(" + id + ", " + visit + ")");
+
+        try {
+            Service newService = serviceService.read(sessionService.getId());
+            Shop newShop = shopService.read(sessionShop.getId());
+
+            visit.setService(newService);
+            visit.setShop(newShop);
+            visit.setId(id);
+
+            visitService.update(id, visit);
+            return "redirect:/visits";
+
+        } catch (NoSuchElementException e) {
+            LOGGER.warning("Failed to update visit: " + e.getMessage());
+            return "redirect:/clients/dashboard?error=data_not_found";
+        }
     }
 
     @GetMapping(value = "/delete/{id}")

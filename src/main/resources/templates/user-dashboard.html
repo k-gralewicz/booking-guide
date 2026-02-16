@@ -18,7 +18,7 @@
                 <ul class="list-group">
                     <li class="list-group-item" th:each="shop : ${shops}"
                         th:text="${shop.name + ' - ' + shop.address}"></li>
-                    <li class="list-group-item" th:if="${shops != null and !shops.isEmpty()}">No shops assigned yet.
+                    <li class="list-group-item" th:if="${shops == null}">No shops assigned yet.
                     </li>
                 </ul>
             </div>
@@ -64,5 +64,6 @@
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

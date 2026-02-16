@@ -66,9 +66,29 @@ public class VisitService {
         return mappedVisit;
     }
 
+    public Visit update(Long id, Visit visit) {
+        LOGGER.info("update(" + id + ", " + visit + ")");
+        if (visit != null) {
+            VisitEntity visitEntity = visitMapper.from(visit);
+            VisitEntity createdVisitEntity = visitRepository.save(visitEntity);
+            Visit mappedVisit = visitMapper.from(createdVisitEntity);
+            LOGGER.info("update(...)= " + mappedVisit);
+            return mappedVisit;
+        }
+        return null;
+    }
+
     public void delete(Long id) {
         LOGGER.info("delete(" + id + ")");
         visitRepository.deleteById(id);
         LOGGER.info("delete(...)= ");
+    }
+
+    public List<Visit> list(Long shopId) {
+        LOGGER.info("list(" + shopId + ")");
+        List<VisitEntity> visitEntities = visitRepository.findByShopId(shopId);
+        List<Visit> visits = visitMapper.fromEntities(visitEntities);
+        LOGGER.info("list(...)= " + visits);
+        return visits;
     }
 }

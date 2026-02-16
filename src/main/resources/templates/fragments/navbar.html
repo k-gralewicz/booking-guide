@@ -42,8 +42,9 @@
                             Active Shop: <strong th:text="${session.SHOP_SESSION.name}">Shop Name</strong>
                         </span>
                         <span class="navbar-text" th:if="${session.SHOP_SESSION == null}">
-                            No active shop selected
+                            <span>No active shop selected</span>
                         </span>
+                        <span><a class="nav-link" th:href="@{/clients/dashboard}">Select shop</a></span>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/logout}">Logout</a>

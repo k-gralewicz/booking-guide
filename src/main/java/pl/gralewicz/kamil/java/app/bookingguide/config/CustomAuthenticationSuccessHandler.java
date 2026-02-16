@@ -35,16 +35,19 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             if ("ROLE_ADMIN".equals(role)) {
                 redirectUrl = "/users/dashboard";
                 break;
-            } else  if ("ROLE_USER".equals(role)){
+            } else if ("ROLE_USER".equals(role)) {
+                redirectUrl = "/clients/dashboard";
+                break;
+            } else if ("ROLE_CLIENT".equals(role)) {
                 redirectUrl = "/clients/dashboard";
                 break;
             }
-        }
 
-        if (redirectUrl == null) {
-            redirectUrl = "/services";
-        }
+            if (redirectUrl == null) {
+                redirectUrl = "/services";
+            }
 
-        redirectStrategy.sendRedirect(request, response, redirectUrl);
+            redirectStrategy.sendRedirect(request, response, redirectUrl);
+        }
     }
 }

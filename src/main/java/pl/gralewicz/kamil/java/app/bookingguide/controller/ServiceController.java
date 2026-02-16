@@ -93,6 +93,7 @@ public class ServiceController {
     public String updateView(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("updateView()");
         Service readService = serviceService.read(id);
+        modelMap.addAttribute("isEdit", true);
         LOGGER.info("updateView(...)= " + readService);
         return "service-create";
     }

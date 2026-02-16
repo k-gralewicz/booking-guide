@@ -98,6 +98,11 @@ public class BookingGuideApplication {
 // TODO: 26.06.2025 różnica między sygnaturą metody a definicją metody.  
 // TODO: 26.06.2025 dokończyć implementację visitCreate z poziomu service.  
 // TODO: 26.06.2025 albo dla danej usługi znaleźć sklep 
+// TODO: 26.06.2025 albo pozostać przy liście usług i sklepów i dla wybranego sklepu wyświetlić dostępne usługi.  
+
+// TODO: 03.07.2025 dokończyć implementację funkcji selectShop w javascript:
+// TODO: 03.07.2025 pobranie identyfikatora wybranego shopa, 
+// TODO: 03.07.2025 wykonanie request pod endpoint który wyświetla visit-create.html
 // TODO: 26.06.2025 albo pozostać przy liście usług i sklepów i dla wybranego sklepu wyświetlić dostępne usługi.
 
 // TODO: 17.07.2025 1b:     b. posiada więcej niż 1 Shop - ma możliwość wyboru Shop'a (nowy ekran z dropdown/select),
@@ -111,19 +116,19 @@ public class BookingGuideApplication {
 
 // TODO: 04.09.2025 dokończyć implementację dodawania Service do Shop.
 
-// TODO: 18.09.2025 Navbar - obok wybranego shop dać możliwość zmiany CHANGE jeśli user ma więcej niż 1 shop, 
-// TODO: 18.09.2025 Napisać test integracyjny bez Mock dla ServiceService - nowa klasa testowa, 
-// TODO: 18.09.2025 services.html - dodać NavBar, 
-// TODO: 18.09.2025 do naprawy services metoda READ, 
+// TODO: 18.09.2025 Navbar - obok wybranego shop dać możliwość zmiany CHANGE jeśli user ma więcej niż 1 shop,
+// TODO: 18.09.2025 Napisać test integracyjny bez Mock dla ServiceService - nowa klasa testowa,
+// TODO: 18.09.2025 services.html - dodać NavBar,
+// TODO: 18.09.2025 do naprawy services metoda READ,
 // TODO: 18.09.2025 sprawdzić czy działa metoda createWithShop - albo testami albo ręcznie,
 
 // TODO: 02.10.2025 do pozostałych plików html dodać
 //<div class="container-fluid">
 //<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
 //        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-// TODO: 25.09.2025 przy rezerwacji wizyty przypisywać zapisany w sesji shop zarówno wizualnie w html jak i w kodzie java, 
+// TODO: 25.09.2025 przy rezerwacji wizyty przypisywać zapisany w sesji shop zarówno wizualnie w html jak i w kodzie java,
 
-// TODO: 02.10.2025 to co wyżej + 
+// TODO: 02.10.2025 to co wyżej +
 // TODO: 02.10.2025 client-read.html,
 
 // TODO: 09.10.2025 dodanie mechanizmu usuwania usług w Service: proponowany sposób realizacji:
@@ -139,3 +144,20 @@ public class BookingGuideApplication {
 // do sesji dodać shopId analogicznie do ShopName
 
 // createX - sprawdzić o co chodzi na następnym spotkaniu
+
+// TODO: 13.11.2025 na następnym spotkaniu wszystkie metody update do napisania OD NOWA !
+
+// TODO: 12.01.2026 visitController dokończyć implementację clientWithService dla wybranego klienta
+// w html dokończyć wyświetlanie listy klientów.
+// dla roli ADMIN i USER lista rozwijana, dla CLIENT dane z sesji
+// 33 codeWars.
+
+// TODO: 22.01.2026:
+// po zalogowaniu użytkownika typu CLIENT automatycznie przypisać do niego SHOP i wstawić do sesji.
+// dodać metodę filtrującą listę services po shopId.
+
+// TODO: 09.02.2026:
+// w navbar dodać link do odpowiedniego dashboard w zależności od typu zalogowanego użytkownika.
+// jeżeli nie wybrano żadnego shop to wyświetla się lista visit dla wszystkich shop - ClientDahboard.
+// jeżeli nie wybrano Shop lub Service obsłużyć sytuację - walidacja.
+// visit: update i read do implementacji.
