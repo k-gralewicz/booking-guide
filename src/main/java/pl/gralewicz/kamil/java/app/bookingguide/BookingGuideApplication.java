@@ -159,4 +159,5 @@ public class BookingGuideApplication {
 // TODO: 09.02.2026:
 // w navbar dodać link do odpowiedniego dashboard w zależności od typu zalogowanego użytkownika.
 // jeżeli nie wybrano żadnego shop to wyświetla się lista visit dla wszystkich shop - ClientDahboard.
-// jeżeli nie wybrano Shop lub Service obsłużyć sytuację - walidacja. 
+// jeżeli nie wybrano Shop lub Service obsłużyć sytuację - walidacja.
+// visit: update i read do implementacji.

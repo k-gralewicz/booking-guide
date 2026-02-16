@@ -13,6 +13,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
 import pl.gralewicz.kamil.java.app.bookingguide.service.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -161,43 +162,56 @@ public class VisitController {
         return "redirect:/visits";
     }
 
-    //metoda obsługująca żadanie GET protokołu HTTP,
     @GetMapping(value = "/{id}")
-    public String read(@PathVariable Long id, ModelMap modelMap) { //id paramentr żądania prtokołu http w postaci zmiennej parametru URL.
+    public String read(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("read(" + id + ")");
         Visit readVisit = visitService.read(id);
-        modelMap.addAttribute("createMessage", "This is visit: " + readVisit);
-        boolean isEdit = true;
-        modelMap.addAttribute("isEdit", isEdit); // modelMap służy do komunikacji backend-frontend, ustawia zmienne(wartości) widoczne na frontendzie.
-        LOGGER.info("read(...)= ");
-        return "visit-read.html";
+        modelMap.addAttribute("visit", readVisit);
+        modelMap.addAttribute("isEdit", false);
+        LOGGER.info("read(...)= " + readVisit);
+        return "visit-read";
     }
 
     @GetMapping(value = "/update/{id}")
     public String updateView(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("updateView(" + id + ")");
         Visit readVisit = visitService.read(id);
-        modelMap.addAttribute("visit", readVisit);
-        LOGGER.info("readVisit= " + readVisit);
+
         if (readVisit != null) {
-            Service service = readVisit.getService();
-            modelMap.addAttribute(SERVICE_SESSION, service);
+            modelMap.addAttribute("visit", readVisit);
+            modelMap.addAttribute(SERVICE_SESSION, readVisit.getService());
+            modelMap.addAttribute(SHOP_SESSION, readVisit.getShop());
+            modelMap.addAttribute("clients", clientService.list());
         }
 
         modelMap.addAttribute("isEdit", true);
         LOGGER.info("updateView(...)= " + readVisit);
-        return "visit-create.html";
+        return "visit-create";
     }
 
     @PostMapping(value = "/update/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute Visit visit) {
-        LOGGER.info("update(" + id + "," + visit + ")");
-        Visit updatedVisit = visitService.update(id, visit);
-        LOGGER.info("update(...)= " + updatedVisit);
-        return "redirect:/visits";
-    }
+    public String update(@PathVariable Long id,
+                         @ModelAttribute Visit visit,
+                         @ModelAttribute(SHOP_SESSION) Shop sessionShop,
+                         @ModelAttribute(SERVICE_SESSION) Service sessionService) {
+        LOGGER.info("update(" + id + ", " + visit + ")");
 
-    // parametry session.SERVICE_SESSION i session.SHOP_SESSION muszą być dostępne w metodzie update analogicznie jak w create.
+        try {
+            Service newService = serviceService.read(sessionService.getId());
+            Shop newShop = shopService.read(sessionShop.getId());
+
+            visit.setService(newService);
+            visit.setShop(newShop);
+            visit.setId(id);
+
+            visitService.update(id, visit);
+            return "redirect:/visits";
+
+        } catch (NoSuchElementException e) {
+            LOGGER.warning("Failed to update visit: " + e.getMessage());
+            return "redirect:/clients/dashboard?error=data_not_found";
+        }
+    }
 
     @GetMapping(value = "/delete/{id}")
     public String delete(@PathVariable Long id, ModelMap modelMap) {

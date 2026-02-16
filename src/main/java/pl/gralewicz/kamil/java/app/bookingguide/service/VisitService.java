@@ -83,4 +83,12 @@ public class VisitService {
         visitRepository.deleteById(id);
         LOGGER.info("delete(...)= ");
     }
+
+    public List<Visit> list(Long shopId) {
+        LOGGER.info("list(" + shopId + ")");
+        List<VisitEntity> visitEntities = visitRepository.findByShopId(shopId);
+        List<Visit> visits = visitMapper.fromEntities(visitEntities);
+        LOGGER.info("list(...)= " + visits);
+        return visits;
+    }
 }

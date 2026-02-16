@@ -54,33 +54,28 @@ public class ClientController {
         if (selectedShopId != null) {
             Shop selectedShop = shopService.read(selectedShopId);
             modelMap.addAttribute(SHOP_SESSION, selectedShop);
-            // dodać metodę filtrującą listę services po selectedShopId.
 
             Set<Service> selectedShopServices = selectedShop.getServices();
             modelMap.addAttribute("services", selectedShopServices);
             LOGGER.info("selectedShopServices: (" + selectedShopServices + ")");
-
-        } else {
-            modelMap.addAttribute("errorSelectedShopId", "choose shop");
-            return "client-dashboard";
         }
         if (selectedServiceId != null) {
             Service selectedService = serviceService.read(selectedServiceId);
             modelMap.addAttribute(SERVICE_SESSION, selectedService);
-        } else {
-            modelMap.addAttribute("errorSelectedServiceId", "choose service");
-            return "client-dashboard";
         }
-// 2.02.2026 - dokończyć ClientController
-        List<Visit> visits = visitService.list();
+
+        List<Visit> visits;
+        if (selectedShopId == null) {
+            visits = visitService.list();
+            LOGGER.info("Displaying all visits (no shopId filter)");
+        } else {
+            visits = visitService.list(selectedShopId);
+            LOGGER.info("Displaying visits filtered for shopId: " + selectedShopId);
+        }
+
         modelMap.addAttribute("visits", visits);
-
-//        List<Service> services = serviceService.list();
-//        modelMap.addAttribute("services", services);
-
         LOGGER.info("dashboard(...)= " + visits);
-//        LOGGER.info("dashboard(...)= " + shops);
-//        LOGGER.info("dashboard(...)= " + services);
+
         return "client-dashboard";
     }
 
