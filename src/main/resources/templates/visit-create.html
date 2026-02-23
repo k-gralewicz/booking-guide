@@ -28,7 +28,8 @@
 
                         <div sec:authorize="hasRole('ROLE_ADMIN')" class="mb-4">
                             <label class="fw-bold" for="client">Client:</label>
-                            <select id="client" th:field="*{client.id}" class="form-select" required>
+<!--                            <select id="client" th:field="*{client.id}" class="form-select" required>-->
+                            <select id="client" name="clientId" class="form-select" required>
                                 <option value="" disabled selected>Select a client</option>
                                 <option th:each="client : ${clients}"
                                         th:value="${client.id}"
