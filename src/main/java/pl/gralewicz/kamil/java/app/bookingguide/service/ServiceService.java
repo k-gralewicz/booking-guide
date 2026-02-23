@@ -80,6 +80,19 @@ public class ServiceService {
         return mappedService;
     }
 
+    public Service update(Long id, Service service) {
+        LOGGER.info("update(" + id + ", " + service + ")");
+        if (service != null) {
+            service.setId(id);
+            ServiceEntity serviceEntity = serviceMapper.from(service);
+            ServiceEntity updatedServiceEntity = serviceRepository.save(serviceEntity);
+            Service mappedService = serviceMapper.from(updatedServiceEntity);
+            LOGGER.info("update(...)= " + mappedService);
+            return mappedService;
+        }
+        return null;
+    }
+
     public void delete(Long id, Long selectedShopId) {
         LOGGER.info("delete(" + id + ")");
         Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);

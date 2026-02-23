@@ -161,3 +161,8 @@ public class BookingGuideApplication {
 // jeżeli nie wybrano żadnego shop to wyświetla się lista visit dla wszystkich shop - ClientDahboard.
 // jeżeli nie wybrano Shop lub Service obsłużyć sytuację - walidacja.
 // visit: update i read do implementacji.
+
+// TODO: 16.02.2026:
+// 3. Service Dashboard:  c. Update - not done,
+// 4. User Dashboard:      b. Read - not done,
+// 6. Visit Dashboard:      b. Read - not done,      c. Update - not done.

@@ -62,19 +62,19 @@ public class ServiceController {
             modelMap.addAttribute("isEdit", false);
             return "service-create";
         }
-            Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
-            if(selectedShop!= null){
-                Service createdService = serviceService.createWithShop(service, selectedShop.getId());
-                LOGGER.info("create(...)= " + createdService);
-            }
-            LOGGER.info("create(...)= ");
-            return "redirect:/services";
+        Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
+        if (selectedShop != null) {
+            Service createdService = serviceService.createWithShop(service, selectedShop.getId());
+            LOGGER.info("create(...)= " + createdService);
+        }
+        LOGGER.info("create(...)= ");
+        return "redirect:/services";
     }
 
     @GetMapping(value = "/{id}")
 //    public String read(@PathVariable Long id, String name, String description, BigDecimal price, int duration, DurationType durationType, ModelMap modelMap) {
     public String read(@PathVariable Long id, ModelMap modelMap) {
-            LOGGER.info("read(" + id + ")");
+        LOGGER.info("read(" + id + ")");
 //        LOGGER.info("read(" + name + ")");
 //        LOGGER.info("read(" + description + ")");
 //        LOGGER.info("read(" + price + ")");
@@ -91,11 +91,46 @@ public class ServiceController {
 
     @GetMapping(value = "/update/{id}")
     public String updateView(@PathVariable Long id, ModelMap modelMap) {
-        LOGGER.info("updateView()");
+        LOGGER.info("updateView(" + id + ")");
         Service readService = serviceService.read(id);
+
+        modelMap.addAttribute("service", readService);
+        modelMap.addAttribute("durationTypes", DurationType.values());
         modelMap.addAttribute("isEdit", true);
+
         LOGGER.info("updateView(...)= " + readService);
         return "service-create";
+    }
+
+    @PostMapping(value = "/update/{id}")
+    public String update(
+            @PathVariable Long id,
+            @ModelAttribute("service") Service service,
+            BindingResult bindingResult,
+            ModelMap modelMap) {
+
+        LOGGER.info("update(" + id + ", " + service + ")");
+
+        if (bindingResult.hasErrors()) {
+            LOGGER.warning("Validation errors occurred");
+            modelMap.addAttribute("isEdit", true);
+            modelMap.addAttribute("durationTypes", DurationType.values());
+            return "service-create";
+        }
+
+        try {
+            service.setId(id);
+            serviceService.update(id, service);
+            LOGGER.info("update(...)= success");
+            return "redirect:/services";
+
+        } catch (Exception e) {
+            LOGGER.severe("Error updating service: " + e.getMessage());
+            modelMap.addAttribute("errorMessage", "Błąd aktualizacji: " + e.getMessage());
+            modelMap.addAttribute("isEdit", true);
+            modelMap.addAttribute("durationTypes", DurationType.values());
+            return "service-create";
+        }
     }
 
     @GetMapping(value = "/delete/{id}")
@@ -103,7 +138,7 @@ public class ServiceController {
         LOGGER.info("read(" + id + ")");
 
         Shop selectedShop = (Shop) modelMap.getAttribute(SHOP_SESSION);
-        if(selectedShop!= null) {
+        if (selectedShop != null) {
             Long selectedShopId = selectedShop.getId();
             serviceService.delete(id, selectedShopId);
         }

@@ -78,12 +78,17 @@ public class UserController {
     @GetMapping(value = "/{id}")
     public String read(@PathVariable Long id, ModelMap modelMap) {
         LOGGER.info("read(" + id + ")");
-        User readUser = userService.read(id);
-        modelMap.addAttribute("createMessage", "This is user: " + readUser);
-        boolean isEdit = true;
-        modelMap.addAttribute("isEdit", isEdit);
-        LOGGER.info("read(...)= ");
-        return "user-read";
+        try {
+            User readUser = userService.read(id);
+            modelMap.addAttribute("user", readUser);
+            modelMap.addAttribute("createMessage", "User Profile: " + readUser.getUsername());
+            modelMap.addAttribute("isEdit", false);
+            LOGGER.info("read(...)= " + readUser);
+            return "user-read";
+        } catch (NoSuchElementException e) {
+            LOGGER.warning("User with id " + id + " not found");
+            return "redirect:/users";
+        }
     }
 
     @GetMapping(value = "/update/{id}")
