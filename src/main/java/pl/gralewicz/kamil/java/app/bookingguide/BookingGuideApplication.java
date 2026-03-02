@@ -166,3 +166,9 @@ public class BookingGuideApplication {
 // 3. Service Dashboard:  c. Update - not done,
 // 4. User Dashboard:      b. Read - not done,
 // 6. Visit Dashboard:      b. Read - not done,      c. Update - not done.
+
+// TODO: 23.02.2026:
+// stworzyć USER z możliwością dodania danych jak CLIENT
+// klasa User analogicznie do klasy UserEntity
+// html od user-create musi zawierać dodatkowo takie dane jak tworzenie nowego CLIENT na client-create.
+// dane z formularza tworzenia USER należy zapisać w polu client dla klasy UserEntity.
