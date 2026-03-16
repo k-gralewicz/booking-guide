@@ -73,12 +73,6 @@ public class VisitController {
     public String createX(@RequestParam(required = false) String username, Long shopId, Long serviceId, Long clientId, String dueDate, ModelMap modelMap) {
         LOGGER.info("createX(username=" + username + ", shopId=" + shopId + ", serviceId=" + serviceId + ", clientId=" + clientId + ", dueDate=" + dueDate + ")");
 
-        // sprawdzić czy jest username, a następnie pobrać go.
-        // w przeciwnym wypadku, na podstawie clientId pobrać klienta.
-        // odnaleziony client wstawić do visit.
-
-        // na podstawie user lub username pobrać client
-
         Visit newVisit = new Visit();
 
         if (username != null) {
@@ -87,6 +81,15 @@ public class VisitController {
                 modelMap.addAttribute("error", "User not found");
                 return "visit-create";
             }
+//            Client clientFromUser = userByUsername.getClient();
+//            newVisit.setClient(clientFromUser);
+
+            Client clientFromUser = userByUsername.getClient();
+            LOGGER.info("clientFromUser= " + clientFromUser);
+            Long clientFromUserId = clientFromUser.getId();
+            Client client = clientService.read(clientFromUserId);
+            newVisit.setClient(client);
+//            z pobranego klienta za pomocą ID pobierz go ponownie za pomocą service i dopiero ustaw do newVisit
         } else {
             Client client = clientService.read(clientId);
             newVisit.setClient(client);

@@ -80,11 +80,6 @@ public class UserService {
             userEntity.addShop(shopEntity);
         }
 
-        // podczas tworzenia nowego usera wymusić sztuczne tworzenie client.
-        // client musi posiadać te same dane co user.
-
-
-
         UserEntity saved = userRepository.save(userEntity);
         return userMapper.from(saved);
     }

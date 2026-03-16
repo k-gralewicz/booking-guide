@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.gralewicz.kamil.java.app.bookingguide.api.RoleType;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Role;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
@@ -16,14 +17,14 @@ import java.util.Set;
 @SpringBootTest
 class UserServiceSpringIntegrationTest {
 
-   @Autowired
-   private UserService userService;
+    @Autowired
+    private UserService userService;
 
-   @Autowired
-   private RoleService roleService;
+    @Autowired
+    private RoleService roleService;
 
-   @Autowired
-   private ShopService shopService;
+    @Autowired
+    private ShopService shopService;
 
     @Test
     void create() {
@@ -35,15 +36,14 @@ class UserServiceSpringIntegrationTest {
 
         // then
         Assertions.assertAll(
-                ()-> Assertions.assertNotNull(createdUser, "createdUser is null"),
-                ()-> Assertions.assertNotNull(createdUser.getId(), "cretedUser id is null")
+                () -> Assertions.assertNotNull(createdUser, "createdUser is null"),
+                () -> Assertions.assertNotNull(createdUser.getId(), "cretedUser id is null")
         );
     }
 
 
-
     @Test
-    void createWithRole () {
+    void createWithRole() {
         // given
         User user = new User();
         List<Role> roles = roleService.list();
@@ -57,13 +57,13 @@ class UserServiceSpringIntegrationTest {
 
         // then
         Assertions.assertAll(
-                ()-> Assertions.assertNotNull(createdUser, "createdUser is null"),
-                ()-> Assertions.assertEquals(1, createdUser.getRoles().size(), "roles is not equals")
+                () -> Assertions.assertNotNull(createdUser, "createdUser is null"),
+                () -> Assertions.assertEquals(1, createdUser.getRoles().size(), "roles is not equals")
         );
     }
 
     @Test
-    void createWithShop (){
+    void createWithShop() {
         // given
         User user = new User();
         Shop shop = new Shop();
@@ -75,13 +75,13 @@ class UserServiceSpringIntegrationTest {
 
         // then
         Assertions.assertAll(
-                ()->Assertions.assertNotNull(createdUser, "createdUser is null")
+                () -> Assertions.assertNotNull(createdUser, "createdUser is null")
         );
 
     }
 
     @Test
-    void createWithShops (){
+    void createWithShops() {
         // given
         User user = new User();
         Shop shop = new Shop();
@@ -96,14 +96,14 @@ class UserServiceSpringIntegrationTest {
 
         // then
         Assertions.assertAll(
-                ()->Assertions.assertNotNull(createdUser, "createdUser is null"),
-                ()->Assertions.assertEquals(2, createdUser.getShops().size(), "createdUser is not equals")
+                () -> Assertions.assertNotNull(createdUser, "createdUser is null"),
+                () -> Assertions.assertEquals(2, createdUser.getShops().size(), "createdUser is not equals")
         );
 
     }
 
     @Test
-    void createWithPassword (){
+    void createWithPassword() {
         // given
         User user = new User();
         List<Role> roles = roleService.list();
@@ -116,13 +116,13 @@ class UserServiceSpringIntegrationTest {
 
         // then
         Assertions.assertAll(
-                ()-> Assertions.assertNotNull(createdUser, "createdUser is null"),
-                ()-> Assertions.assertEquals("password",createdUser.getPassword(), "createdUser password is not equals")
+                () -> Assertions.assertNotNull(createdUser, "createdUser is null"),
+                () -> Assertions.assertEquals("password", createdUser.getPassword(), "createdUser password is not equals")
         );
     }
 
     @Test
-    void  findByUsernameTest(){
+    void findByUsernameTest() {
         // given
         User user = new User();
         user.setUsername("Katarzyna");
@@ -133,12 +133,12 @@ class UserServiceSpringIntegrationTest {
 
         // then
         Assertions.assertAll(
-                ()->Assertions.assertNotNull(foundUser, "foundUser is null")
+                () -> Assertions.assertNotNull(foundUser, "foundUser is null")
         );
     }
 
     @Test
-    void  findByUsernameWithRolesTest(){
+    void findByUsernameWithRolesTest() {
         // given
         User user = new User();
         user.setUsername("Katarzyna");
@@ -154,13 +154,13 @@ class UserServiceSpringIntegrationTest {
 
         // then
         Assertions.assertAll(
-                ()->Assertions.assertNotNull(foundUser, "foundUser is null")
+                () -> Assertions.assertNotNull(foundUser, "foundUser is null")
         );
 
     }
 
     @Test
-    void getShopsForUser(){
+    void getShopsForUser() {
         // given
         User user = new User();
         user.setUsername("Franek");
@@ -168,7 +168,6 @@ class UserServiceSpringIntegrationTest {
         firstShop.setName("Akademia Piękna");
         Shop secondShop = new Shop();
         secondShop.setName("Studio Wizażu");
-
 
 
         // when
@@ -183,8 +182,28 @@ class UserServiceSpringIntegrationTest {
 
         // then
         Assertions.assertAll(
-                ()->Assertions.assertNotNull(shopsForUser, "shopsForUser is null"),
-                ()->Assertions.assertEquals(2, createdUser.getShops().size(), "createdUser is not equals")
+                () -> Assertions.assertNotNull(shopsForUser, "shopsForUser is null"),
+                () -> Assertions.assertEquals(2, createdUser.getShops().size(), "createdUser is not equals")
+        );
+    }
+
+    @Test
+    void creteUserWithClient() {
+        // given
+        Client client = new Client();
+        client.setFirstName("Anna");
+        User user = new User();
+        user.setClient(client);
+
+        // when
+        User createdUser = userService.create(user);
+        Client createdUserClient = createdUser.getClient();
+
+        // then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(createdUser, "createdUser is null"),
+                () -> Assertions.assertNotNull(createdUserClient, "createdUserClient is null"),
+                () -> Assertions.assertEquals("Anna", createdUserClient.getFirstName())
         );
     }
 }

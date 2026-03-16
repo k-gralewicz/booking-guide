@@ -177,3 +177,7 @@ public class BookingGuideApplication {
 // widok create-visit poprawić żeby wyświetlał clients w polu dropdown,
 // z Gemini powalczyć z logowaniem - tą pustą stroną po zalogowaniu,
 // w navbar dla użytkownika innego niż ADMIN nie wyświetlać: Clients, Shops, Users
+
+// TODO: 16.03.2026
+// z Gemini powalczyć z logowaniem - tą pustą stroną po zalogowaniu,
+// doprecyzować wymagania biznesowe podczas tworzenie wizyty - skąd tworzy Admin, a skąd Client/User.
