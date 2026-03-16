@@ -20,20 +20,26 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/visits}">Visits</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/clients}">Clients</a>
-                    </li>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/clients}">Clients</a>
+                        </li>
+                    </div>
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/services}">Services</a>
                         </li>
                     </div>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/shops}">Shops</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/users}">Users</a>
-                    </li>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/shops}">Shops</a>
+                        </li>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/users}">Users</a>
+                        </li>
+                    </div>
                 </ul>
 
                 <ul class="navbar-nav ms-auto align-items-center">

@@ -172,3 +172,8 @@ public class BookingGuideApplication {
 // klasa User analogicznie do klasy UserEntity
 // html od user-create musi zawierać dodatkowo takie dane jak tworzenie nowego CLIENT na client-create.
 // dane z formularza tworzenia USER należy zapisać w polu client dla klasy UserEntity.
+
+// TODO: 02.03.2026
+// widok create-visit poprawić żeby wyświetlał clients w polu dropdown,
+// z Gemini powalczyć z logowaniem - tą pustą stroną po zalogowaniu,
+// w navbar dla użytkownika innego niż ADMIN nie wyświetlać: Clients, Shops, Users

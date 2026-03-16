@@ -8,7 +8,7 @@ public class Client {
    private String email;
    private String phoneNumber;
 
-   private Address address; // zależność/relacja (dependency/association)
+   private Address address = new Address(); // zależność/relacja (dependency/association)
 
     public Client() {
     }

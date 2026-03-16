@@ -76,18 +76,18 @@
                     </div>
                     <div class="mb-3">
                         <label for="lastName" class="fw-bold">Last Name:</label>
-                        <input type="text" id="lastName" class="form-control" required>
+                        <input type="text" id="lastName" th:field="${user.client.lastName}" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label for="phoneNumber" class="fw-bold">Phone Number:</label>
-                        <input type="text" id="phoneNumber" class="form-control">
+                        <input type="text" id="phoneNumber" th:field="${user.client.phoneNumber}" class="form-control">
                     </div>
                 </div>
                 <div class="col-4 border rounded  bg-light shadow-sm">
                     <h5 class="text-secondary mb-3">Address</h5>
                     <div class="mb-3">
                         <label for="address.street" class="fw-bold">Street:</label>
-                        <input type="text" id="address.street" class="form-control" required/>
+                        <input type="text" id="address.street" th:field="${user.client.address.street}" class="form-control" required/>
                     </div>
                     <div class="mb-3">
                         <label for="address.flatNumber" class="fw-bold">Flat Number:</label>
