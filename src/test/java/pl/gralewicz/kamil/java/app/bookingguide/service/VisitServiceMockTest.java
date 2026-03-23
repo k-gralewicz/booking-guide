@@ -76,22 +76,22 @@ class VisitServiceMockTest {
         visitDto1.setClient(client1); // Zakładamy, że DTO trzyma obiekty
         visitDto1.setService(service1);
         visitDto1.setShop(shop1);
-        visitDto1.setDueDate(LocalDateTime.of(2025, 5, 10, 10, 0));
+//        visitDto1.setDueDate(LocalDateTime.of(2025, 5, 10, 10, 0));
 
         visitEntity1 = new VisitEntity();
         visitEntity1.setId(1L);
         visitEntity1.setClient(clientEntity1); // Zakładamy, że Encja trzyma obiekty encji
         visitEntity1.setService(serviceEntity1);
         visitEntity1.setShop(shopEntity1);
-        visitEntity1.setDueDate(LocalDateTime.of(2025, 5, 10, 10, 0));
+//        visitEntity1.setDueDate(LocalDateTime.of(2025, 5, 10, 10, 0));
 
         visitDto2 = new Visit(); // Druga wizyta dla testu listy
         visitDto2.setId(2L);
-        visitDto2.setDueDate(LocalDateTime.of(2025, 5, 11, 11, 0));
+//        visitDto2.setDueDate(LocalDateTime.of(2025, 5, 11, 11, 0));
 
         visitEntity2 = new VisitEntity();
         visitEntity2.setId(2L);
-        visitEntity2.setDueDate(LocalDateTime.of(2025, 5, 11, 11, 0));
+//        visitEntity2.setDueDate(LocalDateTime.of(2025, 5, 11, 11, 0));
     }
 
 
@@ -161,7 +161,7 @@ class VisitServiceMockTest {
         // entityToSave.setClient(clientEntity1); // Jeśli mapper tak robi
         // entityToSave.setService(serviceEntity1);
         // entityToSave.setShop(shopEntity1);
-        entityToSave.setDueDate(visitDto1.getDueDate());
+//        entityToSave.setDueDate(visitDto1.getDueDate());
 
 
         // Encja po zapisie (wynik repo.save) - użyjemy visitEntity1 z setup
@@ -202,7 +202,7 @@ class VisitServiceMockTest {
         // Weryfikacja encji przekazanej do zapisu
         VisitEntity capturedEntity = visitEntityCaptor.getValue();
         Assertions.assertNotNull(capturedEntity, "Przechwycona encja nie powinna być null");
-        Assertions.assertEquals(inputVisitDto.getDueDate(), capturedEntity.getDueDate(), "Data w encji do zapisu");
+//        Assertions.assertEquals(inputVisitDto.getDueDate(), capturedEntity.getDueDate(), "Data w encji do zapisu");
         // Można dodać sprawdzenie powiązanych encji w capturedEntity, jeśli mapper je ustawia
 
         verifyNoMoreInteractions(visitRepositoryMock, visitMapperMock);

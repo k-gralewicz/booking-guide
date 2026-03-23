@@ -14,6 +14,8 @@ public class User {
     private List<Role> roles = new ArrayList<>();
     private List<Shop> shops = new ArrayList<>();
 
+    private Client client = new Client();
+
     public User() {
     }
 
@@ -81,6 +83,14 @@ public class User {
         this.shopId = shopId;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -92,6 +102,7 @@ public class User {
                 ", shopId=" + shopId +
                 ", roles=" + roles +
                 ", shops=" + shops +
+                ", client=" + client +
                 '}';
     }
 }

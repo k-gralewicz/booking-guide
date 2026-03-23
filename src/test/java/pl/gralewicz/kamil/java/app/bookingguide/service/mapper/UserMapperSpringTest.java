@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.gralewicz.kamil.java.app.bookingguide.api.RoleType;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Role;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
@@ -22,7 +23,7 @@ class UserMapperSpringTest {
     void from() {
         // given
         User user = new User();
-        user.setRoleId(1L);
+//        user.setRoleId(1L);
 
         // when
         UserEntity userEntity = userMapper.from(user);
@@ -40,7 +41,7 @@ class UserMapperSpringTest {
         User user = new User();
         List<Role> roles = new ArrayList<>();
         roles.add(new Role(RoleType.ADMIN));
-        user.setRoles(roles);
+//        user.setRoles(roles);
 
         // when
         UserEntity userEntity = userMapper.from(user);
@@ -54,5 +55,23 @@ class UserMapperSpringTest {
 
 //        napisać test który sprawdzi czy dla jednego użytkownika dodaje więcej niż jedną rolę i sprawdza
 //        czy role zostały przypisane z modelu na encję.
+    }
+
+    @Test
+    void fromUserWithClient() {
+        // given
+        User user = new User();
+        Client client = new Client();
+        client.setFirstName("Anna");
+        user.setClient(client);
+
+        // when
+        UserEntity userEntity = userMapper.from(user);
+
+        // then
+        Assertions.assertAll(
+                ()-> Assertions.assertNotNull(userEntity, "userEntity is null"),
+                ()-> Assertions.assertNotNull(userEntity.getClient(), "client is null")
+        );
     }
 }

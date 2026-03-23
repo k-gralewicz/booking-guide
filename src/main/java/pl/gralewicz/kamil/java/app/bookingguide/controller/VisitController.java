@@ -70,19 +70,31 @@ public class VisitController {
     }
 
     @PostMapping(value = "/create")
-    public String createX(String username, Long shopId, Long serviceId, String dueDate, ModelMap modelMap) {
-        LOGGER.info("createX(" + username + ")");
-        LOGGER.info("createX(" + shopId + ")");
-        LOGGER.info("createX(" + serviceId + ")");
-        LOGGER.info("createX(" + dueDate + ")");
-        // na podstawie username pobrać użytkownika
-        User userByUsername = userService.findByUsername(username);
-        if (userByUsername == null) {
-            modelMap.addAttribute("error", "User not found");
-            return "visit-create";
+    public String createX(@RequestParam(required = false) String username, Long shopId, Long serviceId, Long clientId, String dueDate, ModelMap modelMap) {
+        LOGGER.info("createX(username=" + username + ", shopId=" + shopId + ", serviceId=" + serviceId + ", clientId=" + clientId + ", dueDate=" + dueDate + ")");
+
+        Visit newVisit = new Visit();
+
+        if (username != null) {
+            User userByUsername = userService.findByUsername(username);
+            if (userByUsername == null) {
+                modelMap.addAttribute("error", "User not found");
+                return "visit-create";
+            }
+//            Client clientFromUser = userByUsername.getClient();
+//            newVisit.setClient(clientFromUser);
+
+            Client clientFromUser = userByUsername.getClient();
+            LOGGER.info("clientFromUser= " + clientFromUser);
+            Long clientFromUserId = clientFromUser.getId();
+            Client client = clientService.read(clientFromUserId);
+            newVisit.setClient(client);
+//            z pobranego klienta za pomocą ID pobierz go ponownie za pomocą service i dopiero ustaw do newVisit
+        } else {
+            Client client = clientService.read(clientId);
+            newVisit.setClient(client);
         }
-        // na podstawie shopId pobrać shop,
-//        shopId = 602L;
+
         Shop shop = shopService.findById(shopId);
         if (shop == null) {
             modelMap.addAttribute("error", "Shop not found");
@@ -93,9 +105,7 @@ public class VisitController {
             modelMap.addAttribute("error", "Service not found");
             return "visit-create";
         }
-        // na podstawie serviceId pobrać service
 
-        Visit newVisit = new Visit();
         newVisit.setShop(shop);
         newVisit.setService(service);
 //        newVisit.setDueDate(LocalDate.from(LocalDate.parse(dueDate, DateTimeFormatter.ISO_DATE).atStartOfDay()));

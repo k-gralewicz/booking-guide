@@ -1,13 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,11 +16,14 @@ public class UserEntity {
     private String password;
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleEntity> roles = new HashSet<>();
 
     @ManyToMany(mappedBy = "users")
     private Set<ShopEntity> shops = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private ClientEntity client;
 
     public UserEntity() {
     }
@@ -90,6 +86,14 @@ public class UserEntity {
         this.shops = shops;
     }
 
+    public ClientEntity getClient() {
+        return client;
+    }
+
+    public void setClient(ClientEntity client) {
+        this.client = client;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
@@ -99,6 +103,7 @@ public class UserEntity {
                 ", email='" + email + '\'' +
                 ", roles=" + roles +
 //                ", shops=" + shops +
+                ", client=" + client +
                 '}';
     }
 }
