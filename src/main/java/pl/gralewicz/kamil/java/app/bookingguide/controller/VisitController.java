@@ -41,8 +41,25 @@ public class VisitController {
     }
 
     @GetMapping
-    public String list(ModelMap modelMap) {
+    public String list(Long selectedShopId,Long selectedServiceId, ModelMap modelMap) {
         LOGGER.info("list()");
+        Set<Shop> shops = shopService.list();
+        modelMap.addAttribute("shops", shops);
+        modelMap.addAttribute("selectedShopId",selectedShopId);
+        modelMap.addAttribute("selectedServiceId", selectedServiceId);
+        if (selectedShopId != null) {
+            Shop selectedShop = shopService.read(selectedShopId);
+            modelMap.addAttribute(SHOP_SESSION, selectedShop);
+
+            Set<Service> selectedShopServices = selectedShop.getServices();
+            modelMap.addAttribute("services", selectedShopServices);
+            LOGGER.info("selectedShopServices: (" + selectedShopServices + ")");
+        }
+        if (selectedServiceId != null) {
+            Service selectedService = serviceService.read(selectedServiceId);
+            modelMap.addAttribute(SERVICE_SESSION, selectedService);
+        }
+
         List<Visit> visits = visitService.list();
         modelMap.addAttribute("visits", visits);
         LOGGER.info("list(...)= " + visits);
