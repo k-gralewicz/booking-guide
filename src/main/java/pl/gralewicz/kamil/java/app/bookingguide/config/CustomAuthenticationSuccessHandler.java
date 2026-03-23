@@ -20,11 +20,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        AuthenticationSuccessHandler.super.onAuthenticationSuccess(request, response, chain, authentication);
-    }
-
-    @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Collection<? extends GrantedAuthority> grantedAuthorities = authentication.getAuthorities();
         String redirectUrl = null;
@@ -42,12 +37,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 redirectUrl = "/clients/dashboard";
                 break;
             }
-
-            if (redirectUrl == null) {
-                redirectUrl = "/services";
-            }
-
-            redirectStrategy.sendRedirect(request, response, redirectUrl);
         }
+        if (redirectUrl == null) {
+            redirectUrl = "/services";
+        }
+        redirectStrategy.sendRedirect(request, response, redirectUrl);
     }
 }
