@@ -41,8 +41,25 @@ public class VisitController {
     }
 
     @GetMapping
-    public String list(ModelMap modelMap) {
+    public String list(Long selectedShopId,Long selectedServiceId, ModelMap modelMap) {
         LOGGER.info("list()");
+        Set<Shop> shops = shopService.list();
+        modelMap.addAttribute("shops", shops);
+        modelMap.addAttribute("selectedShopId",selectedShopId);
+        modelMap.addAttribute("selectedServiceId", selectedServiceId);
+        if (selectedShopId != null) {
+            Shop selectedShop = shopService.read(selectedShopId);
+            modelMap.addAttribute(SHOP_SESSION, selectedShop);
+
+            Set<Service> selectedShopServices = selectedShop.getServices();
+            modelMap.addAttribute("services", selectedShopServices);
+            LOGGER.info("selectedShopServices: (" + selectedShopServices + ")");
+        }
+        if (selectedServiceId != null) {
+            Service selectedService = serviceService.read(selectedServiceId);
+            modelMap.addAttribute(SERVICE_SESSION, selectedService);
+        }
+
         List<Visit> visits = visitService.list();
         modelMap.addAttribute("visits", visits);
         LOGGER.info("list(...)= " + visits);
@@ -61,10 +78,12 @@ public class VisitController {
 //        }
         List<Service> services = serviceService.list();
         Set<Shop> shops = shopService.list();
+        List<Client> clients = clientService.list();
         modelMap.addAttribute("services", services);
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("visit", new Visit());
         modelMap.addAttribute("isEdit", false);
+        modelMap.addAttribute("clients", clients);
         LOGGER.info("createView(...)= ");
         return "visit-create";
     }
@@ -73,6 +92,8 @@ public class VisitController {
     public String createX(@RequestParam(required = false) String username, Long shopId, Long serviceId, Long clientId, String dueDate, ModelMap modelMap) {
         LOGGER.info("createX(username=" + username + ", shopId=" + shopId + ", serviceId=" + serviceId + ", clientId=" + clientId + ", dueDate=" + dueDate + ")");
 
+        List<Client> clients = clientService.list();
+        modelMap.addAttribute("clients", clients);
         Visit newVisit = new Visit();
 
         if (username != null) {
@@ -129,6 +150,7 @@ public class VisitController {
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("visit", new Visit());
         modelMap.addAttribute("isEdit", false);
+
         LOGGER.info("createWithUsername(...)= ");
         return "visit-create";
     }

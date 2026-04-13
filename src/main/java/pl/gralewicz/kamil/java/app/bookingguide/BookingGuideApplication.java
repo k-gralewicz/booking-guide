@@ -181,3 +181,7 @@ public class BookingGuideApplication {
 // TODO: 16.03.2026
 // z Gemini powalczyć z logowaniem - tą pustą stroną po zalogowaniu,
 // doprecyzować wymagania biznesowe podczas tworzenie wizyty - skąd tworzy Admin, a skąd Client/User.
+
+// TODO: 23.03.2026
+// dokończyć wyświetlanie listy klientów na create/visit.
+// usunąć book przy liście serwisów
