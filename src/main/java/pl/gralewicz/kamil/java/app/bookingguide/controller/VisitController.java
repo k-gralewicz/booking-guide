@@ -78,10 +78,12 @@ public class VisitController {
 //        }
         List<Service> services = serviceService.list();
         Set<Shop> shops = shopService.list();
+        List<Client> clients = clientService.list();
         modelMap.addAttribute("services", services);
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("visit", new Visit());
         modelMap.addAttribute("isEdit", false);
+        modelMap.addAttribute("clients", clients);
         LOGGER.info("createView(...)= ");
         return "visit-create";
     }
@@ -90,6 +92,8 @@ public class VisitController {
     public String createX(@RequestParam(required = false) String username, Long shopId, Long serviceId, Long clientId, String dueDate, ModelMap modelMap) {
         LOGGER.info("createX(username=" + username + ", shopId=" + shopId + ", serviceId=" + serviceId + ", clientId=" + clientId + ", dueDate=" + dueDate + ")");
 
+        List<Client> clients = clientService.list();
+        modelMap.addAttribute("clients", clients);
         Visit newVisit = new Visit();
 
         if (username != null) {
@@ -146,6 +150,7 @@ public class VisitController {
         modelMap.addAttribute("shops", shops);
         modelMap.addAttribute("visit", new Visit());
         modelMap.addAttribute("isEdit", false);
+
         LOGGER.info("createWithUsername(...)= ");
         return "visit-create";
     }

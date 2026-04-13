@@ -10,33 +10,38 @@
 </head>
 <body>
 <div th:fragment="shop-service-picker">
-    <input type="hidden" id="isVisit" name="isVisit" value="true">
-    <div class="form-group">
-        <div th:if="${errorSelectedShopId}" th:text="${errorSelectedShopId}" class="text-danger"></div>
-        <label for="shop">Select Shop</label>
-        <select class="form-control" id="shop" name="selectedShopId" onchange="selectShopOrService();">
-            <option value="">--Select Shop--</option>
-            <option th:each="shop : ${shops}"
-                    th:value="${shop.id}"
-                    th:text="${shop.name}"
-            th:selected="${shop.id == selectedShopId}"></option>
-        </select>
-    </div>
-    <div class="form-group">
-        <div th:if="${errorSelectedServiceId}" th:text="${errorSelectedServiceId}" class="text-danger"></div>
-        <label for="service">Select Service</label>
-        <select class="form-control" id="service" name="selectedServiceId" onchange="selectShopOrService();">
-            <option value="">--Select Service--</option>
-            <option th:each="service : ${services}"
-                    th:value="${service.id}"
-                    th:text="${service.name}"
-                    th:selected="${service.id == selectedServiceId}"></option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary"
-            th:disabled="${selectedShopId == null || selectedServiceId == null}">
-        Book a new visit
-    </button>
+    <form th:action="@{/clients/visit/create}" method="get" id="dashboardForm">
+        <input type="hidden" id="isVisit" name="isVisit" value="true">
+        <div class="form-group">
+            <div th:if="${errorSelectedShopId}" th:text="${errorSelectedShopId}" class="text-danger"></div>
+            <label for="shop">Select Shop</label>
+            <select class="form-control" id="shop" name="selectedShopId" onchange="selectShopOrService();">
+                <option value="">--Select Shop--</option>
+                <option th:each="shop : ${shops}"
+                        th:value="${shop.id}"
+                        th:text="${shop.name}"
+                        th:selected="${shop.id == selectedShopId}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <div th:if="${errorSelectedServiceId}" th:text="${errorSelectedServiceId}" class="text-danger"></div>
+            <label for="service">Select Service</label>
+            <select class="form-control" id="service" name="selectedServiceId" onchange="selectShopOrService();">
+                <option value="">--Select Service--</option>
+                <option th:each="service : ${services}"
+                        th:value="${service.id}"
+                        th:text="${service.name}"
+                        th:selected="${service.id == selectedServiceId}"></option>
+            </select>
+        </div>
+
+        <input type="hidden" th:value="${#authentication.name}" name="username">
+
+        <button type="submit" class="btn btn-primary"
+                th:disabled="${selectedShopId == null || selectedServiceId == null}">
+            Book a new visit
+        </button>
+    </form>
 </div>
 </body>
 </html>
