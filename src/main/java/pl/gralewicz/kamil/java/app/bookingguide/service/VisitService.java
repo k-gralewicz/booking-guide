@@ -27,6 +27,22 @@ public class VisitService {
         this.shopRepository = shopRepository;
     }
 
+    public List<Visit> list() {
+        LOGGER.info("list()");
+        List<VisitEntity> visitEntities = visitRepository.findAll();
+        List<Visit> visits = visitMapper.fromEntities(visitEntities);
+        LOGGER.info("list(...)= ");
+        return visits;
+    }
+
+    public List<Visit> list(Long shopId) {
+        LOGGER.info("list(" + shopId + ")");
+        List<VisitEntity> visitEntities = visitRepository.findByShopId(shopId);
+        List<Visit> visits = visitMapper.fromEntities(visitEntities);
+        LOGGER.info("list(...)= " + visits);
+        return visits;
+    }
+
     public Visit create(Visit visit) {
         LOGGER.info("create(" + visit + ")");
         VisitEntity visitEntity = visitMapper.from(visit); // delegacja
@@ -46,14 +62,6 @@ public class VisitService {
         Visit mappedVisit = visitMapper.from(createdVisitEntity);
         LOGGER.info("createWithShop(...)= " + mappedVisit);
         return mappedVisit;
-    }
-
-    public List<Visit> list() {
-        LOGGER.info("list()");
-        List<VisitEntity> visitEntities = visitRepository.findAll();
-        List<Visit> visits = visitMapper.fromEntities(visitEntities);
-        LOGGER.info("list(...)= ");
-        return visits;
     }
 
     public Visit read(Long id) {
@@ -82,13 +90,5 @@ public class VisitService {
         LOGGER.info("delete(" + id + ")");
         visitRepository.deleteById(id);
         LOGGER.info("delete(...)= ");
-    }
-
-    public List<Visit> list(Long shopId) {
-        LOGGER.info("list(" + shopId + ")");
-        List<VisitEntity> visitEntities = visitRepository.findByShopId(shopId);
-        List<Visit> visits = visitMapper.fromEntities(visitEntities);
-        LOGGER.info("list(...)= " + visits);
-        return visits;
     }
 }
