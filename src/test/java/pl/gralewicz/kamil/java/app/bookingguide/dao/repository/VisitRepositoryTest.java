@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.User;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
 

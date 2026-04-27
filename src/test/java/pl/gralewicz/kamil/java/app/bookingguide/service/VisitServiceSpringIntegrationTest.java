@@ -6,18 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ClientRepository;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ServiceRepository;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.*;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,6 +27,8 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
     private ShopService shopService;
     @Autowired
     private ServiceService serviceService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private VisitRepository visitRepository;
@@ -45,6 +38,8 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
     private ShopRepository shopRepository;
     @Autowired
     private ServiceRepository serviceRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     private ClientEntity clientEntity;
     private ServiceEntity serviceEntity;
@@ -52,6 +47,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
     private ClientEntity secondClientEntity;
     private ServiceEntity secondServiceEntity;
     private ShopEntity secondShopEntity;
+    private UserEntity userEntity;
 
     @BeforeEach
     void setupTestData() {
@@ -115,6 +111,49 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
                     Assertions.assertNotNull(foundVisit2.getClient(), "Client w wizycie 2 nie powinien być null");
                     Assertions.assertEquals(secondClientEntity.getId(), foundVisit2.getClient().getId(), "Niezgodne ID klienta w wizycie 2");
                 }
+        );
+    }
+
+    @Test
+    @Transactional
+    void listByUsername() {
+        //given
+        Client client = new Client();
+        client.setFirstName("Anna");
+
+        User user = new User();
+        user.setClient(client);
+        user.setUsername("Anna");
+        User createdUser = userService.create(user);
+
+        Service service = new Service();
+        service.setName("zabieg");
+        Service createdService = serviceService.create(service);
+
+        Visit firstVisit = new Visit();
+        firstVisit.setService(createdService);
+        firstVisit.setClient(createdUser.getClient());
+        Visit createdFirstVisit = visitService.create(firstVisit);
+
+        Visit secondVisit = new Visit();
+        secondVisit.setService(createdService);
+        secondVisit.setClient(createdUser.getClient());
+        Visit createdSecondVisit = visitService.create(secondVisit);
+
+        Visit thirdVisit = new Visit();
+        thirdVisit.setService(createdService);
+        Visit createdThirdVisit = visitService.create(thirdVisit);
+
+
+        //when
+        String userByUsername = user.getUsername();
+        List<Visit> visitsByUsername = visitService.list(userByUsername);
+        List<Visit> visits = visitService.list();
+
+        //then
+        Assertions.assertAll(
+                ()->Assertions.assertNotNull(visitsByUsername, "visitsByUsername is null"),
+                ()->Assertions.assertEquals(2, visitsByUsername.size(), "visitsByUsername isn't equals")
         );
     }
 

@@ -185,3 +185,6 @@ public class BookingGuideApplication {
 // TODO: 23.03.2026
 // dokończyć wyświetlanie listy klientów na create/visit.
 // usunąć book przy liście serwisów
+
+// TODO: 13.04.2026
+// /client/dashboard ma filtrować wizyty za pomocą nowo dodanej metody.

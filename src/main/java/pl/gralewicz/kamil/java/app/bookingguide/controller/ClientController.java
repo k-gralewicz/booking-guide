@@ -13,6 +13,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.ServiceService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.ShopService;
 import pl.gralewicz.kamil.java.app.bookingguide.service.VisitService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -41,10 +42,12 @@ public class ClientController {
     @GetMapping(value = "/dashboard")
     public String dashboard(@RequestParam(required = false) Long selectedShopId,
                             @RequestParam(required = false) Long selectedServiceId,
+                            Principal principal,
                             ModelMap modelMap, HttpSession session) {
         LOGGER.info("dashboard()");
         LOGGER.info("dashboard(" + selectedShopId + ")");
         LOGGER.info("dashboard(" + selectedServiceId + ")");
+        LOGGER.info("dashboard(" + principal + ")");
 
         Set<Shop> shops = shopService.list();
         modelMap.addAttribute("shops", shops);
@@ -64,18 +67,13 @@ public class ClientController {
             modelMap.addAttribute(SERVICE_SESSION, selectedService);
         }
 
-        List<Visit> visits;
-        if (selectedShopId == null) {
-            visits = visitService.list();
-            LOGGER.info("Displaying all visits (no shopId filter)");
-        } else {
-            visits = visitService.list(selectedShopId);
-            LOGGER.info("Displaying visits filtered for shopId: " + selectedShopId);
+        if (principal != null) {
+            String username = principal.getName();
+            List<Visit> visits = visitService.list(username);
+            modelMap.addAttribute("visits", visits);
         }
 
-        modelMap.addAttribute("visits", visits);
-        LOGGER.info("dashboard(...)= " + visits);
-
+        LOGGER.info("dashboard(...)= " );
         return "client-dashboard";
     }
 

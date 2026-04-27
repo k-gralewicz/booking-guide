@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface VisitRepository extends JpaRepository<VisitEntity, Long> {
     List<VisitEntity> findByShopId(Long shopId);
+    List<VisitEntity> findByClientId(Long clientId);
 }
