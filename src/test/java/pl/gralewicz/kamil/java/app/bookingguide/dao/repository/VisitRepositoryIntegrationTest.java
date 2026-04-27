@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.repository;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,7 +60,10 @@ public class VisitRepositoryIntegrationTest {
         List<VisitEntity> visitsByClientId = visitRepository.findByClientId(savedClientEntity.getId());
 
         //then
-        int size = visitsByClientId.size();
-        System.out.println("numer of visits: " + size);
+
+        Assertions.assertAll(
+                ()->Assertions.assertNotNull(visitsByClientId, "visitsByClientId is null"),
+                ()->Assertions.assertEquals(2, visitsByClientId.size(), "visitsByClientId isn't equals")
+        );
     }
 }

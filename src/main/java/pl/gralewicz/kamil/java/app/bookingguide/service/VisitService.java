@@ -2,9 +2,12 @@ package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
@@ -20,11 +23,13 @@ public class VisitService {
     private final VisitRepository visitRepository; // zależności
     private final VisitMapper visitMapper;
     private final ShopRepository shopRepository;
+    private final UserRepository userRepository;
 
-    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper, ShopRepository shopRepository) { // wstrzykiwanie zależności
+    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper, ShopRepository shopRepository, UserRepository userRepository) { // wstrzykiwanie zależności
         this.visitRepository = visitRepository;
         this.visitMapper = visitMapper;
         this.shopRepository = shopRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Visit> list() {
@@ -40,6 +45,17 @@ public class VisitService {
         List<VisitEntity> visitEntities = visitRepository.findByShopId(shopId);
         List<Visit> visits = visitMapper.fromEntities(visitEntities);
         LOGGER.info("list(...)= " + visits);
+        return visits;
+    }
+
+    public List<Visit> list(String username) {
+        LOGGER.info("list(" + username + ")");
+        UserEntity userByUsername = userRepository.findByUsername(username);
+        ClientEntity client = userByUsername.getClient();
+        Long clientId = client.getId();
+        List<VisitEntity> visitEntities = visitRepository.findByClientId(clientId);
+        List<Visit> visits = visitMapper.fromEntities(visitEntities);
+        LOGGER.info("list(...)= ");
         return visits;
     }
 
