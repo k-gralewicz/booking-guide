@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Table(name = "VISITS")
 public class VisitEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
