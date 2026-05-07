@@ -20,14 +20,6 @@ public class Visit {
     public Visit(){
     }
 
-    public boolean booking(LocalDateTime dueDate) {
-        boolean isAvailable = shop.visitAvailable(dueDate);
-        if (isAvailable) {
-            shop.book(this);
-        }
-        return isAvailable;
-    }
-
     public Long getId() {
         return id;
     }
