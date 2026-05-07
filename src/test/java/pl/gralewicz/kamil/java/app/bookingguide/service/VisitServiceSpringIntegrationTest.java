@@ -307,7 +307,7 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
         //when
         Visit visit = new Visit();
         visit.setShop(createdShop);
-        LocalDate localDate = LocalDate.of(2026, Month.MAY, 25);
+        LocalDateTime localDate = LocalDateTime.of(2026, Month.MAY, 25, 13, 30 );
         visit.setDueDate(localDate);
 
         Visit cretedVisit = visitService.create(visit);

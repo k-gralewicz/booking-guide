@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "VISITS")
@@ -30,7 +31,7 @@ public class VisitEntity {
     @JoinColumn(name = "shop_id")
     private ShopEntity shop;
 
-    private LocalDate dueDate;
+    private LocalDateTime dueDate;
 
     public VisitEntity() {
     }
@@ -67,11 +68,11 @@ public class VisitEntity {
         this.shop = shop;
     }
 
-    public LocalDate getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 

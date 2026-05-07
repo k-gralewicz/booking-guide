@@ -5,11 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 
 @SpringBootTest
-class ServiceServiceTest {
+class ServiceServiceSpringIntegrationTest {
+
+    private static final int _30 = 30;
 
     @Autowired
     private ServiceService serviceService;
@@ -36,5 +39,28 @@ class ServiceServiceTest {
                 () -> Assertions.assertNotNull(createdService, "Service is null"),
                 () -> Assertions.assertEquals(1, createdService.getShops().size(), "Service should have 1 shop"),
                 () -> Assertions.assertTrue(createdService.getShops().contains(createdShop), "Service should contain the created shop"));
+    }
+
+    @Test
+    void createWithDurationType() {
+        //given
+        Shop shop = new Shop();
+        shop.setName("Kosmetyka");
+        Shop createdShop = shopService.create(shop);
+
+        Service service = new Service();
+        service.setName("Kwas");
+        service.setDurationType(DurationType.MINUTES);
+        service.setDuration(_30);
+
+        //when
+        Service createdService = serviceService.createWithShop(service, createdShop.getId());
+
+        //then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(createdService, "createdService is null"),
+                () -> Assertions.assertEquals(DurationType.MINUTES, createdService.getDurationType(), "DurationType is not correct"),
+                () -> Assertions.assertEquals(_30, createdService.getDuration(), "Duration is not correct")
+        );
     }
 }

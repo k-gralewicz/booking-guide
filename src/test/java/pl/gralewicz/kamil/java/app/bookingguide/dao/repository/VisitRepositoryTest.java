@@ -49,7 +49,7 @@ class VisitRepositoryTest {
         // when
         VisitEntity visitEntity = new VisitEntity();
         visitEntity.setShop(savedShopEntity);
-        LocalDate dueDate = LocalDate.of(2023, Month.JULY, 14);
+        LocalDateTime dueDate = LocalDateTime.of(2023, Month.JULY, 14, 13, 30);
         visitEntity.setDueDate(dueDate);
 
         VisitEntity createdVisitEntity = visitRepository.save(visitEntity);
