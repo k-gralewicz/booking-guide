@@ -10,7 +10,9 @@ import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -291,6 +293,30 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
         Assertions.assertAll("Sprawdzenie stanu bazy po usunięciu wizyty",
                 () -> Assertions.assertFalse(visitRepository.existsById(idToDelete), "Wizyta nadal istnieje w bazie po usunięciu"),
                 () -> Assertions.assertEquals(countBefore - 1, visitRepository.count(), "Liczba wizyt w bazie nie zmniejszyła się o 1")
+        );
+    }
+
+    @Test
+    void createWithDate(){
+        //given
+        Shop shop = new Shop();
+        shop.setName("Kosmetyka");
+
+        Shop createdShop = shopService.create(shop);
+
+        //when
+        Visit visit = new Visit();
+        visit.setShop(createdShop);
+        LocalDateTime localDate = LocalDateTime.of(2026, Month.MAY, 25, 13, 30 );
+        visit.setDueDate(localDate);
+
+        Visit cretedVisit = visitService.create(visit);
+
+        //then
+        Assertions.assertAll(
+                ()-> Assertions.assertNotNull(createdShop, "createdShop is null"),
+                ()-> Assertions.assertNotNull(cretedVisit, "createdVisit is null"),
+                ()-> Assertions.assertEquals(localDate, cretedVisit.getDueDate(), "Due date is not correct")
         );
     }
 }

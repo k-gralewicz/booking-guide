@@ -10,6 +10,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
@@ -42,21 +43,21 @@ class VisitRepositoryTest {
         // given
         ShopEntity shopEntity = new ShopEntity();
         shopEntity.setName("Kosmetyka");
-        shopEntity.setId(1L);
 
-        shopRepository.save(shopEntity);
+        ShopEntity savedShopEntity = shopRepository.save(shopEntity);
 
         // when
         VisitEntity visitEntity = new VisitEntity();
-        visitEntity.setShop(shopEntity);
-        LocalDateTime dueDate = LocalDateTime.of(2023, Month.JULY, 14, 20, 0);
-//        visitEntity.setDueDate(dueDate);
+        visitEntity.setShop(savedShopEntity);
+        LocalDateTime dueDate = LocalDateTime.of(2023, Month.JULY, 14, 13, 30);
+        visitEntity.setDueDate(dueDate);
 
         VisitEntity createdVisitEntity = visitRepository.save(visitEntity);
         // then
+        Assertions.assertNotNull(savedShopEntity, "savedShopEntity is null");
         Assertions.assertNotNull(createdVisitEntity, "createdVisitEntity is null");
-//        Assertions.assertEquals(dueDate, createdVisitEntity.getDueDate(), "Due date is not set correctly");
         Assertions.assertNotNull(createdVisitEntity.getShop(), "Shop is not assigned to the visit");
-        Assertions.assertEquals(shopEntity.getName(), createdVisitEntity.getShop().getName(), "Shop name is not correctly assigned");
+        Assertions.assertEquals(savedShopEntity.getName(), createdVisitEntity.getShop().getName(), "Shop name is not correctly assigned");
+        Assertions.assertEquals(dueDate, createdVisitEntity.getDueDate(), "Due date is not set correctly");
     }
 }

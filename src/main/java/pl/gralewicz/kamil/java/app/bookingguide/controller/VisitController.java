@@ -1,5 +1,6 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
 import pl.gralewicz.kamil.java.app.bookingguide.service.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -41,11 +44,11 @@ public class VisitController {
     }
 
     @GetMapping
-    public String list(Long selectedShopId,Long selectedServiceId, ModelMap modelMap) {
+    public String list(Long selectedShopId, Long selectedServiceId, ModelMap modelMap) {
         LOGGER.info("list()");
         Set<Shop> shops = shopService.list();
         modelMap.addAttribute("shops", shops);
-        modelMap.addAttribute("selectedShopId",selectedShopId);
+        modelMap.addAttribute("selectedShopId", selectedShopId);
         modelMap.addAttribute("selectedServiceId", selectedServiceId);
         if (selectedShopId != null) {
             Shop selectedShop = shopService.read(selectedShopId);
@@ -89,8 +92,10 @@ public class VisitController {
     }
 
     @PostMapping(value = "/create")
-    public String createX(@RequestParam(required = false) String username, Long shopId, Long serviceId, Long clientId, String dueDate, ModelMap modelMap) {
-        LOGGER.info("createX(username=" + username + ", shopId=" + shopId + ", serviceId=" + serviceId + ", clientId=" + clientId + ", dueDate=" + dueDate + ")");
+    public String createX(@RequestParam(required = false) String username, Long shopId, Long serviceId, Long clientId,
+                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String dueDate, ModelMap modelMap) {
+        LOGGER.info("createX(username=" + username + ", shopId=" + shopId + ", serviceId=" +
+                serviceId + ", clientId=" + clientId + ", dueDate=" + dueDate + ")");
 
         List<Client> clients = clientService.list();
         modelMap.addAttribute("clients", clients);
@@ -129,7 +134,7 @@ public class VisitController {
 
         newVisit.setShop(shop);
         newVisit.setService(service);
-//        newVisit.setDueDate(LocalDate.from(LocalDate.parse(dueDate, DateTimeFormatter.ISO_DATE).atStartOfDay()));
+        newVisit.setDueDate(LocalDateTime.parse(dueDate, DateTimeFormatter.ISO_DATE_TIME));
 
         Visit createdVisit = visitService.create(newVisit);
         LOGGER.info("createX(...)= " + createdVisit);

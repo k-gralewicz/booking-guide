@@ -14,18 +14,10 @@ public class Visit {
     private Long shopId;
     private Shop shop;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate dueDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime dueDate;
 
     public Visit(){
-    }
-
-    public boolean booking(LocalDateTime dueDate) {
-        boolean isAvailable = shop.visitAvailable(dueDate);
-        if (isAvailable) {
-            shop.book(this);
-        }
-        return isAvailable;
     }
 
     public Long getId() {
@@ -76,11 +68,11 @@ public class Visit {
         this.shop = shop;
     }
 
-    public LocalDate getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 

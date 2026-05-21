@@ -188,3 +188,10 @@ public class BookingGuideApplication {
 
 // TODO: 13.04.2026
 // /client/dashboard ma filtrować wizyty za pomocą nowo dodanej metody.
+
+// TODO: 27.04.2026
+// zarządzanie datami i czasem - dodanie
+// na profilu Clienta - zrobić to samo na Visits co na Dashboard (filtrowanie)
+
+// TODO: 21.05.2026
+// z czatemGPT zrobić dokumentację komunikacji FR-BD - Spring MVC, Thymeleaf.

@@ -66,7 +66,8 @@
                 <td th:text="${visit.client?.firstName + ' ' + visit.client?.lastName}">Client Name</td>
                 <td th:text="${visit.service?.name}">Service</td>
                 <td th:text="${visit.shop?.name}">Shop</td>
-                <td th:text="${visit.dueDate != null ? #temporals.format(visit.dueDate, 'dd-MM-yyyy HH:mm') : ''}">DueDate</td>
+<!--                <td th:text="${visit.dueDate != null ? #temporals.format(visit.dueDate, 'dd-MM-yyyy HH:mm') : ''}">DueDate</td>-->
+                <td th:text="${visit.dueDate}">DueDate</td>
                 <td>
                     <a th:href="@{/visits/{id}(id=${visit.id})}" class="btn btn-sm btn-primary">Read</a>
                     <a th:href="@{/visits/update/{id}(id=${visit.id})}" class="btn btn-sm btn-warning">Update</a>
