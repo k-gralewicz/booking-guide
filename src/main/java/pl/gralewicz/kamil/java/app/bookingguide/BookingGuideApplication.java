@@ -193,5 +193,5 @@ public class BookingGuideApplication {
 // zarządzanie datami i czasem - dodanie
 // na profilu Clienta - zrobić to samo na Visits co na Dashboard (filtrowanie)
 
-// TODO: 07.05.2026
+// TODO: 21.05.2026
 // z czatemGPT zrobić dokumentację komunikacji FR-BD - Spring MVC, Thymeleaf.
