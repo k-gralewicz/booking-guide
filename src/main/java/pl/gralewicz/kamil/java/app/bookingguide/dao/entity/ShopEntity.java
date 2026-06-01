@@ -1,16 +1,7 @@
 package pl.gralewicz.kamil.java.app.bookingguide.dao.entity;
 
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.sql.Time;
 import java.time.LocalTime;
@@ -45,6 +36,9 @@ public class ShopEntity {
 
     private LocalTime openFrom;
     private LocalTime openTo;
+
+    @OneToMany(mappedBy = "shop")
+    private List<ShopScheduleEntity> shopSchedules = new ArrayList<>();
 
     public ShopEntity() {
 
@@ -132,6 +126,14 @@ public class ShopEntity {
         this.openTo = openTo;
     }
 
+    public List<ShopScheduleEntity> getShopSchedules() {
+        return shopSchedules;
+    }
+
+    public void setShopSchedules(List<ShopScheduleEntity> shopSchedules) {
+        this.shopSchedules = shopSchedules;
+    }
+
     @Override
     public String toString() {
         return "ShopEntity{" +
@@ -144,6 +146,7 @@ public class ShopEntity {
 //                ", services=" + services +
                 ", openFrom=" + openFrom +
                 ", openTo=" + openTo +
+                ", shopSchedules=" + shopSchedules +
                 '}';
     }
 }
