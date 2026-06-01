@@ -12,6 +12,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +43,8 @@ public class ShopEntity {
     @ManyToMany(cascade = {PERSIST, MERGE}, fetch = FetchType.EAGER)
     private Set<ServiceEntity> services = new HashSet<>();
 
+    private LocalTime openFrom;
+    private LocalTime openTo;
 
     public ShopEntity() {
 
@@ -112,28 +116,21 @@ public class ShopEntity {
         this.services = services;
     }
 
-    //
-//    public List<Visit> getVisits() {
-//        return visits;
-//    }
-//
-//    public void setVisits(List<Visit> visits) {
-//        this.visits = visits;
-//    }
+    public LocalTime getOpenFrom() {
+        return openFrom;
+    }
 
+    public void setOpenFrom(LocalTime openFrom) {
+        this.openFrom = openFrom;
+    }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        ShopEntity that = (ShopEntity) o;
-//        return id.equals(that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(address, that.address) && Objects.equals(users, that.users) && Objects.equals(services, that.services);
-//    }
+    public LocalTime getOpenTo() {
+        return openTo;
+    }
 
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, name, description, phoneNumber, address, users, services);
-//    }
+    public void setOpenTo(LocalTime openTo) {
+        this.openTo = openTo;
+    }
 
     @Override
     public String toString() {
@@ -145,6 +142,8 @@ public class ShopEntity {
                 ", address=" + address +
                 ", users=" + users +
 //                ", services=" + services +
+                ", openFrom=" + openFrom +
+                ", openTo=" + openTo +
                 '}';
     }
 }

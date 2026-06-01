@@ -1,16 +1,16 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.springframework.stereotype.Service;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -106,5 +106,86 @@ public class VisitService {
         LOGGER.info("delete(" + id + ")");
         visitRepository.deleteById(id);
         LOGGER.info("delete(...)= ");
+    }
+
+//    protected void availability(LocalDateTime date, int duration, DurationType durationType) {
+//        LOGGER.info("availability(" + date + "," + duration + ", " + durationType + ")");
+//        List<Visit> visits = list();
+//        LOGGER.info("availability(...)= " + visits);
+//    }
+//}
+
+    public boolean availability(Long shopId, LocalDateTime date, int duration, DurationType durationType) {
+        LOGGER.info("availability(shopId=" + shopId + ", " + date + ", duration=" + duration + ", " + durationType + ")");
+
+        if (shopId == null || date == null || durationType == null || duration <= 0) {
+            LOGGER.warning("Niepoprawne lub brakujące parametry wejściowe w availability()");
+            return false;
+        }
+
+        ShopEntity shopEntity = shopRepository.findById(shopId)
+                .orElseThrow(() -> new java.util.NoSuchElementException("Nie znaleziono sklepu o ID: " + shopId));
+
+        LocalDateTime proposedStart = date;
+        LocalDateTime proposedEnd = proposedStart;
+
+        switch (durationType) {
+            case MINUTES:
+                proposedEnd = proposedStart.plusMinutes(duration);
+                break;
+            case HOURS:
+                proposedEnd = proposedStart.plusHours(duration);
+                break;
+            default:
+                LOGGER.severe("Nieobsługiwany typ DurationType: " + durationType);
+                return false;
+        }
+
+        if (shopEntity.getOpenFrom() != null && shopEntity.getOpenTo() != null) {
+            LocalTime visitStartRaw = proposedStart.toLocalTime();
+            LocalTime visitEndRaw = proposedEnd.toLocalTime();
+
+            if (visitStartRaw.isBefore(shopEntity.getOpenFrom()) || visitEndRaw.isAfter(shopEntity.getOpenTo())) {
+                LOGGER.info("availability(...)= false (Wizyta poza godzinami otwarcia sklepu)");
+                return false;
+            }
+        }
+
+        List<Visit> visits = list();
+
+        for (Visit existingVisit : visits) {
+            if (existingVisit.getDueDate() == null || existingVisit.getShop() == null || existingVisit.getService() == null) {
+                continue;
+            }
+
+            if (existingVisit.getShop().getId().equals(shopId)) {
+
+                LocalDateTime existingStart = existingVisit.getDueDate();
+                LocalDateTime existingEnd = existingStart;
+
+                // WYJAŚNIENIE: Wyciągamy obiekt Service jawnie określając jego typ.
+                // Dzięki temu IntelliJ dokładnie wie, skąd brać metody getDuration() i getDurationType().
+                pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service existingService = existingVisit.getService();
+
+                if (existingService != null && existingService.getDurationType() != null) {
+                    switch (existingService.getDurationType()) {
+                        case MINUTES:
+                            existingEnd = existingStart.plusMinutes(existingService.getDuration());
+                            break;
+                        case HOURS:
+                            existingEnd = existingStart.plusHours(existingService.getDuration());
+                            break;
+                    }
+                }
+
+                if (proposedStart.isBefore(existingEnd) && proposedEnd.isAfter(existingStart)) {
+                    LOGGER.info("availability(...)= false (Kolizja z wizytą o ID: " + existingVisit.getId() + ")");
+                    return false;
+                }
+            }
+        }
+
+        LOGGER.info("availability(...)= true (Termin jest wolny)");
+        return true;
     }
 }

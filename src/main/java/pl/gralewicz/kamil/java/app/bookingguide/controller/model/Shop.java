@@ -1,6 +1,7 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -17,29 +18,16 @@ public class Shop {
     private List<Visit> visits = new ArrayList<>();
     private Set<Service> services = new HashSet<>();
 
+    private LocalTime openFrom;
+    private LocalTime openTo;
+
     public Shop() {
     }
-
-//    public Shop(String name, String description, String phoneNumber, Address address) {
-//        this.name = name;
-//        this.description = description;
-//        this.phoneNumber = phoneNumber;
-//        this.address = address;
-//    }
 
     public boolean visitAvailable(LocalDateTime dueDate) {
         LOGGER.info("visitAvailable(" + dueDate + ")");
         if (visits.size() > 0) {
             for (Visit visit : visits) {
-//                LocalDateTime visitDueDate = visit.getDueDate();
-//                boolean dueDateEquals = dueDate.isEqual(visitDueDate);
-//                if (dueDateEquals) {
-//                    System.out.println("Termin zajęty przez wizytę " + visit);
-//                } else {
-//                    System.out.println("Termin dostępny ");
-//                    LOGGER.info("visitAvailable(...)=" + true);
-//                    return true;
-//                }
             }
         } else {
             LOGGER.info("visitAvailable(...)=" + true);
@@ -53,20 +41,11 @@ public class Shop {
     public Visit book(Visit visit) {
         LOGGER.info("book(" + visit + ")");
         if (visit != null) {
-//            boolean isAvailable = visitAvailable(visit.getDueDate());
-//            if (isAvailable) {
-//                visits.add(visit);
-//                LOGGER.info("book(...)=" + visit);
-//                return visit;
-//            }
+
         }
         LOGGER.info("book(...)=" + null);
         return null;
     }
-
-//    public void addVisit(Visit visit) {
-//        visits.add(visit);
-//    }
 
     public void allVisits() {
         System.out.println("Wszystkie wizyty " + visits);
@@ -120,6 +99,22 @@ public class Shop {
         this.services = services;
     }
 
+    public LocalTime getOpenFrom() {
+        return openFrom;
+    }
+
+    public void setOpenFrom(LocalTime openFrom) {
+        this.openFrom = openFrom;
+    }
+
+    public LocalTime getOpenTo() {
+        return openTo;
+    }
+
+    public void setOpenTo(LocalTime openTo) {
+        this.openTo = openTo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -141,6 +136,8 @@ public class Shop {
                 ", description='" + description + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address=" + address +
+                ", openFrom=" + openFrom +
+                ", openTo=" + openTo +
                 '}';
     }
 }

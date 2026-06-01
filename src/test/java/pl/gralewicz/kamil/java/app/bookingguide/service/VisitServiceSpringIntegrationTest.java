@@ -12,6 +12,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -318,5 +319,47 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
                 ()-> Assertions.assertNotNull(cretedVisit, "createdVisit is null"),
                 ()-> Assertions.assertEquals(localDate, cretedVisit.getDueDate(), "Due date is not correct")
         );
+    }
+
+    @Test
+    void createWithAvailability(){
+        //given
+        Shop shop = new Shop();
+        shop.setName("Salon");
+        shop.setOpenFrom(LocalTime.of(10, 0));
+        shop.setOpenTo(LocalTime.of(20, 0));
+
+        Shop createdShop = shopService.create(shop);
+
+        Client firstClient = new Client();
+        firstClient.setFirstName("Anna");
+
+        Client secondClient = new Client();
+        secondClient.setFirstName("Ola");
+
+        Client createdFirstClient = clientService.create(firstClient);
+        Client createdSecondClient = clientService.create(secondClient);
+
+        Visit firstVisit = new Visit();
+        firstVisit.setShop(createdShop);
+        firstVisit.setClient(createdFirstClient);
+        LocalDateTime firstLocalDateTime = LocalDateTime.of(2026, Month.MAY, 25, 12, 0);
+        firstVisit.setDueDate(firstLocalDateTime);
+
+        Visit secondVisit = new Visit();
+        secondVisit.setShop(createdShop);
+        secondVisit.setClient(createdSecondClient);
+        LocalDateTime secondLocalDateTime = LocalDateTime.of(2026, Month.MAY, 25, 13, 0);
+        secondVisit.setDueDate(secondLocalDateTime);
+
+        Visit cretedFirstVisit = visitService.create(firstVisit);
+        Visit createdSecondVisit = visitService.create(secondVisit);
+
+        //when
+        LocalDateTime visitDate = LocalDateTime.of(2026, Month.MAY, 25, 10, 0);
+        DurationType visitDurationType = DurationType.HOURS;
+//        visitService.availability(visitDate, visitDurationType);
+//        //then
+
     }
 }

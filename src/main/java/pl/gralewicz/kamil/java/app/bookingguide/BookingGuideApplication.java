@@ -195,3 +195,6 @@ public class BookingGuideApplication {
 
 // TODO: 21.05.2026
 // z czatemGPT zrobić dokumentację komunikacji FR-BD - Spring MVC, Thymeleaf.
+// na widoku tworzenia Shop dodać obowiązkowe wpisanie godzin otwarcie.
+// przepisać ShopMapperTest na ShopMapperSpringTest,
+// dokończyć implementację metody: availability(),
