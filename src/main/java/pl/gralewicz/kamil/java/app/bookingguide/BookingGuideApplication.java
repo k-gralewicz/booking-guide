@@ -198,3 +198,7 @@ public class BookingGuideApplication {
 // na widoku tworzenia Shop dodać obowiązkowe wpisanie godzin otwarcie.
 // przepisać ShopMapperTest na ShopMapperSpringTest,
 // dokończyć implementację metody: availability(),
+
+// TODO: 01.06.2026
+// stworzyć enum DayOfWeek z Id i name,
+// stworzyć implementację VisitAvailabilityService + testy,
