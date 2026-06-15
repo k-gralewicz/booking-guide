@@ -202,3 +202,11 @@ public class BookingGuideApplication {
 // TODO: 01.06.2026
 // stworzyć enum DayOfWeek z Id i name,
 // stworzyć implementację VisitAvailabilityService + testy,
+
+// TODO: 08.06.2026
+// dokończyć implementację metody create() w VisitService
+// metoda create wywołuje metodę book() z VisitAvailabilityService.
+
+// TODO: 15.06.2026
+// poprawnie obsłużyć wyjątki między warstwami (VisitService create()),
+//

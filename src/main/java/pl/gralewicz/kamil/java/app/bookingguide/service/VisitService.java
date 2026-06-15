@@ -1,7 +1,8 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
-import org.springframework.stereotype.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
@@ -16,7 +17,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-@Service // stereotyp informujący lub oznaczający klasę jako komponent springowy, który podlega DI i IoC.
+@org.springframework.stereotype.Service // stereotyp informujący lub oznaczający klasę jako komponent springowy, który podlega DI i IoC.
 public class VisitService {
     private static final Logger LOGGER = Logger.getLogger(VisitService.class.getName());
 
@@ -24,12 +25,14 @@ public class VisitService {
     private final VisitMapper visitMapper;
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
+    private final VisitAvailabilityService visitAvailabilityService;
 
-    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper, ShopRepository shopRepository, UserRepository userRepository) { // wstrzykiwanie zależności
+    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper, ShopRepository shopRepository, UserRepository userRepository, VisitAvailabilityService visitAvailabilityService) { // wstrzykiwanie zależności
         this.visitRepository = visitRepository;
         this.visitMapper = visitMapper;
         this.shopRepository = shopRepository;
         this.userRepository = userRepository;
+        this.visitAvailabilityService = visitAvailabilityService;
     }
 
     public List<Visit> list() {
@@ -61,9 +64,28 @@ public class VisitService {
 
     public Visit create(Visit visit) {
         LOGGER.info("create(" + visit + ")");
-        VisitEntity visitEntity = visitMapper.from(visit); // delegacja
-        VisitEntity createdVisitEntity = visitRepository.save(visitEntity);
-        Visit mappedVisit = visitMapper.from(createdVisitEntity);
+
+        if (visit == null) {
+            throw new IllegalArgumentException("Visit cannot be null");
+        }
+        if (visit.getDueDate() == null) {
+            throw new IllegalArgumentException("Visit due date cannot be null");
+        }
+        if (visit.getShop() == null || visit.getShop().getId() == null) {
+            throw new IllegalArgumentException("Visit must be assigned to a valid shop with an ID");
+        }
+        if (visit.getService() == null || visit.getService().getId() == null) {
+            throw new IllegalArgumentException("Visit must have a service with a valid ID");
+        }
+
+        Shop shop = visit.getShop();
+        Service service = visit.getService();
+        LocalDateTime requestedDateTime = visit.getDueDate();
+        int duration = visit.getService().getDuration();
+        DurationType durationType = visit.getService().getDurationType();
+
+        Visit mappedVisit = visitAvailabilityService.book(shop, service, requestedDateTime, duration, durationType);
+
         LOGGER.info("create(...) = " + mappedVisit);
         return mappedVisit;
     }

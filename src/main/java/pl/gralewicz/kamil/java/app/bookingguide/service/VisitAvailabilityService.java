@@ -1,13 +1,18 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ServiceMapper;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -15,17 +20,24 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
-@Service
+@org.springframework.stereotype.Service
 @Transactional(readOnly = true)
 public class VisitAvailabilityService {
     private static final Logger LOGGER = Logger.getLogger(VisitAvailabilityService.class.getName());
 
     private final ShopRepository shopRepository;
     private final VisitRepository visitRepository;
+    private final VisitMapper visitMapper;
+    private final ShopMapper shopMapper;
+    private final ServiceMapper serviceMapper;
 
-    public VisitAvailabilityService(ShopRepository shopRepository, VisitRepository visitRepository) {
+
+    public VisitAvailabilityService(ShopRepository shopRepository, VisitRepository visitRepository, VisitMapper visitMapper, ShopMapper shopMapper, ServiceMapper serviceMapper) {
         this.shopRepository = shopRepository;
         this.visitRepository = visitRepository;
+        this.visitMapper = visitMapper;
+        this.shopMapper = shopMapper;
+        this.serviceMapper = serviceMapper;
     }
 
     public boolean isAvailable(Long shopId, LocalDateTime requestedDateTime, int duration, DurationType durationType) {
@@ -88,35 +100,39 @@ public class VisitAvailabilityService {
     }
 
     @Transactional
-    public VisitEntity book(Long shopId,
-                            Long serviceId,
-                            LocalDateTime requestedDateTime,
-                            int duration,
-                            DurationType durationType) {
+    public Visit book(Shop shop, Service service,
+                      LocalDateTime requestedDateTime,
+                      int duration,
+                      DurationType durationType) {
+        LOGGER.info("book(shop=" + shop +
+                ", service=" + service +
+                ", duration=" + duration +
+                ", durationType=" + durationType + ")");
 
-        LOGGER.info("book(shopId=" + shopId +
-                ", serviceId=" + serviceId +
-                ", date=" + requestedDateTime + ")");
+        if (shop != null & service != null) {
+            Long shopId = shop.getId();
+            Long serviceId = service.getId();
 
-        boolean available = isAvailable(
-                shopId,
-                requestedDateTime,
-                duration,
-                durationType);
+            boolean available = isAvailable(shopId, requestedDateTime, duration, durationType);
+            if (!available) {
+                throw new IllegalStateException("Selected term is not available");
+            }
 
-        if (!available) {
-            throw new IllegalStateException("Selected term is not available");
+            ShopEntity shopEntity = shopMapper.from(shop);
+            ServiceEntity serviceEntity = serviceMapper.from(service);
+            VisitEntity visit = new VisitEntity();
+            visit.setShop(shopEntity);
+            visit.setService(serviceEntity);
+            visit.setDueDate(requestedDateTime);
+
+            VisitEntity savedVisit = visitRepository.save(visit);
+            Visit mappedVisit = visitMapper.from(savedVisit);
+
+            LOGGER.info("book(...)= " + mappedVisit);
+            return mappedVisit;
         }
 
-        VisitEntity visit = new VisitEntity();
-//        visit.setShop(shop);
-//        visit.setService(service);
-        visit.setDueDate(requestedDateTime);
-
-        VisitEntity savedVisit = visitRepository.save(visit);
-
-        LOGGER.info("Visit booked successfully. ID=" + savedVisit.getId());
-
-        return savedVisit;
+        LOGGER.info("book(...)= " + null);
+        return null;
     }
 }
