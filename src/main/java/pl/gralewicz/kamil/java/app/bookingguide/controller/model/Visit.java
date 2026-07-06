@@ -80,11 +80,12 @@ public class Visit {
     public String toString() {
         return "Visit{" +
                 "id=" + id +
-                ", client=" + client +
+                ", clientId=" + (client != null ? client.getId() : null) +
+//                ", client=" + client +
                 ", serviceId=" + serviceId +
-                ", service=" + service +
+//                ", service=" + service +
                 ", shopId=" + shopId +
-                ", shop=" + shop +
+//                ", shop=" + shop +
                 ", dueDate=" + dueDate +
                 '}';
     }

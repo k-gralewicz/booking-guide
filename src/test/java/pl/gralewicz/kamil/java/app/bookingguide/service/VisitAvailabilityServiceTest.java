@@ -3,50 +3,69 @@ package pl.gralewicz.kamil.java.app.bookingguide.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ClientRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ServiceRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ServiceMapper;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ShopMapper;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
+@SpringBootTest
+@Transactional
 class VisitAvailabilityServiceTest {
 
+    @Autowired
     private ShopRepository shopRepository;
+
+    @Autowired
     private VisitRepository visitRepository;
+
+    @Autowired
     private VisitAvailabilityService visitAvailabilityService;
+
+    @Autowired
+    private ServiceRepository serviceRepository;
+
+    @Autowired
+    private ShopMapper shopMapper;
+
+    @Autowired
+    private ServiceMapper serviceMapper;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    private Long savedShopId;
 
     @BeforeEach
     void setUp() {
-        this.shopRepository = Mockito.mock(ShopRepository.class);
-        this.visitRepository = Mockito.mock(VisitRepository.class);
-        this.visitAvailabilityService = new VisitAvailabilityService(shopRepository, visitRepository);
+        ShopEntity shop = new ShopEntity();
+        shop.setOpenFrom(LocalTime.of(8, 0));
+        shop.setOpenTo(LocalTime.of(16, 0));
+
+        ShopEntity savedShop = shopRepository.save(shop);
+        this.savedShopId = savedShop.getId();
     }
 
     @Test
     void isAvailable() {
         //given
-        Long shopId = 1L;
         LocalDateTime requestedTime = LocalDateTime.of(2026, Month.MAY, 25, 12, 0);
 
-        ShopEntity shop = new ShopEntity();
-        shop.setId(shopId);
-        shop.setOpenFrom(LocalTime.of(8, 0));
-        shop.setOpenTo(LocalTime.of(16, 0));
-
-        Mockito.when(shopRepository.findById(shopId)).thenReturn(Optional.of(shop));
-        Mockito.when(visitRepository.findByShopId(shopId)).thenReturn(new ArrayList<>());
-
         //when
-        Boolean result = visitAvailabilityService.isAvailable(shopId, requestedTime, 30, DurationType.MINUTES);
+        Boolean result = visitAvailabilityService.isAvailable(savedShopId, requestedTime, 30, DurationType.MINUTES);
 
         //then
         Assertions.assertAll(
@@ -58,28 +77,23 @@ class VisitAvailabilityServiceTest {
     @Test
     void isAvailableWithCollision() {
         //given
-        Long shopId = 1L;
         LocalDateTime requestedTime = LocalDateTime.of(2026, Month.MAY, 25, 12, 0);
 
-        ShopEntity shop = new ShopEntity();
-        shop.setId(shopId);
-        shop.setOpenFrom(LocalTime.of(8, 0));
-        shop.setOpenTo(LocalTime.of(16, 0));
-
-        VisitEntity existingVisit = new VisitEntity();
-        existingVisit.setId(99L);
-        existingVisit.setDueDate(LocalDateTime.of(2026, Month.MAY, 25, 11, 45));
+        ShopEntity shop = shopRepository.findById(savedShopId).orElseThrow();
 
         ServiceEntity existingService = new ServiceEntity();
         existingService.setDuration(30);
-        existingService.setDurationType(pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType.MINUTES);
+        existingService.setDurationType(DurationType.MINUTES);
+
+        VisitEntity existingVisit = new VisitEntity();
+        existingVisit.setShop(shop);
+        existingVisit.setDueDate(LocalDateTime.of(2026, Month.MAY, 25, 11, 45));
         existingVisit.setService(existingService);
 
-        Mockito.when(shopRepository.findById(shopId)).thenReturn(Optional.of(shop));
-        Mockito.when(visitRepository.findByShopId(shopId)).thenReturn(List.of(existingVisit));
+        visitRepository.save(existingVisit);
 
         //when
-        Boolean result = visitAvailabilityService.isAvailable(shopId, requestedTime, 30, DurationType.MINUTES);
+        Boolean result = visitAvailabilityService.isAvailable(savedShopId, requestedTime, 30, DurationType.MINUTES);
 
         //then
         Assertions.assertAll(
@@ -91,23 +105,65 @@ class VisitAvailabilityServiceTest {
     @Test
     void isAvailableWithClosedShop() {
         //given
-        Long shopId = 1L;
         LocalDateTime tooEarly = LocalDateTime.of(2026, Month.MAY, 25, 6, 0);
 
-        ShopEntity shop = new ShopEntity();
-        shop.setId(shopId);
-        shop.setOpenFrom(LocalTime.of(8, 0));
-        shop.setOpenTo(LocalTime.of(16, 0));
-
-        Mockito.when(shopRepository.findById(shopId)).thenReturn(Optional.of(shop));
-
         //when
-        Boolean result = visitAvailabilityService.isAvailable(shopId, tooEarly, 30, DurationType.MINUTES);
+        Boolean result = visitAvailabilityService.isAvailable(savedShopId, tooEarly, 30, DurationType.MINUTES);
 
         //then
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(result, "result is null"),
                 () -> Assertions.assertFalse(result, "result is not correct")
+        );
+    }
+
+    @Transactional
+    @Test
+    void bookAvailableVisit(){
+        //given
+        LocalDateTime requestedTime = LocalDateTime.of(2026, Month.JULY, 25, 12, 0);
+
+        ShopEntity shopEntity = shopRepository.findById(savedShopId).orElseThrow();
+        shopEntity.setName("Salon");
+        ShopEntity savedShopEntity = shopRepository.save(shopEntity);
+        Shop mappedShop = shopMapper.from(savedShopEntity);
+
+        ServiceEntity service = new ServiceEntity();
+        service.setName("Zabieg");
+        service.setDurationType(DurationType.MINUTES);
+        service.setDuration(15);
+        ServiceEntity saveServiceEntity = serviceRepository.save(service);
+        Service mappedService = serviceMapper.from(saveServiceEntity);
+
+        ClientEntity clientEntity = new ClientEntity();
+        clientEntity.setFirstName("Jan");
+        clientEntity.setLastName("Kowalski");
+        ClientEntity savedClientEntity = clientRepository.save(clientEntity);
+
+        Client mappedClient = new Client();
+        mappedClient.setId(savedClientEntity.getId());
+
+        shopRepository.flush();
+        serviceRepository.flush();
+        clientRepository.flush();
+
+        //when
+        Visit bookedVisit = visitAvailabilityService.book(
+                mappedShop,
+                mappedService,
+                mappedClient,
+                requestedTime,
+                15,
+                DurationType.MINUTES
+        );
+
+        //then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(bookedVisit, "bookedVisit is null"),
+                () -> Assertions.assertNotNull(bookedVisit.getClient(), "Client in bookedVisit is null"),
+                () -> Assertions.assertEquals(mappedClient.getId(), bookedVisit.getClient().getId(), "Client ID does not match"),
+                () -> Assertions.assertEquals(mappedShop.getId(), bookedVisit.getShop().getId(), "Shop ID does not match"),
+                () -> Assertions.assertEquals(requestedTime, bookedVisit.getDueDate(), "Due date does not match")
         );
     }
 }

@@ -12,6 +12,9 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
+
 @Entity
 @Table(name = "VISITS")
 public class VisitEntity {
@@ -23,11 +26,11 @@ public class VisitEntity {
     @JoinColumn(name = "client_id")
     private ClientEntity client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {PERSIST, MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
     private ServiceEntity service;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id")
     private ShopEntity shop;
 
@@ -80,9 +83,12 @@ public class VisitEntity {
     public String toString() {
         return "VisitEntity{" +
                 "id=" + id +
-                ", client=" + client +
-                ", service=" + service +
-                ", shop=" + shop +
+                ", clientId=" + (client != null ? client.getId() : null) +
+                ", serviceId=" + (service != null ? service.getId() : null) +
+                ", shopId=" + (shop != null ? shop.getId() : null) +
+//                ", client=" + client +
+//                ", service=" + service +
+//                ", shop=" + shop +
                 ", dueDate=" + dueDate +
                 '}';
     }

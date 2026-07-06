@@ -1,13 +1,12 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.service.exception.ShopClosedException;
+import pl.gralewicz.kamil.java.app.bookingguide.service.exception.VisitCollisionException;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
 import java.time.LocalDateTime;
@@ -17,7 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-@org.springframework.stereotype.Service // stereotyp informujący lub oznaczający klasę jako komponent springowy, który podlega DI i IoC.
+@org.springframework.stereotype.Service
 public class VisitService {
     private static final Logger LOGGER = Logger.getLogger(VisitService.class.getName());
 
@@ -62,7 +61,7 @@ public class VisitService {
         return visits;
     }
 
-    public Visit create(Visit visit) {
+    public Visit create(Visit visit) throws VisitCollisionException, ShopClosedException {
         LOGGER.info("create(" + visit + ")");
 
         if (visit == null) {
@@ -77,14 +76,33 @@ public class VisitService {
         if (visit.getService() == null || visit.getService().getId() == null) {
             throw new IllegalArgumentException("Visit must have a service with a valid ID");
         }
+        // DODANO WALIDACJĘ KLIENTA
+        if (visit.getClient() == null || visit.getClient().getId() == null) {
+            throw new IllegalArgumentException("Visit must have a client with a valid ID");
+        }
+
+        if (visit.getDueDate().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Nie można zarezerwować wizyty w przeszłości: " + visit.getDueDate());
+        }
 
         Shop shop = visit.getShop();
         Service service = visit.getService();
+        Client client = visit.getClient(); // <-- DODANO POBRANIE MODELU KLIENTA
         LocalDateTime requestedDateTime = visit.getDueDate();
-        int duration = visit.getService().getDuration();
-        DurationType durationType = visit.getService().getDurationType();
+        int duration = service.getDuration();
+        DurationType durationType = service.getDurationType();
 
-        Visit mappedVisit = visitAvailabilityService.book(shop, service, requestedDateTime, duration, durationType);
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Czas trwania usługi musi być większy niż 0");
+        }
+        if (durationType == null) {
+            throw new IllegalArgumentException("Typ czasu trwania usługi nie może być nullem");
+        }
+
+        availability(shop.getId(), requestedDateTime, duration, durationType);
+
+        // POPRAWIONO: Dodany paramter 'client' jako trzeci argument
+        Visit mappedVisit = visitAvailabilityService.book(shop, service, client, requestedDateTime, duration, durationType);
 
         LOGGER.info("create(...) = " + mappedVisit);
         return mappedVisit;
@@ -130,25 +148,18 @@ public class VisitService {
         LOGGER.info("delete(...)= ");
     }
 
-//    protected void availability(LocalDateTime date, int duration, DurationType durationType) {
-//        LOGGER.info("availability(" + date + "," + duration + ", " + durationType + ")");
-//        List<Visit> visits = list();
-//        LOGGER.info("availability(...)= " + visits);
-//    }
-//}
+    public void availability(Long shopId, LocalDateTime proposedStart, int duration, DurationType durationType)
+            throws ShopClosedException, VisitCollisionException {
+        LOGGER.info("availability(shopId=" + shopId + ", " + proposedStart + ", duration=" + duration + ", " + durationType + ")");
 
-    public boolean availability(Long shopId, LocalDateTime date, int duration, DurationType durationType) {
-        LOGGER.info("availability(shopId=" + shopId + ", " + date + ", duration=" + duration + ", " + durationType + ")");
-
-        if (shopId == null || date == null || durationType == null || duration <= 0) {
+        if (shopId == null || proposedStart == null || durationType == null || duration <= 0) {
             LOGGER.warning("Niepoprawne lub brakujące parametry wejściowe w availability()");
-            return false;
+            throw new IllegalArgumentException("Niepoprawne parametry weryfikacji dostępności");
         }
 
         ShopEntity shopEntity = shopRepository.findById(shopId)
                 .orElseThrow(() -> new java.util.NoSuchElementException("Nie znaleziono sklepu o ID: " + shopId));
 
-        LocalDateTime proposedStart = date;
         LocalDateTime proposedEnd = proposedStart;
 
         switch (durationType) {
@@ -160,7 +171,7 @@ public class VisitService {
                 break;
             default:
                 LOGGER.severe("Nieobsługiwany typ DurationType: " + durationType);
-                return false;
+                throw new IllegalArgumentException("Nieobsługiwany typ DurationType");
         }
 
         if (shopEntity.getOpenFrom() != null && shopEntity.getOpenTo() != null) {
@@ -169,7 +180,8 @@ public class VisitService {
 
             if (visitStartRaw.isBefore(shopEntity.getOpenFrom()) || visitEndRaw.isAfter(shopEntity.getOpenTo())) {
                 LOGGER.info("availability(...)= false (Wizyta poza godzinami otwarcia sklepu)");
-                return false;
+                throw new ShopClosedException("Wizyta (" + visitStartRaw + " - " + visitEndRaw +
+                        ") wykracza poza godziny otwarcia sklepu (" + shopEntity.getOpenFrom() + " - " + shopEntity.getOpenTo() + ")");
             }
         }
 
@@ -181,12 +193,9 @@ public class VisitService {
             }
 
             if (existingVisit.getShop().getId().equals(shopId)) {
-
                 LocalDateTime existingStart = existingVisit.getDueDate();
                 LocalDateTime existingEnd = existingStart;
 
-                // WYJAŚNIENIE: Wyciągamy obiekt Service jawnie określając jego typ.
-                // Dzięki temu IntelliJ dokładnie wie, skąd brać metody getDuration() i getDurationType().
                 pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service existingService = existingVisit.getService();
 
                 if (existingService != null && existingService.getDurationType() != null) {
@@ -202,12 +211,12 @@ public class VisitService {
 
                 if (proposedStart.isBefore(existingEnd) && proposedEnd.isAfter(existingStart)) {
                     LOGGER.info("availability(...)= false (Kolizja z wizytą o ID: " + existingVisit.getId() + ")");
-                    return false;
+                    throw new VisitCollisionException("Wybrany termin nakłada się na istniejącą wizytę o ID: " + existingVisit.getId());
                 }
             }
         }
 
         LOGGER.info("availability(...)= true (Termin jest wolny)");
-        return true;
+//        return true;
     }
 }

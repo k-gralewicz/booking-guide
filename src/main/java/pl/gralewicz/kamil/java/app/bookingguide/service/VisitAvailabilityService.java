@@ -1,13 +1,13 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.springframework.transaction.annotation.Transactional;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ClientRepository;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ServiceRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ServiceMapper;
@@ -27,14 +27,17 @@ public class VisitAvailabilityService {
 
     private final ShopRepository shopRepository;
     private final VisitRepository visitRepository;
+    private final ServiceRepository serviceRepository; // DODANO
+    private final ClientRepository clientRepository;
     private final VisitMapper visitMapper;
     private final ShopMapper shopMapper;
     private final ServiceMapper serviceMapper;
 
-
-    public VisitAvailabilityService(ShopRepository shopRepository, VisitRepository visitRepository, VisitMapper visitMapper, ShopMapper shopMapper, ServiceMapper serviceMapper) {
+    public VisitAvailabilityService(ShopRepository shopRepository, VisitRepository visitRepository, ServiceRepository serviceRepository, ClientRepository clientRepository, VisitMapper visitMapper, ShopMapper shopMapper, ServiceMapper serviceMapper) {
         this.shopRepository = shopRepository;
         this.visitRepository = visitRepository;
+        this.serviceRepository = serviceRepository; // DODANO
+        this.clientRepository = clientRepository;
         this.visitMapper = visitMapper;
         this.shopMapper = shopMapper;
         this.serviceMapper = serviceMapper;
@@ -100,16 +103,12 @@ public class VisitAvailabilityService {
     }
 
     @Transactional
-    public Visit book(Shop shop, Service service,
+    public Visit book(Shop shop, Service service, Client client, // <-- DODANO KLIENTA
                       LocalDateTime requestedDateTime,
                       int duration,
                       DurationType durationType) {
-        LOGGER.info("book(shop=" + shop +
-                ", service=" + service +
-                ", duration=" + duration +
-                ", durationType=" + durationType + ")");
 
-        if (shop != null & service != null) {
+        if (shop != null && service != null && client != null) {
             Long shopId = shop.getId();
             Long serviceId = service.getId();
 
@@ -118,11 +117,15 @@ public class VisitAvailabilityService {
                 throw new IllegalStateException("Selected term is not available");
             }
 
-            ShopEntity shopEntity = shopMapper.from(shop);
-            ServiceEntity serviceEntity = serviceMapper.from(service);
+            // Pobieramy zarządzane przez Hibernate encje z bazy danych
+            ShopEntity shopEntity = shopRepository.findById(shopId).orElseThrow();
+            ServiceEntity serviceEntity = serviceRepository.findById(serviceId).orElseThrow();
+            ClientEntity clientEntity = clientRepository.findById(client.getId()).orElseThrow(); // <-- POBIERANIE ENCI KLIENTA
+
             VisitEntity visit = new VisitEntity();
             visit.setShop(shopEntity);
             visit.setService(serviceEntity);
+            visit.setClient(clientEntity); // <-- PODPIĘCIE ENCI KLIENTA DO WIZYTY
             visit.setDueDate(requestedDateTime);
 
             VisitEntity savedVisit = visitRepository.save(visit);
@@ -132,7 +135,6 @@ public class VisitAvailabilityService {
             return mappedVisit;
         }
 
-        LOGGER.info("book(...)= " + null);
         return null;
     }
 }

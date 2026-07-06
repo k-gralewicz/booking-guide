@@ -209,4 +209,13 @@ public class BookingGuideApplication {
 
 // TODO: 15.06.2026
 // poprawnie obsłużyć wyjątki między warstwami (VisitService create()),
+// VisitAvailabilityServiceTest - zastąpić Mock konfiguracją springową.
+// Dlaczego client nie przychodzi do visit.
+
+// TODO: 29.06.2026
+// dokończyć wyjątki w VisitService create(),
+// naprawić błąd w teście bookAvailableVisit.
+
+// TODO: 06.07.2026
+// zapoznać się i zaimplementować mechanizm w SpringData JPA, który ładuje inicjalną bazę danych z pliku data.sql z katalogu Resources.
 //
