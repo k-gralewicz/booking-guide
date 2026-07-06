@@ -27,7 +27,7 @@ public class ServiceEntity {
     private String name;
     private String description;
     private BigDecimal price;
-    private Integer duration;
+    private int duration;
     @Column(name = "DURATION_TYPE")
     private DurationType durationType;
     private String status;
@@ -89,16 +89,16 @@ public class ServiceEntity {
         return duration;
     }
 
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
     public Set<ShopEntity> getShops() {
         return shops;
     }
 
     public void setShops(Set<ShopEntity> shops) {
         this.shops = shops;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
     }
 
     public DurationType getDurationType() {

@@ -39,6 +39,16 @@
                                 <label for="phoneNumber" class="fw-bold">Phone Number:</label>
                                 <input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-control" required/>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="openFrom" class="fw-bold">Open From:</label>
+                                    <input type="time" id="openFrom" th:field="*{openFrom}" class="form-control" required/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="openTo" class="fw-bold">Open To:</label>
+                                    <input type="time" id="openTo" th:field="*{openTo}" class="form-control" required/>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-md-6">

@@ -33,18 +33,6 @@ public class VisitMapper {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         VisitEntity visitEntity = modelMapper.map(visit, VisitEntity.class);
 
-//        VisitEntity visitEntity = new VisitEntity();
-//        visitEntity.setId(visit.getId());
-//        visitEntity.setDueDate(visit.getDueDate());
-//
-//        ClientMapper clientMapper = new ClientMapper();
-//        ClientEntity clientEntity = clientMapper.from(visit.getClient());
-//
-//        ShopMapper shopMapper = new ShopMapper();
-//        ShopEntity shopEntity = shopMapper.from(visit.getShop());
-//
-//        visitEntity.setClient(clientEntity);
-//        visitEntity.setShop(shopEntity);
         LOGGER.info("from(...) = " + visitEntity);
         return visitEntity;
     }
@@ -53,8 +41,8 @@ public class VisitMapper {
         LOGGER.info("from(" + visitEntity + ")");
         ModelMapper modelMapper = new ModelMapper();
         Visit visit = modelMapper.map(visitEntity, Visit.class);
-        LOGGER.info("from(...) = " + visitEntity);
+        // POPRAWKA: Logujemy zmapowany obiekt 'visit', a nie ponownie 'visitEntity'
+        LOGGER.info("from(...) = " + visit);
         return visit;
     }
 }
-// TODO: 11.10.2023 przerobić wszystkie własne mappery na użycie klasy ModelMapper.

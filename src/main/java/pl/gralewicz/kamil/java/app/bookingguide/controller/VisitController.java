@@ -29,18 +29,21 @@ import static pl.gralewicz.kamil.java.app.bookingguide.api.BookingGuideConstants
 public class VisitController {
     private static final Logger LOGGER = Logger.getLogger(VisitController.class.getName());
     private final ClientService clientService;
+    private final VisitAvailabilityService visitAvailabilityService;
 
     private VisitService visitService;
     private ServiceService serviceService;
     private ShopService shopService;
     private UserService userService;
 
-    public VisitController(VisitService visitService, ServiceService serviceService, ShopService shopService, UserService userService, ClientService clientService) {
+
+    public VisitController(VisitService visitService, ServiceService serviceService, ShopService shopService, UserService userService, ClientService clientService, VisitAvailabilityService visitAvailabilityService) {
         this.visitService = visitService;
         this.serviceService = serviceService;
         this.shopService = shopService;
         this.userService = userService;
         this.clientService = clientService;
+        this.visitAvailabilityService = visitAvailabilityService;
     }
 
     @GetMapping
@@ -99,26 +102,25 @@ public class VisitController {
 
         List<Client> clients = clientService.list();
         modelMap.addAttribute("clients", clients);
-        Visit newVisit = new Visit();
 
-        if (username != null) {
+        Client selectedClient = null;
+
+        if (username != null && !username.trim().isEmpty()) {
             User userByUsername = userService.findByUsername(username);
             if (userByUsername == null) {
                 modelMap.addAttribute("error", "User not found");
                 return "visit-create";
             }
-//            Client clientFromUser = userByUsername.getClient();
-//            newVisit.setClient(clientFromUser);
-
             Client clientFromUser = userByUsername.getClient();
             LOGGER.info("clientFromUser= " + clientFromUser);
-            Long clientFromUserId = clientFromUser.getId();
-            Client client = clientService.read(clientFromUserId);
-            newVisit.setClient(client);
-//            z pobranego klienta za pomocą ID pobierz go ponownie za pomocą service i dopiero ustaw do newVisit
-        } else {
-            Client client = clientService.read(clientId);
-            newVisit.setClient(client);
+            selectedClient = clientService.read(clientFromUser.getId());
+        } else if (clientId != null) {
+            selectedClient = clientService.read(clientId);
+        }
+
+        if (selectedClient == null) {
+            modelMap.addAttribute("error", "Client not selected or found");
+            return "visit-create";
         }
 
         Shop shop = shopService.findById(shopId);
@@ -132,12 +134,23 @@ public class VisitController {
             return "visit-create";
         }
 
-        newVisit.setShop(shop);
-        newVisit.setService(service);
-        newVisit.setDueDate(LocalDateTime.parse(dueDate, DateTimeFormatter.ISO_DATE_TIME));
+        LocalDateTime requestedDateTime = LocalDateTime.parse(dueDate, DateTimeFormatter.ISO_DATE_TIME);
 
-        Visit createdVisit = visitService.create(newVisit);
-        LOGGER.info("createX(...)= " + createdVisit);
+        try {
+            Visit createdVisit = visitAvailabilityService.book(
+                    shop,
+                    service,
+                    selectedClient, // <-- Przekazujemy pełny obiekt klienta
+                    requestedDateTime,
+                    service.getDuration(),
+                    service.getDurationType()
+            );
+            LOGGER.info("createX(...)= " + createdVisit);
+        } catch (IllegalStateException e) {
+            modelMap.addAttribute("error", "Wybrany termin jest już zajęty lub salon jest zamknięty!");
+            return "visit-create";
+        }
+
         return "redirect:/visits";
     }
 

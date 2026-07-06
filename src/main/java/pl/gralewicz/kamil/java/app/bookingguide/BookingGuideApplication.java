@@ -195,3 +195,27 @@ public class BookingGuideApplication {
 
 // TODO: 21.05.2026
 // z czatemGPT zrobić dokumentację komunikacji FR-BD - Spring MVC, Thymeleaf.
+// na widoku tworzenia Shop dodać obowiązkowe wpisanie godzin otwarcie.
+// przepisać ShopMapperTest na ShopMapperSpringTest,
+// dokończyć implementację metody: availability(),
+
+// TODO: 01.06.2026
+// stworzyć enum DayOfWeek z Id i name,
+// stworzyć implementację VisitAvailabilityService + testy,
+
+// TODO: 08.06.2026
+// dokończyć implementację metody create() w VisitService
+// metoda create wywołuje metodę book() z VisitAvailabilityService.
+
+// TODO: 15.06.2026
+// poprawnie obsłużyć wyjątki między warstwami (VisitService create()),
+// VisitAvailabilityServiceTest - zastąpić Mock konfiguracją springową.
+// Dlaczego client nie przychodzi do visit.
+
+// TODO: 29.06.2026
+// dokończyć wyjątki w VisitService create(),
+// naprawić błąd w teście bookAvailableVisit.
+
+// TODO: 06.07.2026
+// zapoznać się i zaimplementować mechanizm w SpringData JPA, który ładuje inicjalną bazę danych z pliku data.sql z katalogu Resources.
+//

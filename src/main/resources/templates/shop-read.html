@@ -33,6 +33,15 @@
                         <span th:text="${shop.phoneNumber}">Phone</span>
                     </div>
 
+                    <div class="mb-3 d-flex justify-content-between border-bottom pb-2">
+                        <label class="fw-bold">Working Hours:</label>
+                        <span>
+                            <span th:text="${shop.openFrom != null ? #temporals.format(shop.openFrom, 'HH:mm') : '--:--'}">00:00</span>
+                            -
+                            <span th:text="${shop.openTo != null ? #temporals.format(shop.openTo, 'HH:mm') : '--:--'}">00:00</span>
+                        </span>
+                    </div>
+
                     <h5 class="mt-4 text-secondary">Address Information</h5>
 
                     <div class="mb-3 d-flex justify-content-between border-bottom pb-2">
