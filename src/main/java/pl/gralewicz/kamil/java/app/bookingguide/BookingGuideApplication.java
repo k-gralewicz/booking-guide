@@ -218,4 +218,9 @@ public class BookingGuideApplication {
 
 // TODO: 06.07.2026
 // zapoznać się i zaimplementować mechanizm w SpringData JPA, który ładuje inicjalną bazę danych z pliku data.sql z katalogu Resources.
-//
+// statusy użytkowników, statusy wizyt - zaimplementować - np. z datą startu i końca danego statusu/wartości....
+
+// TODO: 17.08.2026
+// wspólnie z AI wyjaśnić Jackowi dlaczego używamy tabel intersekcji vs zwykły klucz obcy.
+// wizyty - zaimplementować - z datą startu i końca danego statusu/wartości - w html, tabele w bazie danych.
+// usługi - zaimplementować - możliwość zmiany statusu usługi w html i bazie danych.

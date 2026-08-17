@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import pl.gralewicz.kamil.java.app.bookingguide.api.ServiceStatusType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 
 import java.math.BigDecimal;
@@ -30,7 +31,8 @@ public class ServiceEntity {
     private int duration;
     @Column(name = "DURATION_TYPE")
     private DurationType durationType;
-    private String status;
+    @Column(name = "SERVICE_STATUS_TYPE")
+    private ServiceStatusType serviceStatusType;
 
     @ManyToMany(mappedBy = "services", cascade = {PERSIST, MERGE}, fetch = FetchType.EAGER)
     private Set<ShopEntity> shops = new HashSet<>();
@@ -109,15 +111,15 @@ public class ServiceEntity {
         this.durationType = durationType;
     }
 
-    public String getStatus() {
-        return status;
+    public ServiceStatusType getServiceStatusType() {
+        return serviceStatusType;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setServiceStatusType(ServiceStatusType serviceStatusType) {
+        this.serviceStatusType = serviceStatusType;
     }
 
-//    @Override
+    //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;
 //        if (o == null || getClass() != o.getClass()) return false;
@@ -139,8 +141,8 @@ public class ServiceEntity {
                 ", price=" + price +
                 ", duration=" + duration +
                 ", durationType=" + durationType +
-                ", status='" + status + '\'' +
-                ", shops='" + shops + '\'' +
+                ", serviceStatusType=" + serviceStatusType +
+                ", shops=" + shops +
                 '}';
     }
 }

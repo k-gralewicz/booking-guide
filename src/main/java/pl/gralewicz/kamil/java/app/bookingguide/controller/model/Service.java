@@ -1,5 +1,7 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
+import pl.gralewicz.kamil.java.app.bookingguide.api.ServiceStatusType;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,9 +18,7 @@ public class Service {
     private int duration;
 //    private String durationType; // TODO: stworzyć i użyć enum zamiast String
     private DurationType durationType;
-    private Long statusId;
-
-    private List<Status> statuses = new ArrayList<>();
+    private ServiceStatusType serviceStatusType;
 
     public Service() {
     }
@@ -73,28 +73,20 @@ public class Service {
         this.durationType = durationType;
     }
 
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    public List<Status> getStatuses() {
-        return statuses;
-    }
-
-    public void setStatuses(List<Status> statuses) {
-        this.statuses = statuses;
-    }
-
     public Set<Shop> getShops() {
         return shops;
     }
 
     public void setShops(Set<Shop> shops) {
         this.shops = shops;
+    }
+
+    public ServiceStatusType getServiceStatusType() {
+        return serviceStatusType;
+    }
+
+    public void setServiceStatusType(ServiceStatusType serviceStatusType) {
+        this.serviceStatusType = serviceStatusType;
     }
 
     @Override
@@ -119,8 +111,7 @@ public class Service {
                 ", price=" + price +
                 ", duration=" + duration +
                 ", durationType=" + durationType +
-                ", statusId=" + statusId +
-                ", statuses=" + statuses +
+                ", serviceStatusType=" + serviceStatusType +
                 ", shops=" + shops +
                 '}';
     }

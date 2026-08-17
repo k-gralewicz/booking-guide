@@ -2,6 +2,7 @@ package pl.gralewicz.kamil.java.app.bookingguide.service.mapper;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import pl.gralewicz.kamil.java.app.bookingguide.api.ServiceStatusType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
@@ -21,6 +22,7 @@ class ServiceMapperTest {
         service.setName("Mezoterapia igłowa");
         service.setDuration(30);
         service.getShops().add(shop);
+        service.setServiceStatusType(ServiceStatusType.ACTIVE);
 
         // when
         ServiceEntity serviceEntity = serviceMapper.from(service);
@@ -30,7 +32,8 @@ class ServiceMapperTest {
                 () -> Assertions.assertNotNull(serviceEntity, "serviceEntity is null"),
                 () -> Assertions.assertNotNull(serviceEntity.getId(), "ServiceEntity ID is null"),
                 () -> Assertions.assertNotNull(serviceEntity.getName(), "ServiceEntity Name is null"),
-                () -> Assertions.assertEquals(1, serviceEntity.getShops().size(), "Service Entity is not equals")
+                () -> Assertions.assertEquals(1, serviceEntity.getShops().size(), "Service Entity is not equals"),
+                () -> Assertions.assertEquals(ServiceStatusType.ACTIVE, serviceEntity.getServiceStatusType(), "Service Entity status type is not equals")
         );
     }
 
