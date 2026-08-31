@@ -1,6 +1,7 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
 import org.springframework.transaction.annotation.Transactional;
+import pl.gralewicz.kamil.java.app.bookingguide.api.ServiceStatusType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
@@ -91,6 +92,17 @@ public class ServiceService {
             return mappedService;
         }
         return null;
+    }
+
+    public Service changeStatus(Long id, ServiceStatusType serviceStatusType) {
+        LOGGER.info("changeStatus(" + id + ", " + serviceStatusType + ")");
+        ServiceEntity serviceEntity = serviceRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono service o ID " + id));
+        serviceEntity.setServiceStatusType(serviceStatusType);
+        ServiceEntity updatedServiceEntity = serviceRepository.save(serviceEntity);
+        Service mappedService = serviceMapper.from(updatedServiceEntity);
+        LOGGER.info("changeStatus(...)= " + mappedService);
+        return mappedService;
     }
 
     public void delete(Long id, Long selectedShopId) {

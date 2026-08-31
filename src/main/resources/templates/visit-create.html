@@ -28,11 +28,11 @@
 
                         <div sec:authorize="hasRole('ROLE_ADMIN')" class="mb-4">
                             <label class="fw-bold" for="client">Client:</label>
-<!--                            <select id="client" th:field="*{client.id}" class="form-select" required>-->
                             <select id="client" name="clientId" class="form-select" required>
-                                <option value="" disabled selected>Select a client</option>
+                                <option value="" disabled th:selected="${visit.client == null}">Select a client</option>
                                 <option th:each="client : ${clients}"
                                         th:value="${client.id}"
+                                        th:selected="${visit.client != null && visit.client.id == client.id}"
                                         th:text="${client.firstName + ' ' + client.lastName}"></option>
                             </select>
                         </div>
@@ -43,27 +43,41 @@
 
                         <div class="mb-3 d-flex justify-content-between border-bottom pb-2">
                             <label class="fw-bold">Service:</label>
-                            <span th:text="${session.SERVICE_SESSION?.name}">Service Name</span>
+                            <span th:text="${session.SERVICE_SESSION?.name != null ? session.SERVICE_SESSION.name : visit.service?.name}">Service Name</span>
                         </div>
 
                         <div class="mb-3 d-flex justify-content-between border-bottom pb-2">
                             <label class="fw-bold">Shop:</label>
-                            <span th:text="${session.SHOP_SESSION?.name}">Shop Name</span>
-                            <input type="hidden" name="shopId" th:value="${session.SHOP_SESSION?.id}">
-                            <input type="hidden" name="serviceId" th:value="${session.SERVICE_SESSION?.id}">
+                            <span th:text="${session.SHOP_SESSION?.name != null ? session.SHOP_SESSION.name : visit.shop?.name}">Shop Name</span>
+                            <input type="hidden" name="shopId" th:value="${session.SHOP_SESSION?.id != null ? session.SHOP_SESSION.id : visit.shop?.id}">
+                            <input type="hidden" name="serviceId" th:value="${session.SERVICE_SESSION?.id != null ? session.SERVICE_SESSION.id : visit.service?.id}">
                         </div>
 
                         <div class="mb-4">
                             <label class="fw-bold" for="dueDate">Date:</label>
-                            <input type="datetime-local" id="dueDate" th:field="*{dueDate}" class="form-control" required>
-                            <div class="form-text">Format: YYYY-MM-DD</div>
+                            <!-- Poprawka dla poprawnego wyświetlania daty i czasu w polu datetime-local -->
+                            <input type="datetime-local" id="dueDate" name="dueDate"
+                                   th:value="${visit.dueDate != null ? #temporals.format(visit.dueDate, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                                   class="form-control" required>
+                            <div class="form-text">Select visit date and time</div>
+                        </div>
+
+                        <!-- DODANO: Wybór statusu widoczny tylko podczas EDYCJI wizyty -->
+                        <div th:if="${isEdit}" class="mb-4">
+                            <label class="fw-bold" for="currentStatus">Status:</label>
+                            <select id="currentStatus" th:field="*{currentStatus}" class="form-select">
+                                <option th:each="statusOption : ${T(pl.gralewicz.kamil.java.app.bookingguide.api.VisitStatusType).values()}"
+                                        th:value="${statusOption}"
+                                        th:text="${statusOption}">
+                                </option>
+                            </select>
                         </div>
 
                         <div class="text-center mt-4">
                             <div class="btn-group w-100">
                                 <button type="submit" class="btn btn-primary"
                                         th:text="${isEdit} ? 'Update Visit' : 'Create Visit'">Action</button>
-                                <a th:href="@{/clients/dashboard}" class="btn btn-secondary ms-2">Cancel</a>
+                                <a th:href="@{/visits}" class="btn btn-secondary ms-2">Cancel</a>
                             </div>
                         </div>
                     </div>

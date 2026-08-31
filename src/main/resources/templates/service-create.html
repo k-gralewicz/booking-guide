@@ -61,6 +61,17 @@
                         <div th:if="${#fields.hasErrors('durationType')}" th:errors="*{durationType}" class="invalid-feedback">Duration Type Error</div>
                     </div>
 
+                    <div class="mb-4">
+                        <label for="serviceStatusType" class="fw-bold">Status:</label>
+                        <select id="serviceStatusType" th:field="*{serviceStatusType}" class="form-select" th:errorclass="is-invalid" required>
+                            <option value="">-- Select Status --</option>
+                            <option th:each="status : ${serviceStatusTypes}"
+                                    th:value="${status}"
+                                    th:text="${status.label}"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('serviceStatusType')}" th:errors="*{serviceStatusType}" class="invalid-feedback">Status Error</div>
+                    </div>
+
                     <div class="text-center mt-4">
                         <div class="btn-group w-100">
                             <button type="submit" class="btn btn-primary"

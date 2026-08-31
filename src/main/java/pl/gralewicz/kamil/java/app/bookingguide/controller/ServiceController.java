@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import pl.gralewicz.kamil.java.app.bookingguide.api.ServiceStatusType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
@@ -44,9 +46,12 @@ public class ServiceController {
     @GetMapping(value = "/create")
     public String createView(ModelMap modelMap) {
         LOGGER.info("createView()");
+        Service newService = new Service();
+        newService.setServiceStatusType(ServiceStatusType.ACTIVE);
         modelMap.addAttribute("createMessage", "Fill out the form fields");
-        modelMap.addAttribute("service", new Service());
+        modelMap.addAttribute("service", newService);
         modelMap.addAttribute("durationTypes", DurationType.values());
+        modelMap.addAttribute("serviceStatusTypes", ServiceStatusType.values());
         modelMap.addAttribute("isEdit", false);
         LOGGER.info("createView(...)= ");
         return "service-create";
@@ -59,6 +64,7 @@ public class ServiceController {
             LOGGER.warning("Binding errors occurred: " + bindingResult.getAllErrors());
             modelMap.addAttribute("createMessage", "Please correct the errors below.");
             modelMap.addAttribute("durationTypes", DurationType.values());
+            modelMap.addAttribute("serviceStatusTypes", ServiceStatusType.values());
             modelMap.addAttribute("isEdit", false);
             return "service-create";
         }
@@ -96,6 +102,7 @@ public class ServiceController {
 
         modelMap.addAttribute("service", readService);
         modelMap.addAttribute("durationTypes", DurationType.values());
+        modelMap.addAttribute("serviceStatusTypes", ServiceStatusType.values());
         modelMap.addAttribute("isEdit", true);
 
         LOGGER.info("updateView(...)= " + readService);
@@ -115,6 +122,7 @@ public class ServiceController {
             LOGGER.warning("Validation errors occurred");
             modelMap.addAttribute("isEdit", true);
             modelMap.addAttribute("durationTypes", DurationType.values());
+            modelMap.addAttribute("serviceStatusTypes", ServiceStatusType.values());
             return "service-create";
         }
 
@@ -129,8 +137,17 @@ public class ServiceController {
             modelMap.addAttribute("errorMessage", "Błąd aktualizacji: " + e.getMessage());
             modelMap.addAttribute("isEdit", true);
             modelMap.addAttribute("durationTypes", DurationType.values());
+            modelMap.addAttribute("serviceStatusTypes", ServiceStatusType.values());
             return "service-create";
         }
+    }
+
+    @PostMapping(value = "/{id}/status")
+    public String changeStatus(@PathVariable Long id, @RequestParam ServiceStatusType serviceStatusType, ModelMap modelMap) {
+        LOGGER.info("changeStatus(" + id + ", " + serviceStatusType + ")");
+        serviceService.changeStatus(id, serviceStatusType);
+        LOGGER.info("changeStatus(...)= ");
+        return "redirect:/services/" + id;
     }
 
     @GetMapping(value = "/delete/{id}")

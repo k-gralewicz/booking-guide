@@ -1,7 +1,17 @@
 package pl.gralewicz.kamil.java.app.bookingguide.service;
 
-import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
-import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.gralewicz.kamil.java.app.bookingguide.api.VisitStatusType;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Client;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
+import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitStatusEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
@@ -11,22 +21,27 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-@org.springframework.stereotype.Service
+@Service
 public class VisitService {
     private static final Logger LOGGER = Logger.getLogger(VisitService.class.getName());
 
-    private final VisitRepository visitRepository; // zależności
+    private final VisitRepository visitRepository;
     private final VisitMapper visitMapper;
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
     private final VisitAvailabilityService visitAvailabilityService;
 
-    public VisitService(VisitRepository visitRepository, VisitMapper visitMapper, ShopRepository shopRepository, UserRepository userRepository, VisitAvailabilityService visitAvailabilityService) { // wstrzykiwanie zależności
+    public VisitService(VisitRepository visitRepository,
+                        VisitMapper visitMapper,
+                        ShopRepository shopRepository,
+                        UserRepository userRepository,
+                        VisitAvailabilityService visitAvailabilityService) {
         this.visitRepository = visitRepository;
         this.visitMapper = visitMapper;
         this.shopRepository = shopRepository;
@@ -53,6 +68,9 @@ public class VisitService {
     public List<Visit> list(String username) {
         LOGGER.info("list(" + username + ")");
         UserEntity userByUsername = userRepository.findByUsername(username);
+        if (userByUsername == null || userByUsername.getClient() == null) {
+            return new ArrayList<>();
+        }
         ClientEntity client = userByUsername.getClient();
         Long clientId = client.getId();
         List<VisitEntity> visitEntities = visitRepository.findByClientId(clientId);
@@ -76,7 +94,6 @@ public class VisitService {
         if (visit.getService() == null || visit.getService().getId() == null) {
             throw new IllegalArgumentException("Visit must have a service with a valid ID");
         }
-        // DODANO WALIDACJĘ KLIENTA
         if (visit.getClient() == null || visit.getClient().getId() == null) {
             throw new IllegalArgumentException("Visit must have a client with a valid ID");
         }
@@ -86,8 +103,8 @@ public class VisitService {
         }
 
         Shop shop = visit.getShop();
-        Service service = visit.getService();
-        Client client = visit.getClient(); // <-- DODANO POBRANIE MODELU KLIENTA
+        pl.gralewicz.kamil.java.app.bookingguide.controller.model.Service service = visit.getService();
+        Client client = visit.getClient();
         LocalDateTime requestedDateTime = visit.getDueDate();
         int duration = service.getDuration();
         DurationType durationType = service.getDurationType();
@@ -101,7 +118,6 @@ public class VisitService {
 
         availability(shop.getId(), requestedDateTime, duration, durationType);
 
-        // POPRAWIONO: Dodany paramter 'client' jako trzeci argument
         Visit mappedVisit = visitAvailabilityService.book(shop, service, client, requestedDateTime, duration, durationType);
 
         LOGGER.info("create(...) = " + mappedVisit);
@@ -148,6 +164,41 @@ public class VisitService {
         LOGGER.info("delete(...)= ");
     }
 
+    @Transactional
+    public Visit changeStatus(Long visitId, VisitStatusType newStatusType) {
+        LOGGER.info("changeStatus(visitId=" + visitId + ", newStatus=" + newStatusType + ")");
+
+        VisitEntity visitEntity = visitRepository.findById(visitId)
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono wizyty o ID: " + visitId));
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if (visitEntity.getStatusHistory() == null) {
+            visitEntity.setStatusHistory(new ArrayList<>());
+        }
+
+        for (VisitStatusEntity statusEntity : visitEntity.getStatusHistory()) {
+            if (statusEntity.getEndDate() == null) {
+                statusEntity.setEndDate(now);
+            }
+        }
+
+        VisitStatusEntity newStatusEntity = new VisitStatusEntity();
+        newStatusEntity.setStatus(newStatusType);
+        newStatusEntity.setStartDate(now);
+        newStatusEntity.setVisit(visitEntity);
+
+        visitEntity.getStatusHistory().add(newStatusEntity);
+
+        visitEntity.setCurrentStatus(newStatusType);
+
+        VisitEntity updatedEntity = visitRepository.save(visitEntity);
+        Visit mappedVisit = visitMapper.from(updatedEntity);
+
+        LOGGER.info("changeStatus(...) = " + mappedVisit);
+        return mappedVisit;
+    }
+
     public void availability(Long shopId, LocalDateTime proposedStart, int duration, DurationType durationType)
             throws ShopClosedException, VisitCollisionException {
         LOGGER.info("availability(shopId=" + shopId + ", " + proposedStart + ", duration=" + duration + ", " + durationType + ")");
@@ -158,7 +209,7 @@ public class VisitService {
         }
 
         ShopEntity shopEntity = shopRepository.findById(shopId)
-                .orElseThrow(() -> new java.util.NoSuchElementException("Nie znaleziono sklepu o ID: " + shopId));
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono sklepu o ID: " + shopId));
 
         LocalDateTime proposedEnd = proposedStart;
 
@@ -217,6 +268,5 @@ public class VisitService {
         }
 
         LOGGER.info("availability(...)= true (Termin jest wolny)");
-//        return true;
     }
 }

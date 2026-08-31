@@ -18,10 +18,11 @@
     </div>
 
     <div>
-        <table class="table">
+        <table class="table align-middle">
             <thead>
             <tr>
                 <th>ID</th>
+                <th>Status</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
@@ -31,20 +32,29 @@
             </thead>
             <tbody>
             <tr th:if="${services == null || services.isEmpty()}">
-                <td colspan="6" style="text-align: center;">No services found.</td>
+                <td colspan="7" style="text-align: center;">No services found.</td>
             </tr>
 
             <tr th:each="service : ${services}">
                 <td th:text="${service.id}">ID</td>
+                <td>
+                    <span th:if="${service.serviceStatusType != null}"
+                          th:text="${service.serviceStatusType}"
+                          th:classappend="${service.serviceStatusType.name() == 'ACTIVE'} ? 'bg-success' : 'bg-secondary'"
+                          class="badge">
+                        Status
+                    </span>
+                    <span th:if="${service.serviceStatusType == null}" class="badge bg-light text-dark">N/A</span>
+                </td>
                 <td th:text="${service.name}">Name</td>
                 <td th:text="${service.description}">Description</td>
-                <td th:text="${service.price}">Price</td>
+                <td th:text="${service.price + ' PLN'}">Price</td>
                 <td th:text="${service.duration + ' ' + service.durationType}">Duration</td>
                 <td>
                     <a th:href="@{/services/{id}(id=${service.id})}" class="btn btn-sm btn-primary">Read</a>
                     <a th:href="@{/services/update/{id}(id=${service.id})}" class="btn btn-sm btn-warning">Update</a>
                     <a th:href="@{/services/delete/{id}(id=${service.id})}" class="btn btn-sm btn-danger">Delete</a>
-<!--                    <a th:href="@{/visits/create/{serviceId}(serviceId=${service.id})}" class="btn btn-sm btn-success">Book</a>-->
+                    <!--                    <a th:href="@{/visits/create/{serviceId}(serviceId=${service.id})}" class="btn btn-sm btn-success">Book</a>-->
                 </td>
             </tr>
             </tbody>

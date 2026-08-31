@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import pl.gralewicz.kamil.java.app.bookingguide.api.VisitStatusType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
 import pl.gralewicz.kamil.java.app.bookingguide.service.*;
 
@@ -173,7 +174,7 @@ public class VisitController {
         return "visit-create";
     }
 
-// TODO: 13.03.2025 poniżej: 
+// TODO: 13.03.2025 poniżej:
     // 1. Użytkownik wybiera salon(shop),
     // 2. Użytkownik wybiera usługę(service) dla danego salonu(shop),
     //      2a. Filtrowanie usług po salonie,
@@ -218,8 +219,17 @@ public class VisitController {
         Visit readVisit = visitService.read(id);
         modelMap.addAttribute("visit", readVisit);
         modelMap.addAttribute("isEdit", false);
+        modelMap.addAttribute("statuses", VisitStatusType.values()); // Przekazujemy tablicę statusów do widoku
         LOGGER.info("read(...)= " + readVisit);
         return "visit-read";
+    }
+
+    // --- NOWA METODA: OBSŁUGA ZMIANY STATUSU ---
+    @PostMapping(value = "/{id}/status")
+    public String changeStatus(@PathVariable Long id, @RequestParam("status") VisitStatusType status) {
+        LOGGER.info("changeStatus(" + id + ", " + status + ")");
+        visitService.changeStatus(id, status);
+        return "redirect:/visits/" + id;
     }
 
     @GetMapping(value = "/update/{id}")

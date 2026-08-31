@@ -224,3 +224,19 @@ public class BookingGuideApplication {
 // wspólnie z AI wyjaśnić Jackowi dlaczego używamy tabel intersekcji vs zwykły klucz obcy.
 // wizyty - zaimplementować - z datą startu i końca danego statusu/wartości - w html, tabele w bazie danych.
 // usługi - zaimplementować - możliwość zmiany statusu usługi w html i bazie danych.
+
+// TODO: 24.08.2026
+// jako ADMIN widzisz usługi o wszystkich statusach, jako CLIENT tylko aktywne,
+//
+// SELECT * FROM SERVICES;
+//ID  	DESCRIPTION  	DURATION  	DURATION_TYPE  	NAME  	PRICE  	STATUS  	SERVICE_STATUS_TYPE
+//102	farbowanie 	    30	        0	            Henna 	70.00	null	    1
+//
+//ID  	DESCRIPTION  	DURATION  	DURATION_TYPE  	NAME  	PRICE  	STATUS  	SERVICE_STATUS_TYPE     START_DATE      END_DATE
+//102	farbowanie 	    30	        0	            Henna 	70.00	null	    1                       2026-07-26      2026-08-23
+
+//SELECT * FROM VISITS;
+//ID  	DUE_DATE  	CLIENT_ID  	SERVICE_ID  	SHOP_ID  	CURRENT_STATUS
+//952	2026-07-30 	202	        106	            1	        NEW
+// ZAIMPLEMENTOWAĆ TO CO WYŻEJ
+// dodać metodę sprawdzającą cenę wizyty dla zadanego przedziału czasowego, nie aktualną cenę usługi w wizycie.

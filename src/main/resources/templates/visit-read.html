@@ -19,6 +19,18 @@
         <hr/>
 
         <div class="mt-4">
+          <!-- Aktualny status -->
+          <div class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
+            <label class="fw-bold">Status:</label>
+            <span th:if="${visit.currentStatus != null}"
+                  th:text="${visit.currentStatus}"
+                  th:classappend="${visit.currentStatus.name() == 'COMPLETED' || visit.currentStatus.name() == 'CONFIRMED'} ? 'bg-success' : (${visit.currentStatus.name() == 'CANCELLED'} ? 'bg-danger' : 'bg-primary')"
+                  class="badge fs-6">
+                Status
+            </span>
+            <span th:if="${visit.currentStatus == null}" class="badge bg-secondary fs-6">NEW</span>
+          </div>
+
           <div class="mb-3 d-flex justify-content-between border-bottom pb-2">
             <label class="fw-bold">Service:</label>
             <span th:text="${visit.service?.name}">Service Name</span>
@@ -40,7 +52,39 @@
           </div>
         </div>
 
-        <div class="text-center mt-5">
+        <!-- Tabela z historią statusów (Start / End) -->
+        <div class="mt-4">
+          <h5 class="fw-bold mb-3">Status History</h5>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered bg-white text-center align-middle mb-0">
+              <thead class="table-secondary">
+              <tr>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:if="${visit.statusHistory == null || visit.statusHistory.isEmpty()}">
+                <td colspan="3" class="text-muted">No status history available.</td>
+              </tr>
+              <tr th:each="statusLog : ${visit.statusHistory}">
+                <td>
+                  <span th:text="${statusLog.status}" class="badge bg-secondary">Status</span>
+                </td>
+                <td th:text="${statusLog.startDate != null ? #temporals.format(statusLog.startDate, 'dd-MM-yyyy HH:mm:ss') : '-'}">Start</td>
+                <td>
+                  <span th:if="${statusLog.endDate != null}"
+                        th:text="${#temporals.format(statusLog.endDate, 'dd-MM-yyyy HH:mm:ss')}">End</span>
+                  <span th:if="${statusLog.endDate == null}" class="badge bg-success">Current</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
           <div class="btn-group w-100">
             <a th:href="@{/clients/dashboard}" class="btn btn-secondary">Back to Dashboard</a>
             <a th:href="@{/visits/update/{id}(id=${visit.id})}" class="btn btn-warning ms-2">Edit Visit</a>
