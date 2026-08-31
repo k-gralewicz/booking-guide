@@ -10,6 +10,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -361,5 +362,29 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
 //        visitService.availability(visitDate, visitDurationType);
 //        //then
 
+    }
+
+    @Test
+    void getVisitPrice() {
+        // GIVEN
+        ServiceEntity service = new ServiceEntity();
+        service.setPrice(new BigDecimal("70.00"));
+        service.setStartDate(LocalDate.of(2026, 7, 26));
+        service.setEndDate(LocalDate.of(2026, 8, 23));
+        ServiceEntity savedService = serviceRepository.save(service);
+
+        VisitEntity visit = new VisitEntity();
+        visit.setDueDate(LocalDateTime.of(2026, 7, 30, 10, 0));
+        visit.setService(savedService);
+        VisitEntity savedVisit = visitRepository.save(visit);
+
+        // WHEN - Wywołujemy metodę o dokładnej nazwie z klasy VisitService
+        BigDecimal price = visitService.getVisitPriceForTimeRange(savedVisit.getId());
+
+        // THEN
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(price, "price is null"),
+                () -> Assertions.assertEquals(new BigDecimal("70.00"), price, "price is not equals")
+        );
     }
 }

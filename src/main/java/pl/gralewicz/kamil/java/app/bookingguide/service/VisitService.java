@@ -8,10 +8,12 @@ import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Shop;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.Visit;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ClientEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ServiceEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.ShopEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.UserEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitEntity;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.VisitStatusEntity;
+import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ServiceRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.ShopRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.UserRepository;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.VisitRepository;
@@ -19,6 +21,8 @@ import pl.gralewicz.kamil.java.app.bookingguide.service.exception.ShopClosedExce
 import pl.gralewicz.kamil.java.app.bookingguide.service.exception.VisitCollisionException;
 import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.VisitMapper;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -36,17 +40,20 @@ public class VisitService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
     private final VisitAvailabilityService visitAvailabilityService;
+    private final ServiceRepository serviceRepository;
 
     public VisitService(VisitRepository visitRepository,
                         VisitMapper visitMapper,
                         ShopRepository shopRepository,
                         UserRepository userRepository,
-                        VisitAvailabilityService visitAvailabilityService) {
+                        VisitAvailabilityService visitAvailabilityService,
+                        ServiceRepository serviceRepository) {
         this.visitRepository = visitRepository;
         this.visitMapper = visitMapper;
         this.shopRepository = shopRepository;
         this.userRepository = userRepository;
         this.visitAvailabilityService = visitAvailabilityService;
+        this.serviceRepository = serviceRepository;
     }
 
     public List<Visit> list() {
@@ -169,7 +176,7 @@ public class VisitService {
         LOGGER.info("changeStatus(visitId=" + visitId + ", newStatus=" + newStatusType + ")");
 
         VisitEntity visitEntity = visitRepository.findById(visitId)
-                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono wizyty o ID: " + visitId));
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono wizyty o ID: " + idForError(visitId)));
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -197,6 +204,10 @@ public class VisitService {
 
         LOGGER.info("changeStatus(...) = " + mappedVisit);
         return mappedVisit;
+    }
+
+    private Long idForError(Long visitId) {
+        return visitId;
     }
 
     public void availability(Long shopId, LocalDateTime proposedStart, int duration, DurationType durationType)
@@ -268,5 +279,32 @@ public class VisitService {
         }
 
         LOGGER.info("availability(...)= true (Termin jest wolny)");
+    }
+
+    /**
+     * Oblicza cene wizyty na podstawie daty wizyty (DUE_DATE) oraz okresu obowiazywania uslugi (START_DATE - END_DATE).
+     * Jeśli usługa z zakresem dat nie zostanie znaleziona, zwracana jest domyślna cena przypisana do wizyty/usługi.
+     */
+    public BigDecimal getVisitPriceForTimeRange(Long visitId) {
+        LOGGER.info("getVisitPriceForTimeRange(" + visitId + ")");
+        VisitEntity visitEntity = visitRepository.findById(visitId)
+                .orElseThrow(() -> new NoSuchElementException("Nie znaleziono wizyty o ID: " + visitId));
+
+        if (visitEntity.getService() == null || visitEntity.getService().getId() == null) {
+            throw new IllegalArgumentException("Wizyta nie posiada przypisanej usługi.");
+        }
+
+        Long serviceId = visitEntity.getService().getId();
+        LocalDateTime dueDate = visitEntity.getDueDate();
+        LocalDate targetDate = (dueDate != null) ? dueDate.toLocalDate() : LocalDate.now();
+
+        Optional<ServiceEntity> serviceForDate = serviceRepository.findServiceForDate(serviceId, targetDate);
+
+        BigDecimal price = serviceForDate
+                .map(ServiceEntity::getPrice)
+                .orElseGet(() -> visitEntity.getService().getPrice());
+
+        LOGGER.info("getVisitPriceForTimeRange(...) = " + price);
+        return price;
     }
 }

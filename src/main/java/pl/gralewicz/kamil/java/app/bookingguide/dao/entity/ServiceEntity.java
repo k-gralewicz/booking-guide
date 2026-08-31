@@ -12,6 +12,7 @@ import pl.gralewicz.kamil.java.app.bookingguide.api.ServiceStatusType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.DurationType;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,10 +30,18 @@ public class ServiceEntity {
     private String description;
     private BigDecimal price;
     private int duration;
+
     @Column(name = "DURATION_TYPE")
     private DurationType durationType;
+
     @Column(name = "SERVICE_STATUS_TYPE")
     private ServiceStatusType serviceStatusType;
+
+    @Column(name = "START_DATE")
+    private LocalDate startDate;
+
+    @Column(name = "END_DATE")
+    private LocalDate endDate;
 
     @ManyToMany(mappedBy = "services", cascade = {PERSIST, MERGE}, fetch = FetchType.EAGER)
     private Set<ShopEntity> shops = new HashSet<>();
@@ -119,18 +128,21 @@ public class ServiceEntity {
         this.serviceStatusType = serviceStatusType;
     }
 
-    //    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        ServiceEntity that = (ServiceEntity) o;
-//        return duration == that.duration && id.equals(that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(price, that.price) && durationType == that.durationType;
-//    }
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, name, description, price, duration, durationType);
-//    }
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 
     @Override
     public String toString() {
@@ -142,6 +154,8 @@ public class ServiceEntity {
                 ", duration=" + duration +
                 ", durationType=" + durationType +
                 ", serviceStatusType=" + serviceStatusType +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 ", shops=" + shops +
                 '}';
     }
