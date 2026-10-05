@@ -6,9 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import pl.gralewicz.kamil.java.app.bookingguide.api.ServiceStatusType;
+import pl.gralewicz.kamil.java.app.bookingguide.api.VisitStatusType;
 import pl.gralewicz.kamil.java.app.bookingguide.controller.model.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.entity.*;
 import pl.gralewicz.kamil.java.app.bookingguide.dao.repository.*;
+import pl.gralewicz.kamil.java.app.bookingguide.service.mapper.ServiceMapper;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -385,6 +388,40 @@ class VisitServiceSpringIntegrationTest { // Zmieniona nazwa
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(price, "price is null"),
                 () -> Assertions.assertEquals(new BigDecimal("70.00"), price, "price is not equals")
+        );
+    }
+
+    @Test
+    void getStatus(){
+        // GIVEN
+        Shop shop = new Shop();
+        shop.setName("Salon");
+        Shop createdShop = shopService.create(shop);
+        Service service = new Service();
+        service.setPrice(new BigDecimal("100"));
+        service.setStartDate(LocalDateTime.of(2026, 11, 1, 0 , 0));
+        service.setEndDate(LocalDateTime.of(2026, 11 ,3 , 0 , 0));
+        service.setDurationType(DurationType.MINUTES);
+        service.setDuration(30);
+        service.setServiceStatusType(ServiceStatusType.ACTIVE);
+        Service savedService = serviceService.create(service);
+        Client client = new Client();
+        client.setFirstName("Ala");
+        Client createdClient = clientService.create(client);
+
+        Visit visit = new Visit();
+        visit.setDueDate(LocalDateTime.of(2026, 11, 2, 12, 0));
+        visit.setService(savedService);
+        visit.setCurrentStatus(VisitStatusType.NEW);
+        visit.setShop(createdShop);
+        visit.setClient(createdClient);
+        Visit createdVisit = visitService.create(visit);
+        // WHEN
+        Visit changedVisit = visitService.changeStatus(createdVisit.getId(), VisitStatusType.COMPLETED);
+        // THEN
+        Assertions.assertAll(
+                ()-> Assertions.assertNotNull(changedVisit, "changedVisit is null"),
+                ()-> Assertions.assertEquals(VisitStatusType.COMPLETED, changedVisit.getCurrentStatus(), "changedVisit status is not equals")
         );
     }
 }

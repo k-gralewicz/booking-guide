@@ -1,8 +1,10 @@
 package pl.gralewicz.kamil.java.app.bookingguide.controller.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import pl.gralewicz.kamil.java.app.bookingguide.api.ServiceStatusType;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +21,10 @@ public class Service {
 //    private String durationType; // TODO: stworzyć i użyć enum zamiast String
     private DurationType durationType;
     private ServiceStatusType serviceStatusType;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     public Service() {
     }
@@ -89,6 +95,22 @@ public class Service {
         this.serviceStatusType = serviceStatusType;
     }
 
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,6 +134,8 @@ public class Service {
                 ", duration=" + duration +
                 ", durationType=" + durationType +
                 ", serviceStatusType=" + serviceStatusType +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 ", shops=" + shops +
                 '}';
     }

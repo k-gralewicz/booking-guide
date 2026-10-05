@@ -240,3 +240,15 @@ public class BookingGuideApplication {
 //952	2026-07-30 	202	        106	            1	        NEW
 // ZAIMPLEMENTOWAĆ TO CO WYŻEJ
 // dodać metodę sprawdzającą cenę wizyty dla zadanego przedziału czasowego, nie aktualną cenę usługi w wizycie.
+
+// TODO: 31.08.2026
+// do VisitServiceSpringIntegrationTest dodać testy:
+// dokończyć test getStatus
+// 1. Zmiana statusu
+// 2. Zmiana ceny
+// 3. integracyjny na: Zmiana statusu i ceny i sprawdzić jaka obowiązuje.
+// dla metody findServiceForDate(ServiceRepository) dodać test
+// do widoku List Visit i read Visit dodać cenę, do update dodać czas i status.
+// do widoku List i Read Service dodać start i end date,
+
+// stwórz usługę - 1 wizyta - zmienić cenę usługi i status, zrobić nową wizytę i sprawdzić czy ma nową cenę.

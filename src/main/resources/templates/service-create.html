@@ -72,6 +72,22 @@
                         <div th:if="${#fields.hasErrors('serviceStatusType')}" th:errors="*{serviceStatusType}" class="invalid-feedback">Status Error</div>
                     </div>
 
+                    <div class="mb-4">
+                        <label class="fw-bold" for="startDate">Start Date:</label>
+                        <input type="datetime-local" id="startDate" name="startDate"
+                               th:value="${service.startDate != null ? #temporals.format(service.startDate, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                               class="form-control" required>
+                        <div class="form-text">Select Start Date</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-bold" for="endDate">End  Date:</label>
+                        <input type="datetime-local" id="endDate" name="endDate"
+                               th:value="${service.endDate != null ? #temporals.format(service.endDate, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                               class="form-control" required>
+                        <div class="form-text">Select End Date</div>
+                    </div>
+
                     <div class="text-center mt-4">
                         <div class="btn-group w-100">
                             <button type="submit" class="btn btn-primary"
